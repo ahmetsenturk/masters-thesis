@@ -1,13 +1,13 @@
 // Enter your thesis data here:
-#let titleEnglish = "(Title English)"
-#let titleGerman = "(Title German)"
-#let degree = "Bachelor"
-#let program = "Information Systems"
+#let titleEnglish = "Individualized Feedback Generation with Learner Profiles"
+#let titleGerman = "Individualisierte Feedback-Generierung mit Lernerprofilen"
+#let degree = "Master"
+#let program = "Informatics"
 #let supervisor = "Prof. Dr. Stephan Krusche"
-#let advisors = ("Jolanda Krümelmonster, M.Sc.",)
-#let author = "(Author)"
-#let birthdate = datetime(day: 01, month: 01, year: 2002) // only necessary for registration certificate
-#let startDate = datetime(day: 1, month: 1, year: 2024)
-#let submissionDate = datetime(day: 1, month: 1, year: 2024)
+#let advisors = ("Maximilian Sölch, M.Sc.",)
+#let author = "Ahmet İbrahim Şentürk, B.Sc"
+#let birthdate = datetime(day: 28, month: 03, year: 1998) // only necessary for registration certificate
+#let startDate = datetime(day: 25, month: 2, year: 2025)
+#let submissionDate = datetime(day: 25, month: 8, year: 2025)
 #let presentationDate = datetime(day: 1, month: 1, year: 2024)
 #let feedbacklogSubmissionDate = datetime.today()
