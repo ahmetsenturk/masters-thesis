@@ -20,7 +20,6 @@
 )
 
 #include "/content/introduction.typ"
-#include "/content/background.typ"
 #include "/content/related_work.typ"
 #include "/content/requirements.typ"
 #include "/content/system_design.typ"
