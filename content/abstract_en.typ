@@ -1,4 +1,5 @@
-Note:
-  1. *paragraph:* What is the motivation of your thesis? Why is it interesting from a scientific point of view? Which main problem do you like to solve?
-  2. *paragraph:* What is the purpose of the document? What is the main content, the main contribution?
-  3. *paragraph:* What is your methodology? How do you proceed?
+Learning Management Systems like Artemis now are able to assess student submissions in seconds automatically, yet the feedback they return is largely uniform, overlooking differences in students' prior knowledge, engagement patterns, and preferred learning styles—factors that research shows are critical for effective learning. This mismatch between scale and individual relevance limits students' ability to close the gap between their current performance and course goals. The goal of this thesis is to close this gap by providing individualised feedback to students. 
+
+We present a profile-aware feedback architecture for Artemis and Athena. The main contribution is a learner-profiling framework that aggregates competencies, submission history, and explicit feedback preferences, and then injects that profile into a large-language-model (LLM) pipeline to generate submission-specific guidance for programming, text, and modelling exercises.
+
+The work proceeded iteratively. In each cycle, we extended the pipeline—first by defining which learning-style dimensions and competencies to track, next by structuring those competencies, and finally by tailoring the visual presentation of feedback. We ran two evaluation studies with students, using interview-style sessions to gather qualitative insights alongside timing and accuracy measurements. 

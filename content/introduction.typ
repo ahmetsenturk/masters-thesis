@@ -32,7 +32,9 @@ Research consistently shows a strong positive correlation between personalized f
 
 Developing the learner profile required for personalised feedback lays the groundwork for an end-to-end personalised learning ecosystem within LMSs. Such profiles can power the automatic recommendation of study materials aligned with individual competency gaps, enable adaptive lecture scheduling, generate practice tasks calibrated to each student's level, and drive intelligent assistants—such as Iris—that use profile data to suggest resources and coach study strategies.
 
-Reference the following paper in above paragraph: @hu2024
+#TODO[
+  The following papers are relevant for the motivation: @hu2024, @chun2025
+]
 
 Personalised automation also alleviates instructor workload by reducing repetitive grading and clarifying where human intervention is most needed. Tutors can concentrate on high-impact mentoring moments—such as live tutoring sessions—while routine feedback is delivered automatically. Institutions, in turn, gain a scalable mechanism for improving learning outcomes and student satisfaction metrics without proportionally increasing staffing costs.
 
@@ -46,9 +48,14 @@ This thesis pursues two complementary research objectives that together establis
 #text(weight: "bold")[Objective 1: Profiling university students on LMSs.] The first objective is to design and validate a learner-profiling method that can operate at scale within Artemis. We will: (i) identify which artefacts—such as submission history, engagement logs, forum posts, chat conversations, and previous assessments—most accurately reflect competencies, progress, and learning preferences; (ii) determine which preference dimensions (e.g., preferred level of detail, use of examples, explanation style) should be collected explicitly from students and devise lightweight elicitation instruments such as Likert-style sliders or pairwise surveys; and (iii) compare rule-based feature engineering with large-language-model (LLM) approaches, including LLM-as-profiler pipelines that extract profile vectors from free-text evidence. The outcome will be a flexible profile schema that can be populated automatically and updated incrementally throughout a course.
 
 \
-#text(weight: "bold")[Objective 2: Utilising the profile to generate personalised feedback.] Building on the learner profile, the second objective is to create a feedback-generation pipeline that produces individualised, actionable feedback through generative AI. We will: (i) design a multi-stage workflow that feeds the profile, the current submission, and the grading rubric into an LLM; (ii) explore prompting strategies—such as zero-shot and chain-of-thought prompts—to ensure that profile cues are effectively incorporated; (iii) specify an output schema (e.g., JSON containing rationale, identified strengths, weaknesses, and next-step guidance) that integrates seamlessly with Athena; and (iv) evaluate the resulting feedback both quantitatively (rubric alignment, coverage of profile cues) and qualitatively (student surveys) against the baseline.
-
-Both objectives will be pursued through iterative prototyping and case studies conducted within Artemis and Athena, with evaluation criteria focusing on instructional relevance, computational efficiency, and stakeholder satisfaction.
+#text(weight: "bold")[Objective 2: Generate personalised feedback utilising the profile.] Building on the learner profile, the second objective is to create a feedback-generation pipeline that produces individualised, actionable feedback through generative AI. We will: (i) design a multi-stage workflow that feeds the profile, the current submission, and the grading rubric into an LLM; (ii) explore prompting strategies—such as zero-shot and chain-of-thought prompts—to ensure that profile cues are effectively incorporated; (iii) specify an output schema (e.g., JSON containing rationale, identified strengths, weaknesses, and next-step guidance) that integrates seamlessly with Athena; and (iv) evaluate the resulting feedback both quantitatively (rubric alignment, coverage of profile cues) and qualitatively (student surveys) against the baseline.
+\
+\
+#text(weight: "bold")[Objective 3: Delivering the feedback.] As a final objective, we want to complement the personalised feedback with an actionable & intuitive interface. We will: (i) design a user interface that allows students to understand the feedback easily - where they failed, what they did well, and what they could improve.
+\
+\
+All objectives will be pursued through iterative prototyping and case studies conducted within Artemis and Athena, with evaluation criteria focusing on instructional relevance, computational efficiency, and stakeholder satisfaction.
 
 
 == Outline
+...

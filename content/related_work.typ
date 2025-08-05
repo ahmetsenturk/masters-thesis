@@ -4,31 +4,15 @@
 #TODO[
   Describe related work regarding your topic and emphasize your (scientific) contribution in contrast to existing approaches / concepts / workflows. Related work is usually current research by others and you defend yourself against the statement: “Why is your thesis relevant? The problem was al- ready solved by XYZ.” If you have multiple related works, use subsections to separate them.
 ]
-Contemporary research on automated assessment and personalised feedback spans three intersecting streams. The first investigates automatic assessment systems that grade and comment on student work at scale. The second examines the recent wave of large language models (LLMs) and their capacity to generate high‑quality formative feedback. The third explores learner profiling and adaptive learning, laying the conceptual foundations for tailoring feedback to individual needs.
-
-== Automated Assessment Systems
-- @krusche2022
-- @schwind2023
-- @krusche2018
-- @dietrich2023
-- @bernius2019
-- @bernius2022A
-- @bernius2022B
+Contemporary research on personalised, automated feedback converges on two main streams. The first investigates how large language models (LLMs) can be prompted and constrained to generate pedagogically sound comments at scale. The second explores learner profiling and adaptive learning, laying the foundations for tailoring the feedback to each student's competencies, engagement patterns, and preferences.
 
 == Large Language Models for Feedback Generation
-- @kasneci2023
-- @cohn2024
-- @jauhiainen2024
-- @lohr2024
-- @naz2024
-- @dai2023
-- @morales2024
-- @pathak2025
-- @qiu2025
-- @ria2025
-- @stahl2024
-- @stamper2024
-- @lin2023
+Recent studies have begun to explore how generative large language models (LLMs) can be guided to produce pedagogically sound feedback. Cohn #text("et al.", style: "italic") show that adding an explicit chain-of-thought section to the prompt improves the logical consistency of score explanations for short-answer questions @cohn2024. Jauhiainen #text("et al.", style: "italic") report near-human agreement when ChatGPT-4 is asked to grade and comment on academic essays, suggesting that state-of-the-art LLMs can reliably assess discourse-level quality @jauhiainen2024. Complementary work by Lohr #text("et al.", style: "italic") demonstrates that prompt templates can be tuned through expert-in-the-loop iterations to yield distinct feedback genres (e.g., corrective, elaborative) with over 95 % success (63 / 66 cases) @lohr2024. Dai #text("et al.", style: "italic") go further, noting that ChatGPT not only summarises student performance more fluently than human instructors but also offers process-level advice that could foster self-regulated learning @dai2023. Across these studies, a recurring theme is the need for richer context: Morales #text("et al.", style: "italic") emphasise personalisation for diverse MOOC populations, while Pathak and Ria show that injecting task-specific rubrics helps LLMs align comments with instructional objectives @morales2024 @ria2025 @pathak2025. Stamper #text("et al.", style: "italic") argue that future prompt-engineering should pull in multilayered student-model data—knowledge, affect, and metacognition—to reach the level of adaptation offered by classical intelligent-tutoring systems @stamper2024.
 
 == Learner Profiling and Adaptive Learning
-- @tang2024
+Work on adaptive learning platforms provides precedents for what kinds of learner data can drive meaningful personalisation. Kochmar #text("et al.", style: "italic") illustrate that incorporating past interaction metrics—such as the number of attempted questions and historical accuracy—improves the selection of next-step hints @kochmar2020. Cuéllar #text("et al.", style: "italic") expand the signal set to quiz scores, live-session attendance, video-watch percentages, and forum posts; they feed these variables into a GPT-4 prompt that outputs a multi-part feedback message containing motivational, diagnostic, and prescriptive sections styled after popular culture archetypes (e.g., Yoda from Star Wars) @cuellar2025. Tang #text("et al.", style: "italic")'s SPHERE system tackles large programming classes by continuously extracting conversation logs, code history, and runtime errors to surface "critical issues" for instructor triage; selected issues are then templated into hints, explanations, or verifications @tang2024.
+
+#TODO[
+  Mention @oli2024 for LLM  based student competency detection
+  Mention @economides2005 for diffefent feedback types
+]
