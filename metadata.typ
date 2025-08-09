@@ -9,5 +9,5 @@
 #let birthdate = datetime(day: 28, month: 03, year: 1998) // only necessary for registration certificate
 #let startDate = datetime(day: 25, month: 2, year: 2025)
 #let submissionDate = datetime(day: 25, month: 8, year: 2025)
-#let presentationDate = datetime(day: 1, month: 1, year: 2024)
+#let presentationDate = datetime(day: 6, month: 8, year: 2025)
 #let feedbacklogSubmissionDate = datetime.today()

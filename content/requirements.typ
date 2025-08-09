@@ -2,7 +2,7 @@
 
 #let fr(id, title, body) = table(columns: (15mm, 1fr), stroke: none, [#id], [*#title*: #body])
 
-
+#pagebreak()
 = Requirements
 The requirements chapter follows the Requirements Analysis Document Template proposed by Brügge and Dutoit, which emphasizes a clear separation between the application domain (problem space) and the solution domain (technology choices) @bruegge2009. All artefacts in this chapter therefore describe what the system should achieve without assuming how it will be implemented, an approach that supports traceability from stakeholder needs to design decisions.
 
@@ -19,54 +19,56 @@ The envisioned extension introduces learner profiles as a first-class artefact. 
 
 === Functional Requirements
 
-#fr("FR 1", "Configure Feedback Preferences", "The system should allow students to specify their preferred feedback granularity and tone through an intuitive interface.")  <fr1>
+#fr("FR 1", "Configure Feedback Preferences", "The system should allow students to specify their preferred feedback granularity and tone through an intuitive interface.") 
 
-#fr("FR 2", "Extract Competencies", "The system should identify the competencies required for each exercise by analysing the provided metadata using a recognised taxonomy such as Bloom's Taxonomy - when they are not provided by the LMS.")  <fr2>
+#fr("FR 2", "Utilise Competencies", "The system should utilise the competencies set by the lecturers that are linked to an exercise when generating personalised feedback.")
 
-#fr("FR 3", "Assess Competency Status", "For every new submission, the system should classify the student's mastery of each required competency. The assessment should contain an evidence from student's submissions.") <fr3>
+#fr("FR 3", "Extract Competencies", "The system should identify the competencies required for each exercise by analysing the provided metadata using a recognised taxonomy such as Bloom's Taxonomy - when they are not provided by the lecturer.")
 
-#fr("FR 4", "Utilise Feedback Preferences", "The system should utilise the feedback preferences of the student to generate personalised feedback.") <fr4>
+#fr("FR 4", "Assess Competency Status", "For every new submission, the system should classify the student's mastery of each required competency. The assessment should contain an evidence from student's submissions.")
 
-#fr("FR 5", "Utilise Submission History", "The system should make use of the submission history when generating when assessing the competency status. It should extract the progress of the student and use it to assess the competency status.") <fr5>
+#fr("FR 5", "Utilise Feedback Preferences", "The system should utilise the feedback preferences of the student to generate personalised feedback.")
 
-#fr("FR 6", "Utilise Engagement Data", "The system should incorporate engagement signals (i.e., forum posts, chat logs) when assessing the competency status. It should extract the insights from the engagement data and use them to assess the competency status.") <fr6>
+#fr("FR 6", "Utilise Submission History", "The system should make use of the submission history when generating when assessing the competency status. It should extract the progress of the student and use it to assess the competency status.")
 
-#fr("FR 7", "Generate Learner Profiles", "The system should construct a learner profile from the competency status (which encapsulate competencies and progress of the student) and explicit preference settings.") <fr7>
+#fr("FR 7", "Utilise Engagement Data", "The system should incorporate engagement signals (i.e., forum posts, chat logs) when assessing the competency status. It should extract the insights from the engagement data and use them to assess the competency status.")
 
-#fr("FR 8", "Update Learner Profiles", "The system should refine the learner profile after changes in competency status and explicit preference settings. These changes can be triggered when student submits a new submission, engages with platform's chatbot, or when the student changes their feedback preferences.") <fr8>
+#fr("FR 8", "Generate Learner Profiles", "The system should construct a learner profile from the competency status (which encapsulate competencies and progress of the student) and explicit preference settings.")
 
-#fr("FR 9", "Request Personalised Feedback", "The system should allow students to request personalised feedback on their submission. After each submission, students should be able to request personalised feedback.") 
+#fr("FR 9", "Update Learner Profiles", "The system should refine the learner profile after changes in competency status and explicit preference settings. These changes can be triggered when student submits a new submission, engages with platform's chatbot, or when the student changes their feedback preferences.")
 
-#fr("FR 10", "Generate Personalised Feedback", "Given a submission and the student's learner profile, the system should generate feedback that respects the learner profile.") 
+#fr("FR 10", "Request Personalised Feedback", "The system should allow students to request personalised feedback on their submission. After each submission, students should be able to request personalised feedback.") 
 
-#fr("FR 11", "View Personalised Feedback", "The system should display the personalised feedback to the student in a way that is easy to understand what the feedback is about and what are the next steps to improve.") <fr10>
+#fr("FR 11", "Generate Personalised Feedback", "Given a submission and the student's learner profile, the system should generate feedback that respects the learner profile.") 
+
+#fr("FR 12", "View Personalised Feedback", "The system should display the personalised feedback to the student in a way that is easy to understand what the feedback is about and what are the next steps to improve.")
 
 
 === Quality Attributes
 
-#fr("QA 1", "Feedback Interface", "The feedback interface should clearly indicate what the student did well and what they could improve, using Artemis design conventions for colour and layout.")
+#fr("QA 1", "Feedback Interface", "The feedback interface should clearly indicate what the student did well and what they could improve, adhering to Artemis design conventions.")
 
-#fr("QA 2", "Preference Interface", "The preference-setting workflow should be easy to understand and complete. It should be intuitive to use and shouldn't take more than 1 minute for students to configure.")
+#fr("QA 2", "Preference Interface", "The preference-setting workflow should be easy to understand and complete. It should be intuitive to use and shouldn't take more than 1 minute for students to configure. Interface should adhere to Artemis design conventions.")
 
-#fr("QA 3", "Integration", "All data exchanges should conform to public Artemis APIs and data formats.")
+#fr("QA 3", "Reusability", "The developed system should make use of existing components and services from Artemis and Athena to avoid making the current system more complex and harder to maintain. The development on Athena side should use the same approach as the current development and should be in the matter of extending the current capabilites of the system.")
 
-#fr("QA 4", "Documentation", "User and developer documentation should accompany the system.")
+#fr("QA 4", "Documentation", "User and developer documentation should accompany the system. Users should be able to understand the functionalities and how to use them, while developers should be able to understand the system and how to extend it.")
 
-#fr("QA 5", "Fault Tolerance", "In case personalised feedback generation fails, the system should degrade gracefully, allowing automated feedback generation that wouldn't take the learner profile into account.")
+#fr("QA 5", "Fault Tolerance", "In case personalised feedback generation fails, the system should degrade gracefully, allowing tutors and assistants to provide manual feedback to the students.")
 
 #fr("QA 6", "Feedback Quality", "Personalised feedback should be at least as accurate and actionable as existing automated feedback.")
 
-#fr("QA 7", "Latency", "Feedback generation should complete within 20 seconds per submission under normal load.")
+#fr("QA 7", "Latency", "Feedback generation should be completed within a reasonable time frame for students to take immediate action, ideally not more than 20 seconds per submission under normal load.")
 
-#fr("QA 8", "Scalability", "The system should sustain increased load without significant performance degradation.")
+#fr("QA 8", "Scalability", "The system should sustain increased load (e.g., large number of students asking for a feedback on complicated exercises) without significant performance degradation.")
+
+#fr("QA 9", "Extensibility", "The system should be extensible to support new features and functionalities. The system should be designed in a way that allows for easy extension and modification of the existing codebase.")
+
+
 
 === Constraints
 
-#fr("C 1", "Artemis Integration", "The solution should integrate with Artemis via its official API.")
 
-#fr("C 2", "Scalability", "The architecture should handle large classes and complex exercises.")
-
-#fr("C 3", "Fault Tolerance", "Graceful degradation should be provided when feedback generation fails.")
 
 
 == System Models
@@ -128,7 +130,7 @@ In this subsection, we present the dynamic model for the proposed system. The dy
 \
 #text(weight: "bold")[Dynamic Model 1: Student Request Personalised Feedback]
 \
-It starts with the student submitting a solution. After creating a submission on Artemis, the student can request personalised feedback. The submission is then bundled with the current learner profile and previous submission and dispatched to Athena. Athena first checks if the exercise related to the submission has set competencies, and generates them on the fly if not. Then, it assesses the competency status of the student and generates a student competency status. The student competency status is then used to generate personalised feedback and to update the learner profile. The personalised feedback is then returned to the user interface for the student to view.
+It starts with the student submitting a solution. After submission has been created on Artemis, the student can request personalised feedback. The submission is then bundled with the current learner profile and previous submission and dispatched to Athena. Athena first checks if the exercise related to the submission has set competencies, and generates them on the fly if not. Then, it assesses the competency status of the student and generates a student competency status. The student competency status is then used to generate personalised feedback and to update the learner profile. The personalised feedback is then returned to the user interface for the student to view.
 
 
 
