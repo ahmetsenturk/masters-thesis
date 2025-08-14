@@ -68,6 +68,14 @@ The envisioned extension introduces learner profiles as a first-class artefact. 
 
 === Constraints
 
+#fr("C 1", "Cost", "The system should be cost-efficient.")
+
+#fr("C 2", "Maintainability", "The system should be maintainable.")
+
+#fr("C 3", "Extensibility", "The system should be extensible.")
+
+#fr("C 4", "Data Protection", "The system should be compliant with the GDPR and protect the personal data of the students.")
+
 
 
 
