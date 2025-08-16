@@ -4,36 +4,44 @@
 
 #pagebreak()
 = Requirements
-The requirements chapter follows the Requirements Analysis Document Template proposed by Brügge and Dutoit, which emphasizes a clear separation between the application domain (problem space) and the solution domain (technology choices) @bruegge2009. All artefacts in this chapter therefore describe what the system should achieve without assuming how it will be implemented, an approach that supports traceability from stakeholder needs to design decisions.
+The requirements chapter follows the Requirements Analysis Document Template proposed by Brügge and Dutoit, which emphasizes a clear separation between the application domain (problem space) and the solution domain (technology choices and implementation details) @bruegge2009. All artefacts in this chapter therefore describe what the system should achieve without assuming how it will be implemented, an approach that supports traceability from stakeholder needs to design decisions.
 
 == Overview
-The proposed system extends Artemis and its Athena feedback generator with a personalised-feedback layer that employs learner profiles to tailor feedback to individual students. The scope includes mechanisms for collecting and maintaining profiles, incorporating those profiles into automated feedback generation, and presenting the resulting feedback within Artemis. Success will be measured by (i) the correctness and completeness of extracted learner attributes, (ii) the pedagogical quality of the personalised feedback, and (iii) the seamless integration into existing Artemis workflows—all assessed independently of any specific LLM vendor or database technology, in line with the abstraction principles of Brügge and Dutoit @bruegge2009.
+The proposed system extends Artemis and Athena automated feedback generation with a personalisation layer that employs learner profiles to tailor feedback to individual students. The scope includes mechanisms for collecting and maintaining profiles, incorporating those profiles into automated feedback generation, and presenting the resulting feedback within Artemis. Success will be measured by (i) the correctness and completeness of extracted learner attributes, (ii) the pedagogical quality of the personalised feedback, and (iii) the seamless integration into existing Artemis workflows—all assessed independently of any specific LLM vendor or database technology, in line with the abstraction principles of Brügge and Dutoit @bruegge2009.
 
 == Existing System
-Artemis (version 8.0.0) currently offers students the option to request automatically generated feedback for programming, modelling, and text exercises, provided the lecturer enables this feature. Each student may submit up to ten feedback requests per exercise. When a request is triggered, Artemis forwards the submission together with exercise metadata—problem statement, example solution, rubric, and maximum points—to Athena. Athena selects an exercise-specific feedback module that relies on an LLM prompt template and chain-of-thought reasoning to produce formative feedback aligned with the rubric. The generated feedback is returned to Artemis, which displays it in two categories: referenced feedback (anchored to specific lines or elements of the submission) and unreferenced feedback.
+Artemis (version 8.3.4) currently offers students the option to request automatically generated feedback for programming, modelling, and text exercises, provided the lecturer enables this feature. Each student may submit up to ten feedback requests per exercise. When a request is triggered, Artemis forwards the submission together with exercise metadata—problem statement, example solution, rubric, and maximum points—to Athena. Athena selects an exercise-specific feedback module that relies on an LLM prompt template and chain-of-thought reasoning to produce formative feedback aligned with the rubric. The generated feedback is returned to Artemis, which displays it in two categories: referenced feedback (anchored to specific lines or elements of the submission) and unreferenced feedback.
+
+#TODO[
+  I can put a small activity diagram here to show how the current system works
+]
 
 Although this pipeline delivers timely feedback, it treats each submission in isolation and disregards longitudinal evidence such as prior attempts, engagement metrics, or expressed preferences. Consequently, the generated feedback is uniform across students with diverse backgrounds and learning trajectories.
 
 == Proposed System
 The envisioned extension introduces learner profiles as a first-class artefact. A learner profile is a structured representation of a student's competencies, progress, and feedback preferences. Profiles will be populated automatically from submission traces, engagement data, and explicit preference settings, and will be updated incrementally after each new interaction. During feedback generation, Athena will retrieve the relevant profile and supply it—together with the current submission and grading rubric—to an LLM-driven pipeline. The LLM will be prompted to produce feedback that explicitly references profile attributes, thereby aligning the feedback with the student's needs and preferred style.
 
+#TODO[
+  Again here, I can visually support putting the learner profile to the diagram above
+]
+
 === Functional Requirements
 
 #fr("FR 1", "Configure Feedback Preferences", "The system should allow students to specify their preferred feedback granularity and tone through an intuitive interface.") 
 
-#fr("FR 2", "Utilise Competencies", "The system should utilise the competencies set by the lecturers that are linked to an exercise when generating personalised feedback.")
+#fr("FR 2", "Utilise Competencies", "The system should utilise the competencies set by the lecturers that are linked to an exercise when assessing the student's competency status.")
 
-#fr("FR 3", "Extract Competencies", "The system should identify the competencies required for each exercise by analysing the provided metadata using a recognised taxonomy such as Bloom's Taxonomy - when they are not provided by the lecturer.")
+#fr("FR 3", "Extract Competencies", "The system should identify the competencies required for each exercise by analysing the provided metadata using a recognised taxonomy such as Bloom's Taxonomy - when they are not provided by the lecturer through the LMS.")
 
-#fr("FR 4", "Assess Competency Status", "For every new submission, the system should classify the student's mastery of each required competency. The assessment should contain an evidence from student's submissions.")
+#fr("FR 4", "Assess Student's Competency Status", "For every new submission, the system should classify the student's mastery of each required competency linked to the exercise. The assessment should contain an evidence from student's submissions.")
 
-#fr("FR 5", "Utilise Feedback Preferences", "The system should utilise the feedback preferences of the student to generate personalised feedback.")
+#fr("FR 5", "Utilise Feedback Preferences", "The system should utilise the feedback preferences of the student regarding the feedback granularity and tone to generate personalised feedback.")
 
-#fr("FR 6", "Utilise Submission History", "The system should make use of the submission history when generating when assessing the competency status. It should extract the progress of the student and use it to assess the competency status.")
+#fr("FR 6", "Utilise Submission History", "The system should make use of the submission history (i.e., previous submissions) to understand the student's progress when assessing the student's competency status.")
 
-#fr("FR 7", "Utilise Engagement Data", "The system should incorporate engagement signals (i.e., forum posts, chat logs) when assessing the competency status. It should extract the insights from the engagement data and use them to assess the competency status.")
+#fr("FR 7", "Utilise Engagement Data", "The system should incorporate engagement signals (i.e., forum posts, chat logs) extract the insights about where student is struggling when assessing the competency status.")
 
-#fr("FR 8", "Generate Learner Profiles", "The system should construct a learner profile from the competency status (which encapsulate competencies and progress of the student) and explicit preference settings.")
+#fr("FR 8", "Generate Learner Profiles", "The system should construct a learner profile from the student's competency status (which encapsulate competencies and progress of the student) and explicit preference settings.")
 
 #fr("FR 9", "Update Learner Profiles", "The system should refine the learner profile after changes in competency status and explicit preference settings. These changes can be triggered when student submits a new submission, engages with platform's chatbot, or when the student changes their feedback preferences.")
 
@@ -41,14 +49,14 @@ The envisioned extension introduces learner profiles as a first-class artefact. 
 
 #fr("FR 11", "Generate Personalised Feedback", "Given a submission and the student's learner profile, the system should generate feedback that respects the learner profile.") 
 
-#fr("FR 12", "View Personalised Feedback", "The system should display the personalised feedback to the student in a way that is easy to understand what the feedback is about and what are the next steps to improve.")
+#fr("FR 12", "View Personalised Feedback", "The system should display the personalised feedback to the student in a way that is easy to understand what the feedback is about, and what are the next steps to improve.")
 
 
 === Quality Attributes
 
-#fr("QA 1", "Feedback Interface", "The feedback interface should clearly indicate what the student did well and what they could improve, adhering to Artemis design conventions.")
+#fr("QA 1", "Feedback Interface", "The feedback interface should clearly indicate what the student did well, what they could improve, and what are the next steps to improve, adhering to Artemis design conventions.")
 
-#fr("QA 2", "Preference Interface", "The preference-setting workflow should be easy to understand and complete. It should be intuitive to use and shouldn't take more than 1 minute for students to configure. Interface should adhere to Artemis design conventions.")
+#fr("QA 2", "Preference Interface", "The feedbackpreference-setting workflow should be easy to understand and complete. It should be intuitive to use and shouldn't take more than 1 minute for students to configure. Interface should adhere to Artemis design conventions.")
 
 #fr("QA 3", "Reusability", "The developed system should make use of existing components and services from Artemis and Athena to avoid making the current system more complex and harder to maintain. The development on Athena side should use the same approach as the current development and should be in the matter of extending the current capabilites of the system.")
 
@@ -122,7 +130,7 @@ In @figure1, we present the use cases of a student. A student can #text(style: "
 
 To provide a high-level abstraction of the problem domain, and how we initally modelled it, we use the Analysis Object Model (AOM). AOM covers the crucial objects, attributes, methods and relations of the application domain that would guide the design of the system throughout the implementation @bruegge2009. In this section, we present the AOM for the proposed system, as can be seen in @aom.
 
-In the AOM, #text(weight: "bold")[Feedback Preferences] encapsulates the explicit, student-defined parameters that shape the feedback style.  Its attributes - #text(style: "italic")[feedbackDetail] and #text(style: "italic")[feedbackFormality] - record the desired level of depth and rhetorical tone, while the operation #text(style: "italic")[configureFeedbackPreferences()] persists any change and notifies dependent services.  #text(weight: "bold")[Engagement Data] captures a complementary, implicit layer of information drawn from each learner's #text(style: "italic")[chatMessages] and #text(style: "italic")[forumPosts;] through #text(style: "italic")[utiliseEngagementData()] these traces become inputs when updating the learner's mastery estimates.  Together with #text(weight: "bold")[Student Competency Status]—which stores the evolving #text(style: "italic")[progress] for every required competency and records #text(style: "italic")[evidence] from student's submission results—both classes are aggregated into the overarching #text(weight: "bold")[Learner Profile].  The aggregation relationship expresses that the profile acts as an authoritative container.
+In the AOM, #text(weight: "bold")[Feedback Preferences] encapsulates the explicit, student-defined parameters that shape the feedback style.  Its attributes - #text(style: "italic")[feedbackDetail] and #text(style: "italic")[feedbackFormality] - record the desired level of detail (i.e., brief explanation vs. detailed explanation) and rhetorical tone (i.e., formal vs. friendly), while the operation #text(style: "italic")[configureFeedbackPreferences()] persists any change and notifies dependent services.  #text(weight: "bold")[Engagement Data] captures a complementary, implicit layer of information drawn from each learner's #text(style: "italic")[chatMessages] and #text(style: "italic")[forumPosts;] through #text(style: "italic")[utiliseEngagementData()] these traces become inputs when updating the learner's mastery estimates.  Together with #text(weight: "bold")[Student Competency Status]—which stores the evolving #text(style: "italic")[progress] for every required competency and records #text(style: "italic")[evidence] from student's submission results—both classes are aggregated into the overarching #text(weight: "bold")[Learner Profile].  The aggregation relationship expresses that the profile acts as an authoritative container.
 
  More detailly, #text(weight: "bold")[Student Competency Status] maintains a running estimate of each learner's mastery for every required concept. #text(style: "italic")[Progress] classify the status of the student's regarding the competency, while #text(style: "italic")[evidence] links to concrete evidence from student's submissions. The operation #text(style: "italic")[assessCompetencyStatus()] recalculates the mastery level whenever a new feedback is requested; #text(style: "italic")[utiliseSubmissionHistory()] makes sure that the previous submissions are taken into account when the competency status is assessed. A solid association ties the class to #text(weight: "bold")[Competency], signalling that each status record corresponds to one instructional target extracted from the exercise specification.
 

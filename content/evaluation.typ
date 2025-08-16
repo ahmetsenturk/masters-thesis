@@ -12,6 +12,11 @@ Given that users are key to personalization, it was essential to validate our de
 #TODO[
   Describe the design / methodology of the evaluation and why you did it like that. e.g. what kind of evaluation have you done (e.g. questionnaire, personal interviews, simulation, quantitative analysis of metrics), what kind of participants, what kind of questions, what was the procedure?
 ]
+- Personal interviews
+- Likert scale and open-ended questions
+- Exercise selection
+
+
 
 === Participants
 Seven volunteer students at TUM were enlisted to perform user interviews. Previous Artemis experience varied from "none" to "weekly programming practice". All sessions were held in a quiet place using the participant's own laptop to replicate normal working conditions.
@@ -169,7 +174,13 @@ Observing that the students mostly satisfied with the personalised feedback, we 
 
 Interpreting the results in more detail, we thought that the configuration process needed a rework. Easier terminology and a more intuitive interface would help students to configure the preferences more easily.
 
+
 == Limitations
 #TODO[
   Describe limitations and threats to validity of your evaluation, e.g. reliability, generalizability, selection bias, researcher bias
 ]
+- Students only from masters programs, also 
+- Small student sample
+- Exercise type: text only
+- Interview environment
+- 

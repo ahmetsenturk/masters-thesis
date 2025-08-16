@@ -1,40 +1,49 @@
 #import "/utils/todo.typ": TODO
 
 = Introduction
-How can universities ensure that every student—from first-year newcomers to international postgraduates—receives feedback that is personal, even as enrolments swell into the tens of thousands? This challenge sits at the centre of contemporary higher education: scaling instruction to ever-growing cohorts while preserving the personal touch that makes feedback transformative.
+How can universities ensure that every student—from first-year newcomers to international postgraduates—receives personal feedback, even as enrolments swell into the tens of thousands? This challenge sits at the centre of contemporary higher education: scaling the feedback delivery to ever-growing cohorts while preserving the personal touch that makes feedback transformative.
 
-Over the past decade, digital learning platforms powered by artificial intelligence (AI) have revolutionized the delivery of instruction, propelling a shift from teacher-centered to student-centered paradigms, such as flipped classroom approach @monaco2007 @ozdamli2016. In this new landscape, learners engage more actively, direct their own studies, and expect learning experiences that recognise their individual circumstances. 
+Over the past decade, digital learning platforms powered by artificial intelligence (AI) have revolutionized feedback delivery, propelling a shift from teacher-centered to student-centered paradigms, such as the flipped classroom approach @monaco2007 @ozdamli2016. In this new landscape, learners engage more actively, direct their own studies proactively, and expect learning experiences that recognise their individual circumstances. 
 
-As the center of the education shifts from teacher to student, feedback's role today is even more important than before for this evolution to be maintained. When students are given with take-home tasks and are expected to be proactive, they require a validation, a feedback on their submissions—not only in the form of a grade or correction. A high-quality feedback can facilitate skill development, encourage self-reflection, and prompt self-regulated learning for students, enhancing their overall educational outcomes and reduce the discrepancies between current understandings/performance and a desired goal @hattie2007 @shute2008.
+As the center of education shifts from teacher to student, the role of feedback today is even more critical than before for this evolution to be maintained. When students are given take-home tasks and are expected to be proactive, they require validation and feedback on their submissions, not only in the form of a grade or correction. High-quality feedback can facilitate skill development, encourage self-reflection, and prompt self-regulated learning for students, enhancing their overall educational outcomes and reducing the discrepancies between current performance and a desired goal @hattie2007 @shute2008.
 
-Current Learning Management Systems (LMSs) are already adopting this shift as they allow students to follow the course in their own pace, watching lectures, performing the exercise, etc. Some of them also provide automated features that support instructors in effectively engaging large numbers of students, like automated feedback generation @turnbull2021. Artemis is on of these LMSs. Created at Technical University of Munich, Artemis is a platform for interactive learning that offers automated feedback @krusche2018. Artemis allows lecturers to organize their courses by scheduling lectures, exercises, and quizzes. The Athena module in Artemis automates the feedback process, providing timely, structured comments and freeing instructors of tedious grading responsibilities @schwind2023 @dietrich2023.
+Current Learning Management Systems (LMSs) are already adopting this shift as they allow students to follow the course at their own pace, watch lectures, perform exercises, etc. Some also provide automated features that support instructors in effectively engaging many students, like automated feedback generation @turnbull2021. Artemis#footnote[https://github.com/ls1intum/Artemis] is one of these LMSs. Created at the Technical University of Munich, Artemis is an interactive learning platform offering automated feedback @krusche2018. Artemis allows lecturers to organize their courses by scheduling lectures, exercises, and quizzes. Athena#footnote[https://github.com/ls1intum/Athena], a standalone microservice that powers the feedback generation module in Artemis, automates the feedback process, providing timely, structured feedback and freeing instructors of tedious grading responsibilities @schwind2023 @dietrich2023.
 
-However, even advanced automation fails to address an important concern: How can feedback be personalized to students' competencies, progress, and preferences? Current systems, even the ones with automated processes, use a uniform feedback generation pipelines that overlook variations in students' competencies, progress, and preferences. Research indicates that generic signals are likely to be disregarded or, worse, misread, while feedback that personalized to a learner's specific context can significantly enhance engagement and performance @bulut2020 @maier2022 @hatziapostolou2010. Bringing together the disparity between scale and personalization is hence both an educational necessity and a technological problem.
+This thesis focuses on expanding Athena to provide personalised feedback to students, aggregating their competencies, submission history, and explicit feedback preferences.
 
-
+#TODO[
+  However, even advanced automation fails to address an important concern: How can feedback be personalized to students' competencies, progress, and preferences? Current systems, even the ones with automated processes, use a uniform feedback generation pipelines that overlook variations in students' competencies, progress, and preferences. Research indicates that generic signals are likely to be disregarded or, worse, misread, while feedback that personalized to a learner's specific context can significantly enhance engagement and performance @bulut2020 @maier2022 @hatziapostolou2010. Bringing together the disparity between scale and personalization is hence both an educational necessity and a technological problem.
+]
 
 
 == Problem
-Educational research indicates that personalized feedback increases student engagement, satisfaction, and achievement.  When factors such as students' background knowledge, current skill level, participation rate, and preferred learning style are taken into account when creating the feedback, students report higher satisfaction, engage more deeply, and perform better in exams @bulut2020 @mirmotahari2018. According to the literature review conducted by Maier and Klotz with 39 studies, most reported positive experiences with personalized feedback in education @maier2022.
 
-Delivering such individualized feedback manually, however, becomes unmanageable with large student bodies. Cohorts exceed 1000 students in some courses at large universities like TUM, leaving instructors unable to craft bespoke feedback for students' each and every submission. Even with generous teaching-assistant support, the time and cognitive load required to diagnose misconceptions, reference past performance, and suggest actionable next steps for each student are very demanding. This scalability bottleneck forces educators to rely on generic rubrics or minimal pass/fail remarks, diluting the pedagogical impact of feedback.
+However, delivering such individualized feedback manually becomes unmanageable with large student bodies. Cohorts exceed 1000 students in some courses at large universities like TUM, leaving instructors unable to craft individualised feedback for every student's submission. Even with generous teaching-assistant support, the time and cognitive load required to diagnose misconceptions, reference past performance, and suggest actionable next steps for each student are very demanding. This scalability bottleneck forces educators to rely on generic rubrics or minimal pass/fail remarks, diluting the pedagogical impact of feedback.
 
-LMSs equipped with automated feedback modules—such as Artemis with Athena integration—solve the scalability pillar of the problem by generating feedback automatically based on students' submission and other metadata such as rubrics, yet they fall short on personalization. Most of the current pipelines treat every submission in isolation and disregard information about students' competencies, progress, and preferences. As a consequence, personalization pillar still remains not utilized, overlooking the heterogeneity that research deems essential for learning effectiveness. Scholars therefore advocate the creation of learner personas and profiles for students to support adaptive feedback and other personalized services @ballantyne2022 @le2009, but practical methods for automatically deriving such profiles and integrating them into feedback algorithms are still under-explored. Future work must establish explicit mappings between profile data and adaptive feedback strategies @maier2022.
+#TODO[
+  Below two paragrahps can be a bit more clear. 
+  - Last sentence of the next paragraph is not very clear.
+  - The last one should be reimagined
 
-In summary, institutions such as TUM encounter a continual challenge: manual feedback is pedagogically successful yet unscalable, while computerized feedback is scalable but inadequately customized. Addressing this challenge—providing feedback that is concurrently prompt, personalized, and scalable—continues to be an unresolved issue.
+]
+
+LMSs equipped with automated feedback modules—such as Artemis with Athena integration—solve the scalability pillar of the problem by generating feedback automatically based on students' submissions and other metadata, such as rubrics, yet they fall short on personalization. Most current pipelines treat every submission in isolation and disregard information about students' competencies, progress, and preferences. Consequently, the personalization pillar remains unutilized, overlooking the heterogeneity research deems essential for learning effectiveness. Scholars therefore advocate the creation of learner personas and profiles for students to support adaptive feedback and other personalized services @ballantyne2022 @le2009. However, practical methods for automatically deriving and integrating such profiles into feedback algorithms are still underexplored. Future work must establish explicit mappings between profile data and adaptive feedback strategies @maier2022.
+
+In summary, institutions such as TUM encounter a continual challenge: manual feedback is pedagogically successful yet unscalable, while computerized feedback is scalable but inadequately customized. Addressing this challenge—providing concurrent, prompt, personalized, and scalable feedback remains unresolved.
 
 
 
 == Motivation
+#TODO[
+  This is not very clear. We should also take a look at the the following papers: @hu2024, @chun2025
+  First paragraph is not true. We might directly start with the second paragraph.
+]
+
 This thesis tackles the core educational aim articulated by Hattie and Timperley: feedback should reduce the discrepancy between a learner's current performance and the goals set by the instructor @hattie2007. By incorporating learner-specific information into the feedback loop, we aim to close that gap more effectively than generic feedback could.
 
-Research consistently shows a strong positive correlation between personalized feedback and both academic performance and learner satisfaction @bulut2020 @mirmotahari2018 @maier2022. Tailored feedback helps students recognise their strengths, target precise areas for improvement, and chart concrete next steps, thereby fostering self-regulation and deeper engagement. Achieving these outcomes at TUM would not only improve pass rates and grade distributions in large courses, but also enhance students' confidence and autonomy.
+Educational research indicates that personalized feedback increases student engagement, satisfaction, and achievement.  When factors such as students' background knowledge, current skill level, participation rate, and preferred learning style are taken into account when creating the feedback, students report higher satisfaction, engage more deeply, and perform better in exams @bulut2020 @mirmotahari2018. According to the literature review conducted by Maier and Klotz with 39 studies, most reported positive experiences with personalized feedback in education @maier2022. Tailored feedback helps students recognise their strengths, target precise areas for improvement, and chart concrete next steps, thereby fostering self-regulation and deeper engagement. Achieving these outcomes at TUM would not only improve pass rates and grade distributions in large courses, but also enhance students' confidence and autonomy.
 
 Developing the learner profile required for personalised feedback lays the groundwork for an end-to-end personalised learning ecosystem within LMSs. Such profiles can power the automatic recommendation of study materials aligned with individual competency gaps, enable adaptive lecture scheduling, generate practice tasks calibrated to each student's level, and drive intelligent assistants—such as Iris—that use profile data to suggest resources and coach study strategies.
-
-#TODO[
-  The following papers are relevant for the motivation: @hu2024, @chun2025
-]
 
 Personalised automation also alleviates instructor workload by reducing repetitive grading and clarifying where human intervention is most needed. Tutors can concentrate on high-impact mentoring moments—such as live tutoring sessions—while routine feedback is delivered automatically. Institutions, in turn, gain a scalable mechanism for improving learning outcomes and student satisfaction metrics without proportionally increasing staffing costs.
 
@@ -42,7 +51,11 @@ Collectively, these motivations underscore the value of the proposed research: a
 
 
 == Objectives
-This thesis pursues two complementary research objectives that together establish an end-to-end pipeline for personalised feedback in large-scale online courses.
+This thesis pursues three complementary research objectives that together establish an end-to-end pipeline for personalised feedback in large-scale online courses.
+
+#TODO[
+  Rethink the subojectives of the 1-2 objectives. They should be aligned with the presentation as well. The last subobjective of the first objective might belong to the second objective.
+]
 
 \
 === Objective 1: Profiling University Students on LMSs. 
@@ -54,7 +67,7 @@ Building on the learner profile, the second objective is to create a feedback-ge
 \
 \
 === Objective 3: Delivering the Personalised Feedback. 
-As a final objective, we want to complement the personalised feedback with an actionable & intuitive interface. We will: (i) design a user interface that allows students to understand the feedback easily - where they failed, what they did well, and what they could improve.
+As a final objective, we want to complement the personalised feedback with an actionable and intuitive interface. We will design a user interface that allows students to understand the feedback easily - where they failed, what they did well, and what they could improve.
 \
 \
 All objectives will be pursued through iterative prototyping and case studies conducted within Artemis and Athena, with evaluation criteria focusing on instructional relevance, computational efficiency, and stakeholder satisfaction.
