@@ -35,40 +35,38 @@
 #pagebreak()
 
 = Implementation <implementation>
-In this chapter, we will describe the implementation of the proposed system. We will explain this objective by objective, referring to @objectives. For each objective, we will explain the implementation details, the relation with the previous chapters, what decision we made and why, and the results of the implementation.
+In this chapter, we will describe the implementation of the proposed system. We will explain this objective by objective, referring to @objectives. For each objective, we will explain the implementation details, the relation with the previous chapters, our decision and why, and the implementation results.
 
 
 == Profiling University Students on LMSs
-Profiling university students and creating a learner profile is our first objective in this master's thesis. We wanted to create a learner proile that would respect the following three aspects: (i) competency status of the student, (ii) progress of the student, and (iii) the preferences of the student. Under this subsection, we explain what steps we take to achieve this objective.
+Profiling university students and creating a learner profile is our first objective in this master's thesis. We wanted to create a learner profile that would respect the following three aspects: (i) competency status of the student, (ii) progress of the student, and (iii) the preferences of the student. Under this subsection, we explain what steps we take to achieve this objective.
 \
 
-#TODO[
-  Refer to FR 8 here
-]
-
 === Learner Profile Schema
-As mentioned in the introduction, we defined the personalised feedback as a feedback that respects the following three aspects of the student: (i) competency status, (ii) progress, and (iii) preferences. Our goal with defining the learner profile was to create a schema that would allow us to capture these three aspects. In the following subsections how we profiled these three aspects.
-
+As mentioned in the introduction, we defined personalized feedback as feedback that respects the following three aspects of the student: (i) competency status, (ii) progress, and (iii) preferences. Our goal with defining the learner profile was to create a schema that would allow us to capture these three aspects. The following subsections will discuss how we profiled these three aspects.
 
 ==== Competencies & Progress
-Competencies and progress are closely related, so we discuss them together. Our goal is to build a student profile that lets the system generate feedback that respects both what a student can already do and how far they have progressed. To do this, we first needed a schema that can capture these two aspects in a simple, reliable way.
+Competencies and progress are closely related, so we discuss them together. Our goal is to build a student profile that lets the system generate feedback that respects what students can already do and how far they have progressed. To do this, we first needed a schema that could reliably capture these two aspects.
 
-The literature suggests that effective feedback should address both mastery and process. In other words, it should tell students where they stand and how they are moving forward @lohr2024. We began with a quick pilot to test whether LLMs can meaningfully vary feedback based on simple student types. We defined three personas—high achiever, average student, and struggling student—listed their typical needs, and wrote a prompt variant for each. Using a common exercise, we compared the feedback produced for these three personas and checked whether it matched the needs we had defined.
+The literature suggests that effective feedback should address both mastery and process. In other words, it should tell students where they stand and how they are moving forward @lohr2024. We began with a quick pilot to test whether LLMs can meaningfully vary feedback based on simple student types. We defined three personas—high achiever, average student, and struggling student—listed their typical needs, and wrote a prompt variant for each. Using a common exercise, we compared the feedback produced for these three personas and checked whether it matched our defined needs.
 
 
 Since the pilot produced clearly different and appropriate feedback across personas, we moved to a more detailed and personalized method that does not rely on fixed categories. We used an LLM-as-a-profiler approach: instead of assigning a student to a predefined persona, the LLM analyzes a submission to extract strengths and weaknesses directly from the text. We developed this iteratively, starting with a simple prompt that identifies what the student did well and what needs work, then refining the output into a structured schema.
 
-Next, we explored a structured way to represent competencies using the SOLO taxonomy. SOLO is designed to describe how a learner's understanding grows in complexity, which fits our aim of modeling both level and development over time. We asked the LLM to map evidence from the student's submission to SOLO levels and to justify the mapping with short evidence spans.
+#TODO[
+  Reference to LLM-as-profiler
+  One example outfit with SOLO taxonomy.
+]
+
+Next, we explored a structured way to represent competencies using the SOLO taxonomy. SOLO is designed to describe how a learner's understanding grows in complexity, which fits our aim of modeling both level and development over time @biggs1982. We asked the LLM to map evidence from the student's submission to SOLO levels and to justify the mapping with short evidence spans.
 
 #TODO[
-  Reference to LLM-as-a-profiler here.
   Also to following paragraph:
   In this work, we explored various methods for using LLMs to identify gaps in students' self-explanations of specific instructional material, such as explanations for code examples.
   @oli2024
 ]
 
-After the SOLO experiments, we transitioned to Bloom's taxonomy. This shift was natural for two reasons: Bloom's is widely used in the literature and is already supported in Artemis, which lets instructors define Bloom-type competencies and link them to exercises. With Bloom's in place, our analysis changed focus: rather than asking the LLM to infer which competencies might apply, we asked it to assess the submission against the specific Bloom-linked competencies already defined for the exercise. See @blooms-partially-correct for a “Partially Correct” case and @blooms-not-attempted for a “Not Attempted” case on the same exercise. To keep Athena portable to other LMSs, we also implemented a fallback to extract competencies from exercise metadata when an explicit mapping is not available.
-
+After the SOLO experiments, we transitioned to Bloom's taxonomy. This shift was natural for two reasons: Bloom's is widely used in the literature, and Artemis already supports it by letting instructors define Bloom-type competencies and link them to exercises. Since the nature of the two taxonomies is different, while SOLO assesses students' understanding of the subject, Bloom's categorizes the educational goals, our analysis also changed focus: rather than asking the LLM to infer students' understanding, we asked it to assess the submission against the specific Bloom-linked competencies already defined for the exercise. See @blooms-partially-correct for a "Partially Correct" case and @blooms-not-attempted for a "Not Attempted" case on the same exercise. To keep Athena portable to other LMSs, we also implemented a fallback to extract competencies from exercise metadata when an explicit mapping is unavailable.
 
 
 #figure(
@@ -94,7 +92,8 @@ After the SOLO experiments, we transitioned to Bloom's taxonomy. This shift was 
     ```
     ]
   ),
-  caption: [Student's submission analysis with Bloom's taxonomy, where student's answer is partially correct. The competencies are linked to the exercise and the student's submission is analysed according to the Bloom's taxonomy competencies.]
+  caption: [Student's submission analysis with Bloom's taxonomy, where student's answer is partially correct. The competencies are linked to the exercise and the student's submission is analysed according to the Bloom's taxonomy competencies.],
+  supplement: "Listing",
 ) <blooms-partially-correct>
 
 #figure(
@@ -124,7 +123,7 @@ After the SOLO experiments, we transitioned to Bloom's taxonomy. This shift was 
 ) <blooms-not-attempted>
 
 
-Finally, we extended the schema to capture progress. For each competency, the system now compares the current submission with the previous one and records changes (i.e., added, removed modified, or unchanged). This produces a compact “before-after” view at the competency level. As in @blooms-improved, the schema stores a positive change with a short description and line span. The result is feedback that can say not only where the student is, but also how they moved between attempts, which better supports process-focused guidance.
+Finally, we extended the schema to capture the student's progress. The system compares the current submission with the previous one for each competency and records changes (i.e., added, removed, modified, or unchanged). This produces a compact "before-and-after" view at the competency level. As in @blooms-improved, the schema stores a positive change with a short description and line span. The result is feedback that can show where the student is and how they moved between attempts, which better supports process-focused guidance.
 
 
 #figure(
@@ -167,6 +166,10 @@ Finally, we extended the schema to capture progress. For each competency, the sy
   Reference the SOLO and Bloom's taxonomy here. 
 ]
 
+
+#TODO[
+  Continue here
+]
 
 ==== Preferences
 The third part of the learner profile is preferences—how a student wants to receive feedback. Preferences are the dimensions that students can set themselves. We used a hybrid approach to find these dimensions: (i) a short literature review to see common patterns, and (ii) small experiments with intuitive options that matter for feedback.
