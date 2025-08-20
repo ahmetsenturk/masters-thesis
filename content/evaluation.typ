@@ -1,22 +1,61 @@
 #import "/utils/todo.typ": TODO
 #import "requirements.typ": fr
 
+#let outlined-figure(
+  path,
+  caption: none,
+  width: auto,
+  stroke: 0.5pt + gray,
+  inset: 6pt,
+  radius: 0pt
+) = figure(
+  caption: caption
+)[
+  #box(stroke: stroke, inset: inset, radius: radius)[
+    #image(path, width: width)
+  ]
+]
+
+// --- Chapter numbering like "Figure 5.4" ---
+#set heading(numbering: "1.")
+
+// Reset per-chapter counters at level-1 headings
+#show heading.where(level: 1): it => {
+  counter(figure.where(kind: image)).update(0)
+  counter(figure.where(kind: table)).update(0)
+  counter(figure.where(kind: raw)).update(0)
+  it
+}
+
+// Prefix the figure counter with the current chapter number.
+#set figure(numbering: (..num) =>
+  numbering("1.1", counter(heading).get().first(), num.pos().first())
+)
+
+// Use "Figure" in captions (default), left-aligned, small, with a colon.
+#show figure: it => {
+  show figure.caption: cap => context block(
+    above: 4pt,        // space between figure and caption
+    width: 100%,
+    align(left)[
+      #set text(size: 12pt)
+      #text(weight: "bold")[#cap.supplement #cap.counter.display()#text(weight: "bold")[: ]] #cap.body
+    ],
+  )
+  it
+}
+
 #pagebreak()
-= User Interviews
+= User Interviews <user_interviews>
 #TODO[
   If you did an evaluation / case study, describe it here.
 ]
-Given that users are key to personalization, it was essential to validate our developed system. This assessment seeks to measure and comprehend the system's efficacy and accessibility.
+Given that users are central to personalization—and that we prioritized end-user criteria in @design-goals—we evaluated the system against usability, clarity, and perceived usefulness. The goal was to understand whether preference-driven feedback feels more helpful and aligned than the default, and how intuitive the configuration process is.
 
 == Design 
 #TODO[
-  Describe the design / methodology of the evaluation and why you did it like that. e.g. what kind of evaluation have you done (e.g. questionnaire, personal interviews, simulation, quantitative analysis of metrics), what kind of participants, what kind of questions, what was the procedure?
+  We have conducted a user study with university students to evaluate the usability and accessibility of the feedback preferences setup - which allows students to configure their feedback preferences. The participants were introduced to the setup and were asked to use the newly developed system. Finally, we have conducted a short interview to gather insights about the participants' experience with the system.
 ]
-- Personal interviews
-- Likert scale and open-ended questions
-- Exercise selection
-
-
 
 === Participants
 Seven volunteer students at TUM were enlisted to perform user interviews. Previous Artemis experience varied from "none" to "weekly programming practice". All sessions were held in a quiet place using the participant's own laptop to replicate normal working conditions.
@@ -46,9 +85,12 @@ Seven volunteer students at TUM were enlisted to perform user interviews. Previo
 )
 ]
 
+=== Materials
+Participants interacted with the feedback preferences setup integrated into the exercise workflow. The target task was a short, text-based machine learning question chosen to be conceptually accessible to all participants. 
+
 === Procedure
-Each session was directed by a seven-step script. Participants were encouraged to verbalize their thoughts during the interaction.
-Subsequent to the interactive session, a six-item questionnaire (comprising four 5-point Likert scale items and three open-ended questions) was administered verbally. Sessions ended with a short debriefing and agreement for the use of anonymized quotations.
+Each session followed a seven-step script (see @interview-steps). Participants were encouraged to think aloud throughout the interaction.
+
 #figure(caption: "Detailed Interview Steps")[
 #table(
   columns: 2,
@@ -71,7 +113,11 @@ Subsequent to the interactive session, a six-item questionnaire (comprising four
   [7],
   [Conduct a short interview to gather insights],
 )
-]
+] <interview-steps>
+
+=== Instruments and Measures
+Following the interaction, a seven-item questionnaire was administered (four Likert items, three open-ended questions; see @interview-questions). Quantitative measures included perceived coverage of dimensions, ease of understanding, alignment with selected preferences, and overall satisfaction. Log data provided configuration time and interaction effort.
+
 
 #figure(caption: "Interview Questions")[
 #table(
@@ -103,7 +149,9 @@ Subsequent to the interactive session, a six-item questionnaire (comprising four
   [Extra comments about the preferences system?],
   [Free text],
 )
-]
+] <interview-questions>
+
+#pagebreak()
 
 == Objectives
 #TODO[
@@ -126,7 +174,7 @@ To make that broad claim measurable, we decomposed it into four concrete objecti
   Summarize the most interesting results of your evaluation (without interpretation). Additional results can be put into the appendix.
 ]
 === Quantitative Results
-Table 1 summarises the Likert-scale findings. Students rated alignment with their chosen preferences and overall satisfaction at a solid M = 4.0, confirming that the personalised version was perceived as both relevant and useful. Coverage of the three preference dimensions was judged adequate (M = 3.7), but ease of understanding the settings lagged behind (M = 3.4). Log data reinforce this impression: the time to complete the preference setup was observed to be higher than expected. Taken together, the figures indicate high satisfaction with the outcome of personalisation but reveal friction in the configuration process.
+Table 1 summarises the Likert-scale findings. Students rated alignment with their chosen preferences and overall satisfaction at a solid M = 4.0, confirming that the personalised version was perceived as both relevant and useful. Coverage of the three preference dimensions was judged adequate (M = 3.7), but ease of understanding the settings lagged behind (M = 3.4). 
 
 #figure(caption: "Likert-scale Results")[
 #table(
@@ -152,35 +200,79 @@ Table 1 summarises the Likert-scale findings. Students rated alignment with thei
 )
 ]
 
+Log data reinforce this impression: the time to complete the preference setup was observed to be higher than expected (expexted 1 minute, average > 4 minutes). 
+
 === Qualitative Results
-Qualitative results discuss the results of the open-ended questions. Considering the small number of interviewees, the answers manually analysed. The results complement the quantitative results an yield themes that align with the numeric trends:
+Qualitative results discuss the results of the open-ended questions. Considering the small number of interviewees, the answers manually analysed. The results complement the quantitative results and yield themes that align with the numeric trends:
 \
 #text("Adjustability was beyond expectations.", weight: "bold") Five of seven participants mentioned that they were expecting to setup less than what's currently provided—e.g., #text("“...wasn't expecting much control”", style: "italic") (P5).
 \
 #text("Terminology confusion.", weight: "bold") Five of seven participants struggled with at least one label—most often alternative—e.g., #text("“Alternative wasn't too clear, I would need to try it a bit to understand what it means.”", style: "italic") (P2), #text("“The dimensions were unclear by name, still not sure what some of them actually means, and how different they are in action”", style: "italic") (P7).
 
-The qualitative insights clarify low usability scores: students appreciated the concept of customisation but found the current terminology unintuitive. Their positive remarks regarding alignment and utility validate the elevated satisfaction scores, reinforcing the argument for preference-driven personalization after the user interface is optimised.
+
+== Findings
+
+Taken together, qualitative and quantitative results indicate high satisfaction with the outcome of personalisation but reveal friction in the configuration process. While quantitative results show that ease of understanding the settings lagged behind (M = 3.4), the qualitative insights clarify low usability score: students appreciated the concept of customisation but found the current terminology unintuitive. Their positive remarks regarding alignment and utility validate the elevated satisfaction scores, reinforcing the argument for preference-driven personalization after the user interface is optimised.
+
+
+
+
 
 #TODO[
-  == Findings
-  Interpret the results and conclude interesting findings
+  We might reference the pair-wise preference elicitation techniques here.
 ]
+
+== Design Iterations Informed by Findings
+
+The initial mockup used in the study was not sufficiently intuitive, and terminology contributed to misunderstandings. The first version is shown in @preference-v1.
+
+#outlined-figure(
+  "../figures/preference-component/preference_v1.png",
+  caption: [First version of the feedback preferences setup mockup. It provides the segmented button components to allow students to select the feedback style on three dimensions (i) follow-up vs summary, (ii) alternative vs standard, and (iii) brief vs detailed).],
+  width: 100%,
+  stroke: 0.5pt + black,
+  radius: 3pt
+) <preference-v1>
+
+In response, we introduced a clearer entry point with a dedicated setup button (see @preference-v2_1) that opens an onboarding modal.
+
+#TODO[
+  We might reference the pair-wise preference elicitation techniques here.
+]
+
+#outlined-figure(
+  "../figures/preference-component/preference_v2_1.png",
+  caption: [Initial screen of the second version of the feedback preferences setup mockup. Students welcomed with a setup button.],
+  width: 100%,
+  stroke: 0.5pt + black,
+  radius: 3pt
+) <preference-v2_1>
+
+The onboarding wizard is the biggest change we introduced comparing to the first version, which works a "guided tour" for students to understand the each dimension of the preference configuration (see @preference-v2_2). After setting up their preferences, students are shown the final screen with the selected preferences (see @preference-v2_4) which is a summary of the preferences they have set reusing the same design with the first version.
+
+#outlined-figure(
+  "../figures/preference-component/preference_v2_2.png",
+  caption: [Onboarding modal of the second version of the feedback preferences setup mockup. Students are guided through the setup process with a step-by-step wizard, where they can see examples of the different feedback styles on each step.],
+  width: 100%,
+  stroke: 0.5pt + black,
+  radius: 3pt
+) <preference-v2_2>
+
+We also iterated over the feedback preferences dimensions to make them more intuitive. Even though we introduced the onboarding wizard, some dimensions were still not clear with examples. Therefore, we have reduced the number of dimensions from three, by removing follow-up vs summary and alternative vs standard and adding a new dimension on feedback style, to two and made them more intuitive.
+
+#outlined-figure(
+  "../figures/preference-component/preference_v2_4.png",
+  caption: [Final screen of the second version of the feedback preferences setup mockup. Students can see the selected preferences and update them. The preference dimensions are also updated to make them more intuitive.],
+  width: 100%,
+  stroke: 0.5pt + black,
+  radius: 3pt
+) <preference-v2_4>
+
 
 == Discussion
-#TODO[
-  Discuss the findings in more detail and also review possible disadvantages that you found
-]
-Observing that the students mostly satisfied with the personalised feedback, we think that the system is a success. However, we need to improve the configuration process to make it more intuitive and user-friendly.
 
-Interpreting the results in more detail, we thought that the configuration process needed a rework. Easier terminology and a more intuitive interface would help students to configure the preferences more easily.
+The results indicate that personalized feedback is perceived as both aligned with user preferences and of high quality, whereas first-time configuration imposes a noticeable cognitive cost. The design changes target precisely this pain point. Clearer labels, example-based onboarding, and progressive disclosure are expected to reduce configuration time and increase comprehension without reducing perceived control.
 
 
 == Limitations
-#TODO[
-  Describe limitations and threats to validity of your evaluation, e.g. reliability, generalizability, selection bias, researcher bias
-]
-- Students only from masters programs, also 
-- Small student sample
-- Exercise type: text only
-- Interview environment
-- 
+Generalizability is limited by the small, homogeneous sample drawn from a single institution and restricted to master's students. The task domain focused on a single, text-only machine-learning exercise; outcomes may differ for code-centric, mathematical, or multimodal tasks. Construct validity may be affected by reliance on self-reported Likert items and by the absence of blinded comparisons. Procedure effects are possible due to the think-aloud protocol and researcher presence, as well as learning effects between default and personalized submissions.

@@ -1,7 +1,7 @@
 #import "/utils/todo.typ": TODO
 
 #pagebreak()
-= Summary
+= Summary <summary>
 #TODO[
   This chapter includes the status of your thesis, a conclusion and an outlook about future work.
 ]
