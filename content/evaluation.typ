@@ -101,34 +101,34 @@ This subsection describes the participant body, the materials, questions, and th
 === Participants
 Seven volunteer students at TUM were enlisted to perform user interviews. Previous Artemis experience varied from "none" to "weekly programming practice". All sessions were held in a quiet place using the participant's own laptop to replicate normal working conditions.
 
-
+#let td(body) = table.cell(align: center + horizon)[#body]
 #figure(
   sci-table-4col(
     toprule,
-    table.header([*Student*],
-    [*Program*],
-    [*Year*],
-    [*Artemis Familiarity*]),
+    table.header(td[*Student*],
+    td[*Program*],
+    td[*Year*],
+    td[*Artemis Familiarity*]),
     midrule,
 
-    [S1],
-  [M.Sc. Computer Science], [2], [Low],
-  [S2],
-  [M.Sc. Computer Science], [3], [Medium],
-  [S3],
-  [M.Sc. Management & Technology], [1], [Low],
-  [S4],
-  [M.Sc. Information Systems], [2], [High],
-  [S5],
-  [M.Sc. Management & Technology], [2], [Low],
-  [S6],
-  [M.Sc. Computer Science], [2], [Medium],
-  [S7],
-  [M.Sc. Computer Science], [3], [High],
+    td[S1],
+  td[M.Sc. Computer Science], td[2], td[Low],
+  td[S2],
+  td[M.Sc. Computer Science], td[3], td[Medium],
+  td[S3],
+  td[M.Sc. Management & Technology], td[1], td[Low],
+  td[S4],
+  td[M.Sc. Information Systems], td[2], td[High],
+  td[S5],
+  td[M.Sc. Management & Technology], td[2], td[Low],
+  td[S6],
+  td[M.Sc. Computer Science], td[2], td[Medium],
+  td[S7],
+  td[M.Sc. Computer Science], td[3], td[High],
 
     bottomrule,
   ),
-  caption: [Interview Participants.],
+  caption: [Interview participants' details.],
   kind: table,                   // so it appears under “List of Tables”
 ) <interview-participants>
 
@@ -141,28 +141,28 @@ Each session followed a seven-step script (see @interview-steps). Participants w
 #figure(
   sci-table-2col(
     toprule,
-    table.header([*Step*],
-    [*Description*]),
+    table.header(td[*Step*],
+    td[*Description*]),
     midrule,
 
-    [1],
-  [Introduce the student to the evaluation study and what they will do],
-  [2],
-  [Show the exercise. Let them read (and optionally solve) it.],
-  [3],
-  [They submit their solution and get the default AI feedback (without preferences)],
-  [4],
-  [Explain the preference system, and walk through each dimension],
-  [5],
-  [Let them configure their personalized learner profile],
-  [6],
-  [They submit again and receive personalized feedback],
-  [7],
-  [Conduct a short interview to gather insights],
+    td[1],
+  td[Introduce the student to the evaluation study and what they will do],
+  td[2],
+  td[Show the exercise. Let them read (and optionally solve) it.],
+  td[3],
+  td[They submit their solution and get the default AI feedback (without preferences)],
+  td[4],
+  td[Explain the preference system, and walk through each dimension],
+  td[5],
+  td[Let them configure their personalized learner profile],
+  td[6],
+  td[They submit again and receive personalized feedback],
+  td[7],
+  td[Conduct a short interview to gather insights],
 
     bottomrule,
   ),
-  caption: [Interview questionnaire used in the user study.],
+  caption: [Interview steps with explanation about the activities in each step.],
   kind: table,                   // so it appears under “List of Tables”
 ) <interview-steps>
 
@@ -173,42 +173,42 @@ Following the interaction, a seven-item questionnaire was administered (four Lik
 #figure(
   sci-table-3col(
     toprule,
-    table.header([*Number*],
-    [*Question*],
-    [*Type*],),
+    table.header(td[*Number*],
+    td[*Question*],
+    td[*Type*],),
     midrule,
 
-    [Q 1],
-    [When you heard you'd be able to set your feedback preferences, what kind of customization did you expect?],
-    [Free text],
+    td[Q 1],
+    td[When you heard you'd be able to set your feedback preferences, what kind of customization did you expect?],
+    td[Free text],
 
-    [Q 2],
-    [Do you feel the three preference dimensions covered your expectations?],
-    [Likert scale],
+    td[Q 2],
+    td[Do you feel the three preference dimensions covered your expectations?],
+    td[Likert scale],
 
-    [Q 3],
-    [If something was missing or unclear, what would you have liked to adjust instead?],
-    [Free text],
+    td[Q 3],
+    td[If something was missing or unclear, what would you have liked to adjust instead?],
+    td[Free text],
 
-    [Q 4],
-    [Was it easy to understand what each setting (attribute) does?],
-    [Likert scale],
+    td[Q 4],
+    td[Was it easy to understand what each setting (attribute) does?],
+    td[Likert scale],
 
-    [Q 5],
-    [Was the feedback aligned with the preferences you selected?],
-    [Likert scale],
+    td[Q 5],
+    td[Was the feedback aligned with the preferences you selected?],
+    td[Likert scale],
 
-    [Q 6],
-    [Overall, how satisfied were you with the personalized feedback you received?],
-    [Likert scale],
+    td[Q 6],
+    td[Overall, how satisfied were you with the personalized feedback you received?],
+    td[Likert scale],
 
-    [Q 7],
-    [Extra comments about the preferences system?],
-    [Free text],
+    td[Q 7],
+    td[Extra comments about the preferences system?],
+    td[Free text],
 
     bottomrule,
   ),
-  caption: [Interview questionnaire used in the user study.],
+  caption: [User study questionnaire.],
   kind: table,                   // so it appears under “List of Tables”
 ) <interview-questions>
 
@@ -240,7 +240,7 @@ We will present the results of the user study in two subsections: (i) quantitati
 @evaluation_graph summarises the Likert-scale findings. Students rated alignment with their chosen preferences and overall satisfaction at a solid M = 4.0, confirming that the personalised version was perceived as both relevant and useful. Coverage of the three preference dimensions was judged adequate (M = 3.7), but ease of understanding the settings lagged behind (M = 3.4). 
 
 
-#figure(caption: "Likert-scale Results.")[
+#figure(caption: [User study results of the Likert scale questions, based on the answers of the participants (n = 7). Blue line represents the average rating of the participants, shaded area represents the standard deviation.], )[
   #image("../figures/likert_graph.png", width: 100%)
 ] <evaluation_graph>
 
@@ -273,7 +273,7 @@ The initial mockup used in the study was not sufficiently intuitive, and termino
 
 #outlined-figure(
   "../figures/preference-component/preference_v1.png",
-  caption: [First version of the feedback preferences setup mockup. It provides the segmented button components to allow students to select the feedback style on three dimensions (i) follow-up vs summary, (ii) alternative vs standard, and (iii) brief vs detailed).],
+  caption: [First version of the feedback preferences setup. It provides the segmented button components to allow students to select the feedback style on three dimensions (i) follow-up vs summary, (ii) alternative vs standard, and (iii) brief vs detailed).],
   width: 100%,
   stroke: 0.5pt + black,
   radius: 3pt
@@ -287,7 +287,7 @@ In response, we introduced a clearer entry point with a dedicated setup button (
 
 #outlined-figure(
   "../figures/preference-component/preference_v2_1.png",
-  caption: [Initial screen of the second version of the feedback preferences setup mockup. Students welcomed with a setup button.],
+  caption: [Second version of the feedback preferences setup - initial screen with a setup button.],
   width: 100%,
   stroke: 0.5pt + black,
   radius: 3pt
@@ -297,7 +297,7 @@ The onboarding wizard is the biggest change we introduced comparing to the first
 
 #outlined-figure(
   "../figures/preference-component/preference_v2_2.png",
-  caption: [Onboarding modal of the second version of the feedback preferences setup mockup. Students are guided through the setup process with a step-by-step wizard, where they can see examples of the different feedback styles on each step.],
+  caption: [Second version of the feedback preferences setup - onboarding modal with a step-by-step wizard, where students can see examples of the different feedback styles on each step.],
   width: 100%,
   stroke: 0.5pt + black,
   radius: 3pt
@@ -308,7 +308,7 @@ We also iterated over the feedback preferences dimensions to make them more intu
 
 #outlined-figure(
   "../figures/preference-component/preference_v2_4.png",
-  caption: [Final screen of the second version of the feedback preferences setup mockup. Students can see the selected preferences and update them. The preference dimensions are also updated to make them more intuitive.],
+  caption: [Second version of the feedback preferences setup - final screen with the selected preferences.],
   width: 100%,
   stroke: 0.5pt + black,
   radius: 3pt

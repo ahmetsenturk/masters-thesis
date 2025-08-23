@@ -209,13 +209,13 @@ This subsection presents the necessary interfaces, both the new ones and the one
 
 @mockup1 shows the first mockup iteration for the feedback preferences setup page. Since the preferences are part of the learner profile, the user will set the feedback preferences under the learner profile settings. The mockup contains explanations regarding the Learner Profile, the feedback preferences, and each dimension of the feedback preferences, together with the explanations for each end of the spectrum. The setup interface would follow a segmented toggle approach to make the workflow easy to understand and intuitive, as QA 2 states, where users can click on the toggle to change the preference. 
 
-#figure(caption: "Feedback Preferences Setup Mockup. Students can set up their feedback preferences on this page by seeing the explanations of the preference dimensions and clicking on the segmented buttons.")[
+#figure(caption: "Feedback preferences setup mockup. Students can set up their feedback preferences on this page by seeing the explanations of the preference dimensions and clicking on the segmented buttons.")[
   #image("../figures/preference-component/mockup.png", width: 100%)
 ] <mockup1>
 \
 @mockup2 presents the first mockup iteration for the feedback component. According to Hattie and Timperley, the feedback should be actionable, understandable, and should be aligned with the student's needs @hattie2007. This should also apply to how feedback is delivered to the students. While the content of the feedback is important, the way it is delivered is also important. Following FR 12 and QA 1, we defined that a feedback should be delivered in a way that is (i) actionable (i.e., students should be able to understand what is the next step they should take) and (ii) understandable (i.e., students should be able to understand what the feedback is about, where did they succeed and where did they fail). The mockup contains the feedback component with the feedback details, the credits, and the subsequent improvement steps. 
 
-#figure(caption: "Feedback Component Mockup. Badges of different colors and with different titles should help students to quickly understand the feedback. The seperate next section should explain the action the student should take to improve.")[
+#figure(caption: "Feedback component mockup. Badges of different colors and with different titles should help students to quickly understand the feedback. The seperate next section should explain the action the student should take to improve.")[
   #image("../figures/feedback-component/mockup.png", width: 100%)
 ] <mockup2>
 

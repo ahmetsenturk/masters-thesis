@@ -117,7 +117,7 @@ Student's CURRENT submission (with line numbers):
     ```
     ]
   ),
-  caption: [Student comptency analysis that produces the _Student Competency Status_.],
+  caption: [System prompt for LLM to generate _Student Competency Status_.],
   supplement: "Prompt",
 ) <student-analysis-prompt>
 
@@ -138,7 +138,7 @@ Since Athena can work with any LMS, we also implemented a fallback to extract co
     ```
     ]
   ),
-  caption: [Competency extraction prompt that generates competencies linked to an exercise. It is appended in to the @student-analysis-prompt when the competencies are not provided by the instructor via Artemis.],
+  caption: [System prompt for LLM to extract competencies linked to an exercise. It is appended in to the @student-analysis-prompt when the competencies are not provided by the instructor via LMS.],
   supplement: "Prompt",
 ) <competency-extraction-prompt>
 \
@@ -146,7 +146,7 @@ Since Athena can work with any LMS, we also implemented a fallback to extract co
 @profiling-schemas shows the detailed UML class diagram of the _Student Competency Status_ schema, the output of the LLM call with the prompt @student-analysis-prompt. We present example _Student Competency Status_ outputs in the Appendix (@blooms-partially-correct, @blooms-not-attempted, and @blooms-improved).
 
 
-#figure(caption: "Detailed UML class diagram of Student Competency Status. ", )[
+#figure(caption: [UML class diagram of _Student Competency Status_.], )[
   #image("../figures/profiling_schemas.svg", width: 73% ,format: "svg")
 ] <profiling-schemas>
 
@@ -370,9 +370,9 @@ Together, these two dimensions cover most of the visible variation students expe
 
 
 
-== Generating Personalised Feedback Utilising the Profile
+== Generating Personalized Feedback Utilising the Profile
 
-After defining the learner profile schema the next step was to integrate the profile into the feedback generation process. We followed the chain-of-thought approach, where in the first step we extracted the student's competency status using the input data and the prompt introduced in the previous section, and in the following step, making use of the student's competency status, we generated the personalised feedback, by prompting LLM with @feedback-generation-prompt. 
+After defining the learner profile schema the next step was to integrate the profile into the feedback generation process. We followed the chain-of-thought approach, where in the first step we extracted the student's competency status using the input data and the prompt introduced in the previous section, and in the following step, making use of the student's competency status, we generated the personalized feedback, by prompting LLM with @feedback-generation-prompt. 
 
 
 #figure(
@@ -408,7 +408,7 @@ Student's feedback preferences:
     ```
     ]
   ),
-  caption: [Feedback generation prompt that generates personalised feedback based on the student's competency status and progress. Only the relevant parts of the prompt are shown here (i.e., personalization according to the student's learner profile).],
+  caption: [System prompt for LLM to generate personalized feedback based on the student's competency status and progress. Only the relevant parts of the prompt are shown here (i.e., personalization according to the student's learner profile).],
   supplement: "Prompt",
 ) <feedback-generation-prompt>
 
@@ -424,7 +424,7 @@ Displaying the personalized feedback on the LMS and delivering it to the student
 
 Starting with the prototype design and user feedback round, we iterated over the feedback component to meet the requirements. The final version of the feedback component after integrating the feedback from the UI/UX meetings is shown in @default-feedback-component.
 
-#figure(caption: "Default Feedback Component. This figure shows three default feedback types: Correct, Needs Revision, and Not Attempted. On top of the component, there is the reference to the student's submission if available. Then the feedback is displayed with the credits and a title. In this figures are set to default, but they can also be customized.")[
+#figure(caption: [Default feedback component. This figure shows three default feedback types: Correct, Needs Revision, and Not Attempted. On top of the component, there is the reference to the student's submission if available. Then the feedback is displayed with the credits and a title.])[
   #image("../figures/feedback-component/default.png", width: 94%)
 ] <default-feedback-component>
 

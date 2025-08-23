@@ -139,6 +139,6 @@ The _Learner Profile Module_ manages the learner profile interaction between the
 
 This subsection describes the mapping of the subsystems onto hardware components, as can be seen in @hw-sw-mapping. Students access the Artemis application through the Artemis Client running on their device. The Artemis Client is then connected to the Artemis Server running on the University's Data Center, together with Athena. Athena is connected to a 3rd-party LLM service provider to generate the feedback, which runs on a dedicated server of the provider's choice.
 
-#figure(caption: "UML Deployment  Diagram for the Hardware Software Mapping. Showcases the mapping of the subsystems onto existing hardware and software components.", )[
+#figure(caption: "UML Deployment Diagram for the Hardware Software Mapping. Showcases the mapping of the subsystems onto existing hardware and software components.", )[
   #image("../figures/hardware.svg", width: 90% ,format: "svg")
 ] <hw-sw-mapping>
