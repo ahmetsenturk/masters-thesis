@@ -147,12 +147,13 @@ In @figure1, we present the use cases of a student. A student can #text(style: "
 
 To provide a high-level abstraction of the problem domain and how we initially modelled it, we use the Analysis Object Model (AOM). AOM covers the application domain's crucial objects, attributes, methods, and relations that would guide the system's design throughout the implementation @bruegge2009. In this section, we present the AOM for the proposed system, as seen in @aom.
 
+In the AOM, #text(weight: "bold")[Feedback Preferences] encapsulates the explicit, student-defined parameters that shape the feedback style. Its attributes - #text(style: "italic")[detail] and #text(style: "italic")[formality] - record the desired level of detail (i.e., brief explanation vs. detailed explanation) and rhetorical tone (i.e., formal vs. friendly), while the operation #text(style: "italic")[configure()] persists any change and notifies dependent services.
+
 #figure(caption: "UML Class Diagram for the Analysis Object Model. Illustrates the objects and their relationships that are necessary to model the proposed system. ")[
   #image("../figures/aom.svg", width: 100% ,format: "svg")
 ] <aom>
 \
-
-In the AOM, #text(weight: "bold")[Feedback Preferences] encapsulates the explicit, student-defined parameters that shape the feedback style. Its attributes - #text(style: "italic")[detail] and #text(style: "italic")[formality] - record the desired level of detail (i.e., brief explanation vs. detailed explanation) and rhetorical tone (i.e., formal vs. friendly), while the operation #text(style: "italic")[configure()] persists any change and notifies dependent services.  #text(weight: "bold")[Engagement Data] captures a complementary, implicit layer of information drawn from each learner's #text(style: "italic")[chatMessages] and #text(style: "italic")[forumPosts]. Together with #text(weight: "bold")[Student Competency Status]—which stores the evolving #text(style: "italic")[progress] for every required competency and records #text(style: "italic")[evidence] from student's submission results—these three classes aggregate into the overarching #text(weight: "bold")[Learner Profile]. 
+  #text(weight: "bold")[Engagement Data] captures a complementary, implicit layer of information drawn from each learner's #text(style: "italic")[chatMessages] and #text(style: "italic")[forumPosts]. Together with #text(weight: "bold")[Student Competency Status]—which stores the evolving #text(style: "italic")[progress] for every required competency and records #text(style: "italic")[evidence] from student's submission results—these three classes aggregate into the overarching #text(weight: "bold")[Learner Profile]. 
 
 
 #text(weight: "bold")[Student Competency Status] maintains a running estimate of each learner's mastery for every required concept. #text(style: "italic")[Progress] classifies the status of the students regarding the Competency, while #text(style: "italic")[evidence] links to concrete evidence from students' submissions. The operation #text(style: "italic")[assess()] recalculates the mastery level whenever new feedback is requested. A solid association ties the class to #text(weight: "bold")[Competency], signalling that each status record corresponds to one instructional target extracted from the exercise specification.
@@ -167,8 +168,6 @@ Each Personalized Feedback aggregates the textual #text(style: "italic")[descrip
 In this subsection, we present the dynamic models for the proposed system using UML activity diagrams to show the system's flow and how the objects interact. The first dynamic model shows the feedback preference configuration workflow, while the second dynamic model shows the personalized feedback request, generation, and presentation workflow.
 
 \
-\
-\
 #text(weight: "bold")[Dynamic Model 1: Student Configures Feedback Preferences]
 \
 The first dynamic model showcases how the feedback preference configuration works. The student can access the feedback preference settings from the Artemis settings page by opening the learner profile settings. The system guides the student with an onboarding wizard if the student has not set up the feedback preferences. After setting the preferences up, the system will save them to the learner profile. The student can then see and update the saved feedback preferences if necessary.
@@ -178,37 +177,35 @@ The first dynamic model showcases how the feedback preference configuration work
 ]
 
 \
-\
-\
-\
 #text(weight: "bold")[Dynamic Model 2: Student Requests Personalized Feedback]
 \
 @dynamic-model-1 shows the dynamic model for the student requesting personalized feedback.
-It starts with the student submitting a solution. The student can request personalized feedback after creating the submission on Artemis. The submission is then bundled with the learner profile, previous submission, and exercise and dispatched to Athena. Athena first checks if the exercise related to the submission has set competencies, and generates them on the fly if not. Then, it assesses the competency status of the student and generates a student competency status. The student competency status is then used to generate personalized feedback and to update the learner profile. Students can then view the personalized feedback on the Artemis interface.
-
-It is crucial to note that the whole process is iterative. If the student is unsatisfied with the results, the student can submit another solution and request personalized feedback. Making the personalized feedback accessible can help students iteratively improve by utilizing the easily accessible feedback.
+It starts with the student submitting a solution. The student can request personalized feedback after creating the submission on Artemis. The submission is then bundled with the learner profile, previous submission, and exercise and dispatched to Athena. Athena first checks if the exercise related to the submission has set competencies, and generates them on the fly if not. Then, it assesses the competency status of the student and generates a student competency status. 
 
 #figure(caption: "UML Activity Diagram illustrating the personalized feedback request, generation, and presentation workflow.")[
   #image("../figures/dynamic_1.svg", width: 95% ,format: "svg")
 ] <dynamic-model-1>
 
+The student competency status is then used to generate personalized feedback and to update the learner profile. Students can then view the personalized feedback on the Artemis interface.
 
+It is crucial to note that the whole process is iterative. If the student is unsatisfied with the results, the student can submit another solution and request personalized feedback. Making the personalized feedback accessible can help students iteratively improve by utilizing the easily accessible feedback.
 
 
  
 === User Interface
 This subsection presents the necessary interfaces, both the new ones and the ones that need to be adapted to the new system, for the proposed system to meet the requirements.
 
-@mockup1 shows the first mockup iteration for the feedback preferences setup page. Since the preferences are part of the learner profile, the user will set the feedback preferences under the learner profile settings. The mockup contains explanations regarding the Learner Profile, the feedback preferences, and each dimension of the feedback preferences, together with the explanations for each end of the spectrum. The setup interface would follow a segmented toggle approach to make the workflow easy to understand and intuitive, as QA 2 states, where users can click on the toggle to change the preference. 
+@mockup1 shows the first mockup iteration for the feedback preferences setup page. Since the preferences are part of the learner profile, the user will set the feedback preferences under the learner profile settings. The mockup contains explanations regarding the Learner Profile, the feedback preferences, and each dimension of the feedback preferences, together with the explanations for each end of the spectrum. 
 
 #figure(caption: "Feedback preferences setup mockup. Students can set up their feedback preferences on this page by seeing the explanations of the preference dimensions and clicking on the segmented buttons.")[
-  #image("../figures/preference-component/mockup.png", width: 100%)
+  #image("../figures/preference-component/mockup.png", width: 90%)
 ] <mockup1>
 \
-@mockup2 presents the first mockup iteration for the feedback component. According to Hattie and Timperley, the feedback should be actionable, understandable, and aligned with the student's needs @hattie2007. This should also apply to how to deliver feedback to the students. While the content of the feedback is essential, the way it is delivered is also important. Following FR 12 and QA 1, we defined that a feedback should be (i) actionable (i.e., students should be able to understand what is the next step they should take) and (ii) understandable (i.e., students should be able to understand what the feedback is about, where did they succeed and where did they fail). The mockup contains the feedback component with the feedback details, the credits, and the subsequent improvement steps. 
+The setup interface would follow a segmented toggle approach to make the workflow easy to understand and intuitive, as QA 2 states, where users can click on the toggle to change the preference. 
+@mockup2 presents the first mockup iteration for the feedback component. According to Hattie and Timperley, the feedback should be actionable, understandable, and aligned with the student's needs @hattie2007. This should also apply to how to deliver feedback to the students. While the content of the feedback is essential, the way it is delivered is also important. Following FR 12 and QA 1, we defined that a feedback should be (i) actionable (i.e., students should be able to understand what is the next step they should take) and (ii) understandable (i.e., students should be able to understand what the feedback is about, where did they succeed and where did they fail). 
 
 #figure(caption: "Feedback component mockup. Badges of different colors and titles help students quickly understand the feedback. The seperate next section should explain the action the student should take to improve.")[
-  #image("../figures/feedback-component/mockup.png", width: 100%)
+  #image("../figures/feedback-component/mockup.png", width: 90%)
 ] <mockup2>
 
 
