@@ -87,19 +87,17 @@
 
 #pagebreak()
 = User Interviews <user_interviews>
-#TODO[
-  If you did an evaluation / case study, describe it here.
-]
-Given that users are central to personalization—and that we prioritized end-user criteria in @design-goals—we evaluated the system against usability, clarity, and perceived usefulness. The goal was to understand whether preference-driven feedback feels more helpful and aligned than the default, and how intuitive the configuration process is.
+
+Given that users are central to personalization and prioritized end-user criteria in @design-goals, we evaluated the system against usability, clarity, and perceived usefulness. The goal was to understand whether preference-driven feedback feels more helpful and aligned than the default, and how intuitive the configuration process is.
 
 == Design 
 #TODO[
-  We have conducted a user study with university students to evaluate the usability and accessibility of the feedback preferences setup - which allows students to configure their feedback preferences. The participants were introduced to the setup and were asked to use the newly developed system. Finally, we have conducted a short interview to gather insights about the participants' experience with the system.
+ We have conducted a user study with university students to evaluate the usability and accessibility of the feedback preferences setup, which allows students to configure their feedback preferences. We introduced the participants to the setup and asked them to use the newly developed system. Finally, we have conducted a short interview to gather insights about the participants' experience with the system.
 ]
 This subsection describes the participant body, the materials, questions, and the steps of the user study.
 
 === Participants
-Seven volunteer students at TUM were enlisted to perform user interviews. Previous Artemis experience varied from "none" to "weekly programming practice". All sessions were held in a quiet place using the participant's own laptop to replicate normal working conditions.
+We enlisted seven volunteer students at TUM to perform user interviews. Their previous Artemis experience ranged from "none" to "weekly programming practice." We held all sessions quietly on the participants' laptops to replicate normal working conditions.
 
 #let td(body) = table.cell(align: center + horizon)[#body]
 #figure(
@@ -127,11 +125,11 @@ Seven volunteer students at TUM were enlisted to perform user interviews. Previo
   td[M.Sc. Computer Science], td[3], td[High],
 
     bottomrule,
-  ),
+ ),
   caption: [Interview participants' details.],
-  kind: table,                   // so it appears under “List of Tables”
+  kind: table,                   // so it appears under "List of Tables"
 ) <interview-participants>
-
+\
 === Materials
 Participants interacted with the feedback preferences setup integrated into the exercise workflow. The target task was a short, text-based machine learning question chosen to be conceptually accessible to all participants. 
 
@@ -161,13 +159,13 @@ Each session followed a seven-step script (see @interview-steps). Participants w
   td[Conduct a short interview to gather insights],
 
     bottomrule,
-  ),
+ ),
   caption: [Interview steps with explanation about the activities in each step.],
-  kind: table,                   // so it appears under “List of Tables”
+  kind: table,                   // so it appears under "List of Tables"
 ) <interview-steps>
-
+\
 === Instruments and Measures
-Following the interaction, a seven-item questionnaire was administered (four Likert items, three open-ended questions; see @interview-questions). Quantitative measures included perceived coverage of dimensions, ease of understanding, alignment with selected preferences, and overall satisfaction. Log data provided configuration time and interaction effort.
+Following the interaction, a seven-item questionnaire was administered (four Likert items, three open-ended questions; see @interview-questions). 
 
 
 #figure(
@@ -207,17 +205,14 @@ Following the interaction, a seven-item questionnaire was administered (four Lik
     td[Free text],
 
     bottomrule,
-  ),
+ ),
   caption: [User study questionnaire.],
-  kind: table,                   // so it appears under “List of Tables”
+  kind: table,                   // so it appears under "List of Tables"
 ) <interview-questions>
-
-#pagebreak()
+\
+Quantitative measures included perceived coverage of dimensions, ease of understanding, alignment with selected preferences, and overall satisfaction. Log data provided configuration time and interaction effort.
 
 == Objectives
-#TODO[
-  Derive concrete objectives / hypotheses for this evaluation from the general ones in the introduction.
-]
 The interview study set out to test a single overarching claim:
 
 #text("Does enabling students to customize feedback via preference settings result in feedback that is perceived as higher quality, more aligned with their expectations, and more personally useful?", style: "italic") 
@@ -225,46 +220,50 @@ The interview study set out to test a single overarching claim:
 To make that broad claim measurable, we decomposed it into four concrete objectives that map directly onto our questionnaire items and logging metrics:
 
 #fr("O 1", "Preference Dimension Alignment", "Do students perceive the three preference dimensions (follow-up vs summary, alternative vs standard, brief vs detailed) as comprehensive and aligned with their expectations?")
-#fr("O 2", "Perceived Quality of the Feedback", "Do students regard the personalised feedback as higher-quality than the default?")
-#fr("O 3", "Perceived Personalisation of the Feedback", "Do students perceive the personalised feedback as more aligned with their preferences?")
-#fr("O 4", "Perceived Alignment of the Feedback with Preferences", "Do students perceive the personalised feedback as aligned with the preferences they set?")
+#fr("O 2", "Perceived Quality of the Feedback", "Do students regard the personalized feedback as higher-quality than the default?")
+#fr("O 3", "Perceived Personalisation of the Feedback", "Do students perceive the personalized feedback as more aligned with their preferences?")
+#fr("O 4", "Perceived Alignment of the Feedback with Preferences", "Do students perceive the personalized feedback as aligned with the preferences they set?")
 #fr("O 5", "UI Usability", "Can students understand and configure the preference sliders quickly and confidently?")
 
 == Results & Findings
-#TODO[
-  Summarize the most interesting results of your evaluation (without interpretation). Additional results can be put into the appendix.
-]
+
 We will present the results of the user study in two subsections: (i) quantitative results, and (ii) qualitative results.
 
 === Quantitative Results
-@evaluation_graph summarises the Likert-scale findings. Students rated alignment with their chosen preferences and overall satisfaction at a solid M = 4.0, confirming that the personalised version was perceived as both relevant and useful. Coverage of the three preference dimensions was judged adequate (M = 3.7), but ease of understanding the settings lagged behind (M = 3.4). 
+@evaluation_graph summarises the Likert-scale findings. Students rated alignment with their chosen preferences and overall satisfaction at a solid M = 4.0,  confirming that they perceived the personalized version as relevant and valuable. Coverage of the three preference dimensions was judged adequate (M = 3.7), but ease of understanding the settings lagged (M = 3.4). 
 
 
 #figure(caption: [User study results of the Likert scale questions, based on the answers of the participants (n = 7). Blue line represents the average rating of the participants, shaded area represents the standard deviation.], )[
   #image("../figures/likert_graph.png", width: 100%)
 ] <evaluation_graph>
 
+\
+Log data reinforce this impression: the time to complete the preference setup was observed to be higher than expected (expected 1 minute, average > 4 minutes). 
 
-Log data reinforce this impression: the time to complete the preference setup was observed to be higher than expected (expexted 1 minute, average > 4 minutes). 
+
+
+
+
+
 
 === Qualitative Results
-Qualitative results discuss the results of the open-ended questions. Considering the small number of interviewees, the answers manually analyzed. The results complement the quantitative results and yield themes that align with the numeric trends:
+Qualitative results discuss the results of the open-ended questions. Considering the small number of interviewees, we analyzed the answers manually. The results complement the quantitative results and yield themes that align with the numeric trends:
 \
-#text("Adjustability was beyond expectations.", weight: "bold") Five of seven participants mentioned that they were expecting to setup less than what's currently provided—e.g., #text("“...wasn't expecting much control”", style: "italic") (P5).
+#text("Adjustability was beyond expectations.", weight: "bold") Five of seven participants mentioned that they were expecting to set up less than what is currently provided—e.g., #text("... was not expecting much control", style: "italic") (P5).
 \
-#text("Terminology confusion.", weight: "bold") Five of seven participants struggled with at least one label—most often alternative—e.g., #text("“Alternative wasn't too clear, I would need to try it a bit to understand what it means.”", style: "italic") (P2), #text("“The dimensions were unclear by name, still not sure what some of them actually mean, and how different they are in action”", style: "italic") (P7).
+#text("Terminology confusion.", weight: "bold") Five of seven participants struggled with at least one label—most often alternative—e.g., #text("Alternative was not too clear, I would need to try it a bit to understand what it means.", style: "italic") (P2), #text("The dimensions were unclear by name, still not sure what some of them actually mean, and how different they are in action", style: "italic") (P7).
 
 
 == Findings
 
-Taken together, qualitative and quantitative results indicate high satisfaction with the outcome of personalisation but reveal friction in the configuration process. While quantitative results show that ease of understanding the settings lagged behind (M = 3.4), the qualitative insights clarify low usability score: students appreciated the concept of customisation but found the current terminology unintuitive. Their positive remarks regarding alignment and utility validate the elevated satisfaction scores, reinforcing the argument for preference-driven personalization after the user interface is optimised.
+Taken together, qualitative and quantitative results indicate high satisfaction with the outcome of personalisation but reveal friction in the configuration process. While quantitative results show that ease of understanding the settings lagged (M = 3.4), the qualitative insights clarify a low usability score: students appreciated the concept of customisation but found the current terminology unintuitive. Their positive remarks regarding alignment and utility validate the elevated satisfaction scores, reinforcing the argument for preference-driven personalization after optimizing the user interface.
 
 
 
 
 
 #TODO[
-  We might reference the pair-wise preference elicitation techniques here.
+ We might reference the pair-wise preference elicitation techniques here.
 ]
 
 == Design Iterations Informed by Findings
@@ -278,11 +277,11 @@ The initial mockup used in the study was not sufficiently intuitive, and termino
   stroke: 0.5pt + black,
   radius: 3pt
 ) <preference-v1>
-
-In response, we introduced a clearer entry point with a dedicated setup button (see @preference-v2_1) that opens an onboarding modal.
+\
+In response, we introduced a more precise entry point with a dedicated setup button (see @preference-v2_1) that opens an onboarding modal.
 
 #TODO[
-  We might reference the pair-wise preference elicitation techniques here.
+ We might reference the pair-wise preference elicitation techniques here.
 ]
 
 #outlined-figure(
@@ -292,8 +291,8 @@ In response, we introduced a clearer entry point with a dedicated setup button (
   stroke: 0.5pt + black,
   radius: 3pt
 ) <preference-v2_1>
-
-The onboarding wizard is the biggest change we introduced comparing to the first version, which works a "guided tour" for students to understand the each dimension of the preference configuration (see @preference-v2_2). 
+\
+The onboarding wizard is the most significant change we introduced compared to the first version, which works as a "guided tour" for students to understand each dimension of the preference configuration (see @preference-v2_2). 
 
 #outlined-figure(
   "../figures/preference-component/preference_v2_2.png",
@@ -302,9 +301,10 @@ The onboarding wizard is the biggest change we introduced comparing to the first
   stroke: 0.5pt + black,
   radius: 3pt
 ) <preference-v2_2>
-After setting up their preferences, students are shown the final screen with the selected preferences (see @preference-v2_4) which is a summary of the preferences they have set reusing the same design with the first version.
+\
+After setting up their preferences, students can see the final screen with the selected preferences (see @preference-v2_4), which summarizes their preferences, reusing the same design as the first version.
 
-We also iterated over the feedback preferences dimensions to make them more intuitive. Even though we introduced the onboarding wizard, some dimensions were still not clear with examples. Therefore, we have reduced the number of dimensions from three, by removing follow-up vs summary and alternative vs standard and adding a new dimension on feedback style, to two and made them more intuitive.
+We also iterated over the feedback preferences dimensions to make them more intuitive. Even though we introduced the onboarding wizard, some dimensions were still not precise with examples. Therefore, we have reduced the number of dimensions from three by removing follow-up vs summary and alternative vs standard, and adding a new dimension on feedback style to two, making them more intuitive.
 
 #outlined-figure(
   "../figures/preference-component/preference_v2_4.png",
@@ -317,8 +317,8 @@ We also iterated over the feedback preferences dimensions to make them more intu
 
 == Discussion
 
-The results indicate that personalized feedback is perceived as both aligned with user preferences and of high quality, whereas first-time configuration imposes a noticeable cognitive cost. The design changes target precisely this pain point. Clearer labels, example-based onboarding, and progressive disclosure are expected to reduce configuration time and increase comprehension without reducing perceived control.
+The results indicate personalized feedback is perceived as aligned with user preferences and of high quality, whereas first-time configuration imposes a noticeable cognitive cost. The design changes target precisely this pain point. More transparent labels, example-based onboarding, and progressive disclosure will reduce configuration time and increase comprehension without reducing perceived control.
 
 
 == Limitations
-Generalizability is limited by the small, homogeneous sample drawn from a single institution and restricted to master's students. The task domain focused on a single, text-only machine-learning exercise; outcomes may differ for code-centric, mathematical, or multimodal tasks. Construct validity may be affected by reliance on self-reported Likert items and by the absence of blinded comparisons. Procedure effects are possible due to the think-aloud protocol and researcher presence, as well as learning effects between default and personalized submissions.
+Generalizability is limited by the small, homogeneous sample drawn from a single institution and restricted to master's students. The task domain focused on a single, text-only machine-learning exercise; outcomes may differ for code-centric, mathematical, or multimodal tasks. Construct validity may be affected by reliance on self-reported Likert items and the absence of blinded comparisons. Procedure effects are possible due to the think-aloud protocol, researcher presence, and learning effects between default and personalized submissions.

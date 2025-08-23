@@ -44,7 +44,7 @@
 #pagebreak()
 
 = Implementation <implementation>
-In this chapter, we will describe the implementation of the proposed system objective by objective, referring to @objectives. For each objective, we will explain the implementation details, the relation with the previous chapters, our decision and why, and the implementation results.
+In this chapter, we will describe the implementation of the proposed system, objective by objective, referring to @objectives. For each objective, we will explain the implementation details, the relation with the previous chapters, our decision and why, and the implementation results.
 
 
 == Profiling University Students on LMSs
@@ -53,22 +53,22 @@ Profiling university students and creating a learner profile is our first object
 
 
 === Competencies & Progress
-Our goal is to build a student profile that lets the system generate feedback that respects what students can already do and how far they have progressed, as literature suggests that effective feedback should address both mastery and process. In other words, it should tell students where they stand and how they are moving forward @lohr2024. To do this, we first needed a schema that could reliably capture these two aspects.
+Our goal is to build a student profile that lets the system generate feedback that respects what students can already do and how far they have progressed, as literature suggests that effective feedback should address both mastery and process. In other words, it should tell students where they stand and how they are moving forward @lohr2024. We first needed a schema that reliably captured these two aspects to do this.
 
-We began with a quick pilot to test whether LLMs can meaningfully vary feedback based on different student types. We defined three personas—high achiever, average student, and struggling student—listed their typical needs, and wrote a prompt variant for each. Using a common exercise, we compared the feedback produced for these three personas and checked whether it matched our defined needs.
+We began with a quick pilot to test whether LLMs can meaningfully vary feedback based on different student types. We defined three personas—high achiever, average student, and struggling student—listed their typical needs, and wrote a prompt variant for each. We used a common exercise to compare the feedback produced for these three personas and checked whether it matched our defined needs.
 
 
 Since the pilot produced clearly different and appropriate feedback across personas, we moved to a more detailed and personalized method that does not rely on fixed categories. We used an LLM-as-a-profiler approach: instead of assigning a student to a predefined persona, the LLM analyzes a submission to extract strengths and weaknesses directly from the submission. We developed this iteratively, starting with a simple prompt that identifies what the student did well and what needs work, then refining the output into a structured schema.
 
-Next, we explored a structured way to represent competencies using the SOLO taxonomy. SOLO is designed to describe how a learner's understanding grows in complexity, which fits our aim of modeling both level and development over time @biggs1982. We prompted the LLM to map evidence from the student's submission to SOLO levels and to justify the mapping with short evidence spans.
+Next, we explored a structured way to represent competencies using the SOLO taxonomy. SOLO describes how a learner's understanding grows in complexity, which fits our aim of modeling both level and development over time @biggs1982. We prompted the LLM to map evidence from the student's submission to SOLO levels and to justify the mapping with short evidence spans.
 
 #TODO[
-  Also to following paragraph:
-  In this work, we explored various methods for using LLMs to identify gaps in students' self-explanations of specific instructional material, such as explanations for code examples.
+ Also to following paragraph:
+ In this work, we explored various methods for using LLMs to identify gaps in students' self-explanations of specific instructional material, such as explanations for code examples.
   @oli2024
 ]
 
-After the SOLO experiments, we transitioned to Bloom's taxonomy. This shift was natural for two reasons: Bloom's is widely used in the literature, and Artemis already supports it by letting instructors define Bloom-type competencies and link them to exercises. Since Bloom's categorizes the educational goals rather than the student's understanding, our analysis also changed focus: rather than prompting the LLM to infer students' understanding, we prompted it to assess the submission against the specific Bloom-linked competencies already defined for the exercise @bloom1956. @student-analysis-prompt shows the prompt we used to extract the student's competency status from the submission according to Bloom's taxonomy. We defined 4 different statuses for the student's competency status: _Correct_, _Partially Correct_, _Not Attempted_, and _Not Attempted Correctly_.
+After the SOLO experiments, we transitioned to Bloom's taxonomy. This shift was natural for two reasons: Researchers widely use Bloom's in the literature, and Artemis supports it by letting instructors define Bloom-type competencies and link them to exercises. Since Bloom categorizes the educational goals rather than the students' understanding, our analysis also changed focus: rather than prompting the LLM to infer students' understanding, we prompted it to assess the submission against the specific Bloom-linked competencies already defined for the exercise @bloom1956. @student-analysis-prompt shows the prompt we used to extract the student's competency status from the submission according to Bloom's taxonomy. We defined four different statuses for the student's competency status: _Correct_, _Partially Correct_, _Not Attempted_, and _Not Attempted Correctly_.
 
 #figure(
   box(
@@ -116,7 +116,7 @@ Student's CURRENT submission (with line numbers):
 {submission}
     ```
     ]
-  ),
+ ),
   caption: [System prompt for LLM to generate _Student Competency Status_.],
   supplement: "Prompt",
 ) <student-analysis-prompt>
@@ -137,8 +137,8 @@ Since Athena can work with any LMS, we also implemented a fallback to extract co
     - Reference the grading_instruction_id if relevant.
     ```
     ]
-  ),
-  caption: [System prompt for LLM to extract competencies linked to an exercise. It is appended in to the @student-analysis-prompt when the competencies are not provided by the instructor via LMS.],
+ ),
+  caption: [System prompt for LLM to extract competencies linked to an exercise. It is appended to the @student-analysis-prompt when the instructor does not provide the competencies via LMS.],
   supplement: "Prompt",
 ) <competency-extraction-prompt>
 \
@@ -180,7 +180,7 @@ The third part of the learner profile is preferences—how a student wants to re
     text(hyphenate: true)[Actionable tips vs. conceptual focus.],
 
     [Hint style], text(hyphenate: false)[Alternative ↔ Standard],
-    [Whether feedback hints de-facto solution or alternative ways.],
+    [Whether feedback hints at a de facto solution or alternative ways.],
 
     [Ending of feedback], [Summary ↔ Follow-up],
     [Whether feedback ends with a summary or by prompting the next step.],
@@ -200,12 +200,12 @@ The third part of the learner profile is preferences—how a student wants to re
 
     // bottom rule
     table.hline(stroke: 0.8pt),
-  )
+ )
 ) <pref-dimensions>
+\
+After experiments, more literature review, and user interviews (see Section @user_interviews), we found some dimensions confusing in practice. We simplified to two dimensions that students understood well and that changed the feedback clearly: detail and tone/formality. @pref-dimensions summarizes the complete evolution—from initial candidates to the final selection.
 
-After experiments, more literature review, and user interviews (see Section @user_interviews), we found that some dimensions were confusing in practice. We therefore simplified to two dimensions that students understood well and that changed the feedback in a clear way: detail and tone/formality. The complete evolution—from initial candidates to the final selection—is summarized in @pref-dimensions.
-
-For implementation, each selected dimension maps to a small prompt token injected at generation time. For the Detail dimension, the injected text varies from brief to detailed (see @detail-tokens). For the Tone/Formality dimension, the token adjusts the register from formal to friendly (see @formality-tokens). Both dimensions use a 3-point scale (1-3). A value of 2 means “neutral,” which injects no extra token and falls back to the base prompt. This keeps the system simple while still giving students real control over length and tone.
+Each selected dimension maps to a small prompt token injected at generation time for implementation. For the Detail dimension, the injected text varies from brief to detailed (see @detail-tokens). For the Tone/Formality dimension, the token adjusts the register from formal to friendly (see @formality-tokens). Both dimensions use a 3-point scale (1-3). A value of 2 means "neutral," which injects no extra token and falls back to the base prompt. This keeps the system simple while giving students control over length and tone.
 
 
 #figure(
@@ -222,7 +222,7 @@ For implementation, each selected dimension maps to a small prompt token injecte
       radius: 2pt,
       inset: 10pt,
       body,
-    )
+ )
 
     #table(
       columns: (0.2fr, 0.60fr),
@@ -248,12 +248,12 @@ For implementation, each selected dimension maps to a small prompt token injecte
     inset: 10pt,              // padding
     [
     ```
-        Keep the feedback short and direct — ideally 1 to 2 sentences.
+ Keep the feedback short and direct — ideally 1 to 2 sentences.
         
-        Example 1: Add an index on the `user_id` column to improve performance.
+ Example 1: Add an index on the `user_id` column to improve performance.
         
-        Example 2: Clarify your thesis statement in the introduction to strengthen your argument.
-        ```
+ Example 2: Clarify your thesis statement in the introduction to strengthen your argument.
+ ```
       ]),
       table.hline(stroke: 0.4pt),
 
@@ -273,23 +273,23 @@ For implementation, each selected dimension maps to a small prompt token injecte
       inset: 10pt,              // padding
       [
       ```
-        Give detailed feedback with multiple sentences, examples, and background reasoning where relevant.
+ Give detailed feedback with multiple sentences, examples, and background reasoning where relevant.
         
-        Example 1: Adding an index on `user_id` improves query speed by allowing the database to locate relevant rows efficiently without scanning the entire table, which is crucial for scaling.
+ Example 1: Adding an index on `user_id` improves query speed by allowing the database to locate relevant rows efficiently without scanning the entire table, which is crucial for scaling.
         
-        Example 2: Introducing your main argument clearly in the essay’s opening not only frames the reader’s expectations but also strengthens your persuasiveness, a technique often recommended in academic writing.
-        ```
+ Example 2: Introducing your main argument clearly in the essay's opening not only frames the reader's expectations but also strengthens your persuasiveness, a technique often recommended in academic writing.
+ ```
       ]),
 
       // bottom rule
       table.hline(stroke: 0.8pt),
-    )
+ )
   ]
 ) <detail-tokens>
 
 
 #figure(
-  caption: [Prompts for the Formality dimension. Each value of the 3-point scale injects a different prompt text adjusting the register from formal to friendly.],
+  caption: [Prompts for the Formality dimension. Each value of the 3-point scale injects a different prompt text, adjusting the register from formal to friendly.],
   context[
     #set par(justify: false)
     #set text(hyphenate: false)
@@ -302,7 +302,7 @@ For implementation, each selected dimension maps to a small prompt token injecte
       radius: 2pt,
       inset: 10pt,
       body,
-    )
+ )
 
     #table(
       columns: (0.2fr, 0.60fr),
@@ -333,7 +333,7 @@ Provide feedback in a formal and professional tone, like a teacher would, keep t
 Example 1: Add an index on the user_id column to improve performance.
 
 Example 2: Clarify your thesis statement in the introduction to strengthen your argument.
-        ```
+ ```
       ]),
       table.hline(stroke: 0.4pt),
 
@@ -357,12 +357,12 @@ Provide feedback in a friendly, engaging, and encouraging tone, like a tutor wou
 Example 1: 💪 Let's boost your query performance by adding an index on the user_id column! 🚀
 
 Example 2: 👉 Introducing your main argument clearly in the essay's opening not only frames the reader's expectations but also strengthens your persuasiveness. This is a technique often recommended in academic writing :)
-        ```
+ ```
       ]),
 
       // bottom rule
       table.hline(stroke: 0.8pt),
-    )
+ )
   ]
 ) <formality-tokens>
 \
@@ -372,7 +372,7 @@ Together, these two dimensions cover most of the visible variation students expe
 
 == Generating Personalized Feedback Utilising the Profile
 
-After defining the learner profile schema the next step was to integrate the profile into the feedback generation process. We followed the chain-of-thought approach, where in the first step we extracted the student's competency status using the input data and the prompt introduced in the previous section, and in the following step, making use of the student's competency status, we generated the personalized feedback, by prompting LLM with @feedback-generation-prompt. 
+After defining the learner profile schema, the next step was integrating the profile into the feedback generation process. We followed the chain-of-thought approach, where in the first step we extracted the student's competency status using the input data and the prompt introduced in the previous section, and in the following step, making use of the student's competency status, we generated the personalized feedback by prompting LLM with @feedback-generation-prompt. 
 
 
 #figure(
@@ -407,39 +407,25 @@ Student's feedback preferences:
 {feedback_preferences}
     ```
     ]
-  ),
+ ),
   caption: [System prompt for LLM to generate personalized feedback based on the student's competency status and progress. Only the relevant parts of the prompt are shown here (i.e., personalization according to the student's learner profile).],
   supplement: "Prompt",
 ) <feedback-generation-prompt>
 
 #TODO[
-  End feedback schema?
-  Some closing words about our prompting strategy and all
+ End feedback schema?
+ Some closing words about our prompting strategy and all
 ]
 
 
 == Delivering the Personalized Feedback
 
-Displaying the personalized feedback on the LMS and delivering it to the students was our last objective, which complements the two previous objectives. Our objective was to come up with a design which would meet our requirements (FR 12 and QA 1) and to implement the new feedback component on Artemis.
+Displaying personalized feedback on the LMS and delivering it to the students was our last objective, complementing the previous two objectives. Our objective was to develop a design that would meet our requirements (FR 12 and QA 1) and implement the new feedback component on Artemis.
 
-Starting with the prototype design and user feedback round, we iterated over the feedback component to meet the requirements. The final version of the feedback component after integrating the feedback from the UI/UX meetings is shown in @default-feedback-component.
+Starting with the prototype design and user feedback round, we iterated over the feedback component to meet the requirements. @default-feedback-component showcases the final version of the feedback component after integrating the feedback from the UI/UX meetings.
 
 #figure(caption: [Default feedback component. This figure shows three default feedback types: Correct, Needs Revision, and Not Attempted. On top of the component, there is the reference to the student's submission if available. Then the feedback is displayed with the credits and a title.])[
   #image("../figures/feedback-component/default.png", width: 94%)
 ] <default-feedback-component>
 
-
-
-
-
-
-
-
-#TODO[
-  Here mention how we got to the new feedback component - what steps did we take, UI/UX meetups, cross porjects etc.
-]
-
-#TODO[
-  For the implementation we should come up with some diagrams, component classes, talk a bit technical here. 
-]
 

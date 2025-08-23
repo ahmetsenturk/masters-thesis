@@ -83,7 +83,7 @@ Under this subsection, we will decompose the overall architecture into subsystem
 
 === Athena 
 
-For the proposed system, _Athena_ is the core subsystem that generates the personalized feedback. The current version of Athena (v1.3.0) provides an automated feedback generation service to LMSs and is currently connected to Artemis. The proposed system aims to extend this automated feedback generation service to personalized automated feedback generation. As presented in @sd, _Athena_ provides the _Feedback Generation Service_ to _Artemis Server_ and utilizes the _LLM Completion Service_ to generate the feedback. As a subsystem, _Athena_ also contains the _Assessment Module Manager_ component, assessment modules for three different exercise types: _Programming Assessment Module_, _Text Assessment Module_, and _File Assessment Module_, and finally the _LLM Module_.
+For the proposed system, _Athena_ is the core subsystem that generates the personalized feedback. The current version of Athena (v1.3.0) provides an automated feedback generation service to LMSs and connects to Artemis. The proposed system aims to extend this automated feedback generation service to personalized automated feedback generation. As presented in @sd, _Athena_ provides the _Feedback Generation Service_ to _Artemis Server_ and utilizes the _LLM Completion Service_ to generate the feedback. As a subsystem, _Athena_ also contains the _Assessment Module Manager_ component, assessment modules for three different exercise types: _Programming Assessment Module_, _Text Assessment Module_, and _File Assessment Module_, and finally the _LLM Module_.
 
 #figure(caption: "UML Component Diagram for the Top-Level Subsystem Decomposition. Adapted and existing components are marked.", )[
   #image("../figures/subsystem-decomposition/overall.svg", width: 100% ,format: "svg")
@@ -99,15 +99,12 @@ The related assessment modules, namely _Programming Assessment Module_, _Text As
 Now we will focus on the _Text Assessment Module_ subsystem, which resides in the _Athena_ subsystem and generates the feedback for text exercises. 
 We developed our approach with text exercises because they were the easiest to test and evaluate with the students. We implemented the personalization pipeline into the _Text Assessment Module_ so that the other exercise types can easily adopt it. 
 
-As @athena-sd displays, _Text Assessment Module_ contains the following components: _Personalized Feedback Generation_, _Prompt Management_, _Competency Extraction_, and _Student Status Analysis_. 
+As @athena-sd displays, the _Text Assessment Module_ contains the following components: _Personalized Feedback Generation_, _Prompt Management_, _Competency Extraction_, and _Student Status Analysis_. 
 #figure(caption: "UML Component Diagram for the Subsystem Decomposition of the Text Assessment Module.", )[
   #image("../figures/subsystem-decomposition/athena.svg", width: 100% ,format: "svg")
 ] <athena-sd>
 \
-
-
-
-_Personalized Feedback Generation_ acts as an orchestrator and is responsible for generating personalized feedback using the input data provided by the _Assessment Module Manager_ and communicating with _Prompt Management_, _Competency Extraction_, and _Student Status Analysis_ components.
+_Personalized Feedback Generation_ acts as an orchestrator and generates personalized feedback using the input data provided by the _Assessment Module Manager_ and communicating with _Prompt Management_, _Competency Extraction_, and _Student Status Analysis_ components.
 
 _Prompt Management_ manages the prompts to generate personalized feedback. It contains the directives for the different levels of feedback preferences (see _FeedbackPreferences_ in @aom). It automatically injects the corresponding directives into the feedback generation prompt for the personalised feedback generation based on the learner profile, which the _Assessment Module Manager _ provides.
 
@@ -117,19 +114,19 @@ _Student Status Analysis_ is responsible for analysing the student's status and 
 
 
 === Artemis
-Lastly, we decompose the Artemis subsystem for the proposed system. Artemis follows a client-server architecture. The client side uses the Angular#footnote[https://angular.dev/] as a framework, and the server side uses the Spring Boot#footnote[https://spring.io/projects/spring-boot].
+Lastly, we decompose the Artemis subsystem, which follows a client-server architecture. The client side uses the Angular#footnote[https://angular.dev/] as a framework, and the server side uses the Spring Boot#footnote[https://spring.io/projects/spring-boot]. @artemis-sd displays the Artemis side of the proposed system. We will focus on two further subsystems inside _Artemis Client_, namely _Learner Profile Module_ and _Feedback Module_.
+
 
 #figure(caption: "UML Component Diagram for the Subsystem Decomposition of Artemis. New, adapted, and existing components are marked.", )[
   #image("../figures/subsystem-decomposition/artemis.svg", width: 100% ,format: "svg")
 ] <artemis-sd>
-
-@artemis-sd displays the Artemis side of the proposed system. We will focus on two further subsystems inside _Artemis Client_, namely _Learner Profile Module_ and _Feedback Module_.
+\
 
 The _Learner Profile Module_ manages the learner profile interaction between the student and the LMS. It contains the newly introduced _Feedback Preferences Onboarding Component_, which guides the student through the configuration process for feedback preferences. It also displays the learner profile to the student and allows them to configure the feedback preferences using _Learner Profile Attribute Configure Component_.
 
  _Feedback Module_ contains the newly developed _Feedback Component_, responsible for displaying the feedback. This component is then used in the different exercise type feedback components to display the feedback to the student, namely, _Programming Feedback Component_, _Text Feedback Component_, and _Modeling Feedback Component_.
 
- Both modules are connected to the Artemis Server through REST API calls. _Learner Profile Module_ uses _Learner Profile Service_ to fetch and update the learner profile. _Feedback Module_ uses _Feedback Service_ to request for a feedback.
+Both modules connect to the Artemis Server through REST API calls. _Learner Profile Module_ uses _Learner Profile Service_ to fetch and update the learner profile. _Feedback Module_ uses _Feedback Service_ to request for a feedback.
 
  _Artemis Server_ is connected to _Athena_, as displayed in @sd as well, to fetch the feedback.
 
@@ -137,7 +134,7 @@ The _Learner Profile Module_ manages the learner profile interaction between the
 
 == Hardware Software Mapping
 
-This subsection describes the mapping of the subsystems onto hardware components, as can be seen in @hw-sw-mapping. Students access the Artemis application through the Artemis Client running on their device. The Artemis Client is then connected to the Artemis Server running on the University's Data Center, together with Athena. Athena is connected to a 3rd-party LLM service provider to generate the feedback, which runs on a dedicated server of the provider's choice.
+This subsection describes the mapping of the subsystems onto hardware components, as can be seen in @hw-sw-mapping. Students access the Artemis application through the Artemis Client running on their device. The Artemis Client and Athena connect to the Artemis Server running in the University's Data Center. Athena connects to a 3rd-party LLM service provider, which generates the feedback on a dedicated server of its choice.
 
 #figure(caption: "UML Deployment Diagram for the Hardware Software Mapping. Showcases the mapping of the subsystems onto existing hardware and software components.", )[
   #image("../figures/hardware.svg", width: 90% ,format: "svg")
