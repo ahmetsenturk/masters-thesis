@@ -21,15 +21,25 @@
 // Use "Figure" in captions (default), left-aligned, small, with a colon.
 #show figure: it => {
   show figure.caption: cap => context block(
-    above: 4pt,        // space between figure and caption
+    above: 4pt,
     width: 100%,
-    align(left)[
-      #set text(size: 12pt)
-      #text(weight: "bold")[#cap.supplement #cap.counter.display()#text(weight: "bold")[: ]] #cap.body
-    ],
+    grid(
+      columns: (auto, 1fr),
+      gutter: 6pt,
+      align: left + top,          // <-- force left alignment in both cells
+      [
+        #set text(size: 12pt)
+        #text(weight: "bold")[#cap.supplement #cap.counter.display():]
+      ],
+      [
+        #set text(size: 12pt)
+        #par(justify: true)[#cap.body]   // ragged-right
+      ],
+    ),
   )
   it
 }
+
 
 #pagebreak()
 = Requirements <requirements>
@@ -85,7 +95,7 @@ The envisioned extension introduces learner profiles as a first-class artefact. 
 
 #fr("QA 1", "Feedback Interface", "The feedback interface should indicate what the student did well, what they could improve, and what the following steps are to improve, adhering to Artemis design conventions.")
 
-#fr("QA 2", "Preference Interface", "The feedback preference-setting workflow should be easy to understand and complete. It should be intuitive to use and should not take more than 1 minute for students to configure. Interface should adhere to Artemis design conventions.")
+#fr("QA 2", "Preference Interface", "The feedback preference-setting workflow should be easy to understand and complete. It should be intuitive to use, should not take more than 1 minute for students to configure, and should adhere to Artemis design conventions.")
 
 #fr("QA 3", "Reusability", "The developed system should make use of existing components and services from Artemis and Athena to avoid making the current system more complex and more challenging to maintain. The development on the Athena side should use the same approach as the current development and should extend the current capabilities of the system.")
 
@@ -95,7 +105,7 @@ The envisioned extension introduces learner profiles as a first-class artefact. 
 
 #fr("QA 6", "Feedback Quality", "Personalized feedback should be at least as accurate and actionable as existing automated feedback.")
 
-#fr("QA 7", "Latency", "Feedback generation should be completed within a reasonable time frame for students to take immediate action, ideally not more than 20 seconds per submission under normal load.")
+#fr("QA 7", "Latency", "Feedback generation should be completed within a reasonable time frame for students to take immediate action, not more than 20 seconds per submission under normal load.")
 
 #fr("QA 8", "Scalability", "The system should sustain increased load (e.g., large number of students asking for feedback on complicated exercises) without significant performance degradation.")
 
@@ -105,15 +115,13 @@ The envisioned extension introduces learner profiles as a first-class artefact. 
 
 === Constraints <constraints>
 
-#fr("C 1", "Cost", "The system should be cost-efficient.")
+#fr("C 1", "Cost", "Running the proposed system should not increase the computing costs of the Artemis and Athena systems too much, not more than 1%.")
 
-#fr("C 2", "Maintainability", "The system should be maintainable.")
+#fr("C 2", "Maintainability", "The system should be maintainable with every additional feature and development in the future.")
 
-#fr("C 3", "Extensibility", "The system should be extensible.")
+#fr("C 3", "Data Protection", "The system should be compliant with the GDPR and protect the personal data of the students.")
 
-#fr("C 4", "Data Protection", "The system should be compliant with the GDPR and protect the personal data of the students.")
-
-
+#pagebreak()
 
 
 == System Models
@@ -128,8 +136,7 @@ A scenario describes a sequence of interactions from the system's user's viewpoi
 Anna submits her initial answer and requests AI-generated feedback. She sees that the generated feedback is a direct sentence—"Definition lacks discussion of rate-limiting strategies"—followed by a next step: mention two different rate-limiting strategies. The style matches her brief-formal preference.
 Curious about how different guidance might look, Anna reopens the preference panel, sets the detail level to detail, and switches the tone to friendly. She revises her answer and requests feedback again. This time, the feedback begins with an encouraging summary of her improvements with a friendly tone backed up by emojis, explains why sliding-window algorithms handle burst traffic differently, and provides a real-world example from a CDN. A final paragraph suggests adding further metrics for throughput under peak load.
 Anna finds the expanded explanation helpful, as this can be her personal exercise coach, so she decides to keep the detail-friendly setting for future exercises. The scenario demonstrates that students can dynamically modulate feedback depth and tone to fit their learning stage, reducing cognitive overload when skimming and offering depth during consolidation. 
-
-
+\
 \
 #text(weight: "bold")[History-Aware Feedback.] Ben, a master's student who has already taken a few courses in networking, submits his first response to the same rate-limiter exercise. His answer covers the rate limiter explanation and one strategy, but lacks the second strategy and a comparison between the strategies. The feedback he receives acknowledges his clear explanation and one strategy, flags the missing strategy, and the missing comparison. All feedback has the next steps for Ben on what to do to achieve better results.
 Ben edits his answer, adds a second rate-limiting strategy, and submits it again. The second-round feedback opens with "Good job adding the second strategy," and another feedback, "Strategy comparison is still missing," indicating that the system considers the submission history when generating the feedback. The scenario demonstrates that feedback generation can be personalized by incorporating their progress.
@@ -137,52 +144,64 @@ Ben edits his answer, adds a second rate-limiting strategy, and submits it again
 === Use Case Model
 This subsection outlines the use case model for the proposed system, derived from the scenarios detailed in the preceding section. It illustrates the actions that students can undertake, as use case models define the features of a system that its users can activate @bruegge2009.
 
+In @figure1, we present the use cases of a student. A student can #text(style: "italic")[configure their feedback preferences], which allows students to explicitly specify their preferences regarding the feedback style dimensions (FR1). A student can also #text(style: "italic")[request a personalized feedback] (FR9) on their submission, which will trigger the #text(style: "italic")[generate personalized feedback] (FR10) use case. Generating the personalized feedback, since the personalized feedback respects the learner profile, includes the #text(style: "italic")[generating or updating learner profiles] (FR7) and (FR8), and consequently #text(style: "italic")[assess competency status] (FR3). This would include #text(style: "italic")[utilize feedback preferences] (FR4), #text(style: "italic")[utilize submission history] (FR5), #text(style: "italic")[utilize engagement data] (FR6). After the generation of the personalized feedback is complete, the student can #text(style: "italic")[view the personalized feedback] (FR11).
 
-#figure(caption: "Use Case Model. Showcases the scenarios can be iniated by the student.", )[
+#figure(caption: "UML Use Case Diagram. Showcases the scenarios a student can initiate.", )[
   #image("../figures/use_case.svg", width: 100% ,format: "svg")
 ] <figure1>
-
-In @figure1, we present the use cases of a student. A student can #text(style: "italic")[configure their feedback preferences], which allows students to explicitly specify their preferences regarding the feedback style dimensions (FR1). A student can also #text(style: "italic")[request a personalized feedback] (FR9) on their submission, which will trigger the #text(style: "italic")[generate personalized feedback] (FR10) use case. Generating the personalized feedback, since the personalized feedback respects the learner profile, includes the #text(style: "italic")[generating or updating learner profiles] (FR7) and (FR8), and consequently #text(style: "italic")[assess competency status] (FR3). This would include #text(style: "italic")[utilize feedback preferences] (FR4), #text(style: "italic")[utilize submission history] (FR5), #text(style: "italic")[utilize engagement data] (FR6). After the generation of the personalized feedback is complete, the student can #text(style: "italic")[view the personalized feedback] (FR11).
 \
 
 === Analysis Object Model
 
 To provide a high-level abstraction of the problem domain and how we initially modelled it, we use the Analysis Object Model (AOM). AOM covers the application domain's crucial objects, attributes, methods, and relations that would guide the system's design throughout the implementation @bruegge2009. In this section, we present the AOM for the proposed system, as seen in @aom.
 
-In the AOM, #text(weight: "bold")[Feedback Preferences] encapsulates the explicit, student-defined parameters that shape the feedback style. Its attributes - #text(style: "italic")[detail] and #text(style: "italic")[formality] - record the desired level of detail (i.e., brief explanation vs. detailed explanation) and rhetorical tone (i.e., formal vs. friendly), while the operation #text(style: "italic")[configure()] persists any change and notifies dependent services.  #text(weight: "bold")[Engagement Data] captures a complementary, implicit layer of information drawn from each learner's #text(style: "italic")[chatMessages] and #text(style: "italic")[forumPosts]. Together with #text(weight: "bold")[Student Competency Status]—which stores the evolving #text(style: "italic")[progress] for every required competency and records #text(style: "italic")[evidence] from student's submission results—these three classes aggregate into the overarching #text(weight: "bold")[Learner Profile]. The aggregation relationship expresses that the profile acts as an authoritative container.
-
-#figure(caption: "Analysis Object Model")[
+#figure(caption: "UML Class Diagram for the Analysis Object Model. Illustrates the objects and their relationships that are necessary to model the proposed system. ")[
   #image("../figures/aom.svg", width: 100% ,format: "svg")
 ] <aom>
+\
 
-More detail, #text(weight: "bold")[Student Competency Status] maintains a running estimate of each learner's mastery for every required concept. #text(style: "italic")[Progress] classify the status of the students regarding the Competency, while #text(style: "italic")[evidence] links to concrete evidence from students' submissions. The operation #text(style: "italic")[assess()] recalculates the mastery level whenever new feedback is requested. A solid association ties the class to #text(weight: "bold")[Competency], signalling that each status record corresponds to one instructional target extracted from the exercise specification.
+In the AOM, #text(weight: "bold")[Feedback Preferences] encapsulates the explicit, student-defined parameters that shape the feedback style. Its attributes - #text(style: "italic")[detail] and #text(style: "italic")[formality] - record the desired level of detail (i.e., brief explanation vs. detailed explanation) and rhetorical tone (i.e., formal vs. friendly), while the operation #text(style: "italic")[configure()] persists any change and notifies dependent services.  #text(weight: "bold")[Engagement Data] captures a complementary, implicit layer of information drawn from each learner's #text(style: "italic")[chatMessages] and #text(style: "italic")[forumPosts]. Together with #text(weight: "bold")[Student Competency Status]—which stores the evolving #text(style: "italic")[progress] for every required competency and records #text(style: "italic")[evidence] from student's submission results—these three classes aggregate into the overarching #text(weight: "bold")[Learner Profile]. 
+
+
+#text(weight: "bold")[Student Competency Status] maintains a running estimate of each learner's mastery for every required concept. #text(style: "italic")[Progress] classifies the status of the students regarding the Competency, while #text(style: "italic")[evidence] links to concrete evidence from students' submissions. The operation #text(style: "italic")[assess()] recalculates the mastery level whenever new feedback is requested. A solid association ties the class to #text(weight: "bold")[Competency], signalling that each status record corresponds to one instructional target extracted from the exercise specification.
 
 #text(weight: "bold")[Competency] stores the #text(style: "italic")[description], the #text(style: "italic")[bloomsLevel], and the reference to a #text(style: "italic")[gradingInstruction]. #text(style: "italic")[extract()] parses the #text(weight: "bold")[Exercise] metadata—#text(style: "italic")[title], #text(style: "italic")[problemStatement], #text(style: "italic")[exampleSolution], and #text(style: "italic")[gradingInstructions]—to enumerate learning goals. The many-to-many link between Exercise and Competency acknowledges that a single task can address multiple outcomes and that the same outcome may reappear across assignments.
 
-Learner interaction begins with a #text(weight: "bold")[Submission], whose attribute #text(style: "italic")[content] stores the uploaded solution. The adapted operation #text(style: "italic")[request()] #text(weight: "bold")[Personalized Feedback] of bundles the Submission with the current Learner Profile and generates a Personalized Feedback
+Learner interaction begins with a #text(weight: "bold")[Submission], whose attribute #text(style: "italic")[content] stores the uploaded solution. The adapted operation #text(style: "italic")[request()] of #text(weight: "bold")[Personalized Feedback] bundles the Submission with the current Learner Profile and requests a Personalized Feedback.
 
 Each Personalized Feedback aggregates the textual #text(style: "italic")[description] with an optional rubric reference, optional #text(style: "italic")[credits], and a #text(style: "italic")[suggestedAction] crafted for the next study step. The method #text(style: "italic")[view()] marks the hand-off back to the user interface, where comments are rendered. 
 
 === Dynamic Model
-In this subsection, we present the dynamic models for the proposed system. A dynamic model uses UML activity diagrams to show the system's flow and how the objects interact.
-\
-\
-#text(weight: "bold")[Dynamic Model 1: Student Request Personalised Feedback]
-\
-It starts with the student submitting a solution. The student can request personalized feedback after the submission has been created on Artemis. The submission is then bundled with the learner profile, previous submission, and exercise and dispatched to Athena. Athena first checks if the exercise related to the submission has set competencies, and generates them on the fly if not. Then, it assesses the competency status of the student and generates a student competency status. The student competency status is then used to generate personalized feedback and to update the learner profile. Students can then view the personalized feedback on the Artemis interface.
+In this subsection, we present the dynamic models for the proposed system using UML activity diagrams to show the system's flow and how the objects interact. The first dynamic model shows the feedback preference configuration workflow, while the second dynamic model shows the personalized feedback request, generation, and presentation workflow.
 
-#figure(caption: "Dynamic Model 1: Student Requests Personalised Feedback")[
-  #image("../figures/dynamic_1.svg", width: 95% ,format: "svg")
-]
-It is crucial to note that the whole process is iterative. If the student is unsatisfied with the results, the student can submit another solution and request personalized feedback. Making the personalized feedback accessible can help students iteratively improve by utilizing the easily accessible feedback.
-
-#text(weight: "bold")[Dynamic Model 2: Student Configures Feedback Preferences]
 \
-The second dynamic model showcases how the feedback preference configuration works. The student can access the feedback preference settings from the Artemis settings page by opening the learner profile settings. The system guides the student with an onboarding wizard if the student has not set up the feedback preferences. After setting the preferences up, the system will save them to the learner profile. The student can then see and update the saved feedback preferences if necessary.
+\
+\
+#text(weight: "bold")[Dynamic Model 1: Student Configures Feedback Preferences]
+\
+The first dynamic model showcases how the feedback preference configuration works. The student can access the feedback preference settings from the Artemis settings page by opening the learner profile settings. The system guides the student with an onboarding wizard if the student has not set up the feedback preferences. After setting the preferences up, the system will save them to the learner profile. The student can then see and update the saved feedback preferences if necessary.
 
-#figure(caption: "Dynamic Model 2: Student Configures Feedback Preferences")[
+#figure(caption: "UML Activity Diagram illustrating the feedback preference configuration workflow.")[
   #image("../figures/dynamic_2.svg", width: 80% ,format: "svg")
 ]
+
+\
+\
+\
+\
+#text(weight: "bold")[Dynamic Model 2: Student Requests Personalized Feedback]
+\
+@dynamic-model-1 shows the dynamic model for the student requesting personalized feedback.
+It starts with the student submitting a solution. The student can request personalized feedback after the submission has been created on Artemis. The submission is then bundled with the learner profile, previous submission, and exercise and dispatched to Athena. Athena first checks if the exercise related to the submission has set competencies, and generates them on the fly if not. Then, it assesses the competency status of the student and generates a student competency status. The student competency status is then used to generate personalized feedback and to update the learner profile. Students can then view the personalized feedback on the Artemis interface.
+
+It is crucial to note that the whole process is iterative. If the student is unsatisfied with the results, the student can submit another solution and request personalized feedback. Making the personalized feedback accessible can help students iteratively improve by utilizing the easily accessible feedback.
+
+#figure(caption: "UML Activity Diagram illustrating the personalized feedback request, generation, and presentation workflow.")[
+  #image("../figures/dynamic_1.svg", width: 95% ,format: "svg")
+] <dynamic-model-1>
+
+
+
 
  
 === User Interface
@@ -191,13 +210,13 @@ This subsection presents the necessary interfaces, both the new ones and the one
 @mockup1 shows the first mockup iteration for the feedback preferences setup page. Since the preferences are part of the learner profile, the user will set the feedback preferences under the learner profile settings. The mockup contains explanations regarding the Learner Profile, the feedback preferences, and each dimension of the feedback preferences, together with the explanations for each end of the spectrum. The setup interface would follow a segmented toggle approach to make the workflow easy to understand and intuitive, as QA 2 states, where users can click on the toggle to change the preference. 
 
 #figure(caption: "Feedback Preferences Setup Mockup. Students can set up their feedback preferences on this page by seeing the explanations of the preference dimensions and clicking on the segmented buttons.")[
-  #image("../figures/feedback-component/mockup_1.png", width: 100%)
+  #image("../figures/preference-component/mockup.png", width: 100%)
 ] <mockup1>
+\
+@mockup2 presents the first mockup iteration for the feedback component. According to Hattie and Timperley, the feedback should be actionable, understandable, and should be aligned with the student's needs @hattie2007. This should also apply to how feedback is delivered to the students. While the content of the feedback is important, the way it is delivered is also important. Following FR 12 and QA 1, we defined that a feedback should be delivered in a way that is (i) actionable (i.e., students should be able to understand what is the next step they should take) and (ii) understandable (i.e., students should be able to understand what the feedback is about, where did they succeed and where did they fail). The mockup contains the feedback component with the feedback details, the credits, and the subsequent improvement steps. 
 
-@mockup2 presents the first mockup iteration for the feedback component. As one of our objectives is delivering the personalized feedback, the user interface for the feedback is crucial for the proposed system. Following FR 12 and QA 1, the feedback component would be designed to be user-friendly,  informative, and actionable. The mockup contains the feedback component with the feedback details, the credits, and the subsequent improvement steps. The key differences from the current design are the better color coding, easily detectable status indicators, and more elaborate and visible next steps to improve. 
-
-#figure(caption: "Feedback Component Mockup.")[
-  #image("../figures/feedback-component/mockup_2.png", width: 100%)
+#figure(caption: "Feedback Component Mockup. Badges of different colors and with different titles should help students to quickly understand the feedback. The seperate next section should explain the action the student should take to improve.")[
+  #image("../figures/feedback-component/mockup.png", width: 100%)
 ] <mockup2>
 
 

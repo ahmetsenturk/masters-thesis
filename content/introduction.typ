@@ -30,19 +30,16 @@ These points establish the motivation for this thesis and the following objectiv
 
 == Objectives <objectives>
 To address the previously mentioned problems in @problem, motivated by the points mentioned in @motivation, this thesis pursues three complementary research objectives that establish an end-to-end pipeline for personalized feedback in large-scale online courses.
-
 \
-=== Objective 1: Profiling University Students on LMSs. 
-The first objective is to design and validate a learner-profiling method that can operate at scale within Artemis. We will (i) define a learner profile schema that respects the following three aspects: competency status, progress, and preferences - and use this schema to represent the information about the student which would later used to personalise the feedback for; (ii) identify which artefacts—such as submission history, engagement logs, forum posts, chat conversations, and previous assessments—most accurately reflect competencies, progress, and learning preferences; and (iii) compare rule-based feature engineering with large-language-model (LLM) approaches, including LLM-as-profiler pipelines that extract profile vectors from free-text evidence. The outcome will be a flexible profile schema that can be populated automatically and updated incrementally throughout a course.
-
+=== Profiling University Students on LMSs. 
+The first objective is to design and validate a learner-profiling method that can operate at scale within Artemis. We will (i) define a learner profile schema that respects the following three aspects: competency status, progress, and preferences - and use this schema to represent the information about the student which would later be used to personalize the feedback for; (ii) identify which artefacts—such as submission history, engagement logs, forum posts, chat conversations, and previous assessments—most accurately reflect competencies, progress, and learning preferences; and (iii) compare rule-based feature engineering with large-language-model (LLM) approaches, including LLM-as-profiler pipelines that extract profile vectors from free-text evidence. The outcome will be a flexible profile schema that can be populated automatically and updated incrementally throughout a course.
 \
-=== Objective 2: Generate Personalized Feedback Utilising the Profile. 
+=== Generate Personalized Feedback Utilizing the Profile. 
 Building on the learner profile and the current automated feedback generation pipeline on Athena, the second objective is to create a feedback generation pipeline that produces individualized, actionable feedback through LLMs. We will: (i) design a multi-stage workflow that feeds the learner profile, the current submission, and the grading rubric into an LLM; and (ii) explore prompting strategies—such as zero-shot and chain-of-thought prompts—to ensure that learner profile cues are effectively incorporated.
 \
-=== Objective 3: Delivering the Personalized Feedback. 
+=== Delivering the Personalized Feedback. 
 As a final objective, we want to complement the personalized feedback with an actionable and intuitive interface. We will design a user interface that allows students to understand the feedback easily - where they failed, what they did well, and what they could improve.
-\
-\
+
 We will follow an iterative prototyping approach to implement all the objectives within Artemis and Athena, with evaluation criteria focusing on instructional relevance, computational efficiency, and stakeholder satisfaction.
 
 

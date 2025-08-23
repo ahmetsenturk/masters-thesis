@@ -19,15 +19,25 @@
 // Use "Figure" in captions (default), left-aligned, small, with a colon.
 #show figure: it => {
   show figure.caption: cap => context block(
-    above: 4pt,        // space between figure and caption
+    above: 4pt,
     width: 100%,
-    align(left)[
-      #set text(size: 12pt)
-      #text(weight: "bold")[#cap.supplement #cap.counter.display()#text(weight: "bold")[: ]] #cap.body
-    ],
+    grid(
+      columns: (auto, 1fr),
+      gutter: 6pt,
+      align: left + top,          // <-- force left alignment in both cells
+      [
+        #set text(size: 12pt)
+        #text(weight: "bold")[#cap.supplement #cap.counter.display():]
+      ],
+      [
+        #set text(size: 12pt)
+        #par(justify: true)[#cap.body]   // ragged-right
+      ],
+    ),
   )
   it
 }
+
 
 #pagebreak()
 
@@ -44,7 +54,7 @@ Aiming to enhance the feedback generation process and make it personalized for t
 Per the quality attributes and constraints specified in @quality-attributes and @constraints, we define the design goals that will direct the development of the proposed system. The design goals listed are then prioritized, considering the conflicting goals and trade-offs. To conduct a systematic evaluation, we utilize the design criteria classification established by Bruegge and Dutoit @bruegge2009, organizing our design objectives into five categories: Performance, Dependability, Cost, Maintenance, and End-user criteria.
 \
 \
-#text(weight: "bold")[Performance.] The key performance criteria for our proposed system are latency (QA 7) and scalability (QA 8). Firstly, the system should be able to generate feedback in a reasonable time frame for students to take immediate action, ideally not more than 20 seconds per submission under normal load. Secondly, the system should handle many students and submissions without significant performance degradation. Since some courses have many students, the system should be able to handle this load.
+#text(weight: "bold")[Performance.] The key performance criteria for our proposed system are latency (QA 7) and scalability (QA 8). Firstly, the system should be able to generate feedback in a reasonable time frame for students to take immediate action, ideally not more than 20 seconds per submission under normal load. Secondly, the system should handle many students and submissions without significant performance degradation. 
 \
 \
 #text(weight: "bold")[Dependability.] The key dependability criteria are the fault tolerance (QA 5) and the system's feedback quality (QA 6). In case of a failure, the system should degrade gracefully, allowing tutors and assistants to provide manual feedback to the students, if necessary. The feedback quality should also be high enough to guide the students to improve their work.
@@ -56,7 +66,7 @@ Per the quality attributes and constraints specified in @quality-attributes and 
 #text(weight: "bold")[Maintenance.] The key maintenance criteria are the reusability (QA 3), documentation (QA 4), and extensibility (QA 9) of the system. First and foremost, the proposed system should use existing components and services from Artemis and Athena to avoid making the current system more complex and harder to maintain. The development should use the same conventions as the current development and extend the system's capabilities. We will design the features to allow for easy extension and modification of the existing codebase. Finally, the proposed system should be documented in detail to allow future developers who work on Artemis and Athena to understand the system and how to extend and/or maintain it.
 \
 \
-#text(weight: "bold")[End-user.] The key end-user criteria are the feedback interface (QA 1) and the preference interface (QA 2), which would guide the proposed system implementation regarding design and usability. The feedback interface should indicate what the student did well and what they could improve, adhering to Artemis design conventions. The preference interface should be easy to understand and complete. It should be intuitive to use and should not take more than 1 minute for students to configure. Interface should adhere to Artemis design conventions. Additionally, the system considers data protection and GDPR compliance using Azure services in the European Union. They comply with the GDPR by not utilising personal data to train their models (C 4).
+#text(weight: "bold")[End-user.] The key end-user criteria are the feedback interface (QA 1) and the preference interface (QA 2), which would guide the proposed system implementation regarding design and usability. The feedback interface should indicate what the student did well and what they could improve, adhering to Artemis design conventions. The preference interface should be easy to understand and complete. It should be intuitive to use and should not take more than 1 minute for students to configure. Interface should adhere to Artemis design conventions. Additionally, the system considers data protection and GDPR compliance using Azure services in the European Union (C 4).
 \
 \
 #text(weight: "bold")[Prioritization and Trade-offs.] When prioritizing the design goals, we consider the conflicting goals and trade-offs. End-user criteria are the top priorities since these represent the first contact point for the user with the platform. Following the end-user criteria, the dependability criteria prioritization is necessary, since the system should be reliable and available before it is personalized. Cost, performance, and maintenance closely follow dependability.
@@ -75,10 +85,10 @@ Under this subsection, we will decompose the overall architecture into subsystem
 
 For the proposed system, _Athena_ is the core subsystem that generates the personalized feedback. The current version of Athena (v1.3.0) provides an automated feedback generation service to LMSs and is currently connected to Artemis. The proposed system aims to extend this automated feedback generation service to personalized automated feedback generation. As presented in @sd, _Athena_ provides the _Feedback Generation Service_ to _Artemis Server_ and utilizes the _LLM Completion Service_ to generate the feedback. As a subsystem, _Athena_ also contains the _Assessment Module Manager_ component, assessment modules for three different exercise types: _Programming Assessment Module_, _Text Assessment Module_, and _File Assessment Module_, and finally the _LLM Module_.
 
-#figure(caption: "Athena Subsystem Decomposition. ", )[
+#figure(caption: "UML Component Diagram for the Top-Level Subsystem Decomposition. Adapted and existing components are marked.", )[
   #image("../figures/subsystem-decomposition/overall.svg", width: 100% ,format: "svg")
 ] <sd>
-
+\
 The _Assessment Module Manager_ component orchestrates the incoming feedback requests through a REST API from LMSs, in our case Artemis, and redirects them to the correct assessment module based on the exercise type. 
 
 The related assessment modules, namely _Programming Assessment Module_, _Text Assessment Module_, or _Modeling Assessment Module_, generate feedback for the related exercise type using the _LLM Completion Service_ through the _LLM Module_. 
@@ -89,12 +99,13 @@ The related assessment modules, namely _Programming Assessment Module_, _Text As
 Now we will focus on the _Text Assessment Module_ subsystem, which resides in the _Athena_ subsystem and generates the feedback for text exercises. 
 We developed our approach with text exercises because they were the easiest to test and evaluate with the students. We implemented the personalization pipeline into the _Text Assessment Module_ so that the other exercise types can easily adopt it. 
 
-#figure(caption: "Text Assessment Module Subsystem Decomposition. ", )[
+As @athena-sd displays, _Text Assessment Module_ contains the following components: _Personalized Feedback Generation_, _Prompt Management_, _Competency Extraction_, and _Student Status Analysis_. 
+#figure(caption: "UML Component Diagram for the Subsystem Decomposition of the Text Assessment Module.", )[
   #image("../figures/subsystem-decomposition/athena.svg", width: 100% ,format: "svg")
 ] <athena-sd>
+\
 
 
-As @athena-sd displays, _Text Assessment Module_ contains the following components: _Personalized Feedback Generation_, _Prompt Management_, _Competency Extraction_, and _Student Status Analysis_. 
 
 _Personalized Feedback Generation_ acts as an orchestrator and is responsible for generating personalized feedback using the input data provided by the _Assessment Module Manager_ and communicating with _Prompt Management_, _Competency Extraction_, and _Student Status Analysis_ components.
 
@@ -108,7 +119,7 @@ _Student Status Analysis_ is responsible for analysing the student's status and 
 === Artemis
 Lastly, we decompose the Artemis subsystem for the proposed system. Artemis follows a client-server architecture. The client side uses the Angular#footnote[https://angular.dev/] as a framework, and the server side uses the Spring Boot#footnote[https://spring.io/projects/spring-boot].
 
-#figure(caption: "Artemis Client & Server Subsystem Decomposition. ", )[
+#figure(caption: "UML Component Diagram for the Subsystem Decomposition of Artemis. New, adapted, and existing components are marked.", )[
   #image("../figures/subsystem-decomposition/artemis.svg", width: 100% ,format: "svg")
 ] <artemis-sd>
 
@@ -122,21 +133,12 @@ The _Learner Profile Module_ manages the learner profile interaction between the
 
  _Artemis Server_ is connected to _Athena_, as displayed in @sd as well, to fetch the feedback.
 
+#pagebreak()
+
 == Hardware Software Mapping
 
 This subsection describes the mapping of the subsystems onto hardware components, as can be seen in @hw-sw-mapping. Students access the Artemis application through the Artemis Client running on their device. The Artemis Client is then connected to the Artemis Server running on the University's Data Center, together with Athena. Athena is connected to a 3rd-party LLM service provider to generate the feedback, which runs on a dedicated server of the provider's choice.
 
-#figure(caption: "Hardware Software Mapping. Showcases the mapping of the subsystems onto existing hardware and software components.", )[
+#figure(caption: "UML Deployment  Diagram for the Hardware Software Mapping. Showcases the mapping of the subsystems onto existing hardware and software components.", )[
   #image("../figures/hardware.svg", width: 90% ,format: "svg")
 ] <hw-sw-mapping>
-
-
-== Persistent Data Management
-We followed the approach of minimal changes and migrations to the database. We used what was already available and did not save any unnecessary data the proposed system would generate in the intermediate steps. We introduce three new columns to the _Learner Profile_ table representing students' feedback preferences: _feedbackDetail_, _feedbackFormality_, and _hasSetupFeedbackPreferences_. 
-
-
-#figure(caption: "Learner Profile Table. Showcases the new columns introduced to the learner profile table.", )[
-  #image("../figures/learner_profile.svg", width: 25% ,format: "svg")
-] <learner-profile-table>
-
-

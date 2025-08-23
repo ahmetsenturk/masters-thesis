@@ -1,6 +1,37 @@
 #import "/utils/todo.typ": TODO
 #import "requirements.typ": fr
 
+// Reusable “scientific” table style
+#let sci-table-3col = table.with(
+  columns: (auto, 1fr, auto),   // wide middle column
+  inset: (x: 8pt, y: 7pt),      // padding in cells → space around rules
+  align: left,
+  stroke: none                  // no cell borders
+)
+#let sci-table-2col = table.with(
+  columns: (auto, 1fr),   // wide middle column
+  inset: (x: 8pt, y: 7pt),      // padding in cells → space around rules
+  align: left,
+  stroke: none                  // no cell borders
+)
+#let sci-table-4col = table.with(
+  columns: (auto, 5fr, auto, auto),   // wide middle column
+  inset: (x: 8pt, y: 7pt),      // padding in cells → space around rules
+  align: left,
+  stroke: none                  // no cell borders
+)
+#let toprule    = table.hline(stroke: 0.8pt)
+#let midrule    = table.hline(stroke: 0.6pt)
+#let bottomrule = table.hline(stroke: 0.8pt)
+
+// If you want a touch more space *below the header rule only*,
+// wrap header cells with a bit of extra bottom inset:
+#let head = (
+  box(inset: (bottom: 2pt))[*Number*],
+  box(inset: (bottom: 2pt))[*Question*],
+  box(inset: (bottom: 2pt))[*Type*],
+)
+
 #let outlined-figure(
   path,
   caption: none,
@@ -32,18 +63,27 @@
   numbering("1.1", counter(heading).get().first(), num.pos().first())
 )
 
-// Use "Figure" in captions (default), left-aligned, small, with a colon.
 #show figure: it => {
   show figure.caption: cap => context block(
-    above: 4pt,        // space between figure and caption
+    above: 4pt,
     width: 100%,
-    align(left)[
-      #set text(size: 12pt)
-      #text(weight: "bold")[#cap.supplement #cap.counter.display()#text(weight: "bold")[: ]] #cap.body
-    ],
+    grid(
+      columns: (auto, 1fr),
+      gutter: 6pt,
+      align: left + top,          // <-- force left alignment in both cells
+      [
+        #set text(size: 12pt)
+        #text(weight: "bold")[#cap.supplement #cap.counter.display():]
+      ],
+      [
+        #set text(size: 12pt)
+        #par(justify: true)[#cap.body]   // ragged-right
+      ],
+    ),
   )
   it
 }
+
 
 #pagebreak()
 = User Interviews <user_interviews>
@@ -56,19 +96,22 @@ Given that users are central to personalization—and that we prioritized end-us
 #TODO[
   We have conducted a user study with university students to evaluate the usability and accessibility of the feedback preferences setup - which allows students to configure their feedback preferences. The participants were introduced to the setup and were asked to use the newly developed system. Finally, we have conducted a short interview to gather insights about the participants' experience with the system.
 ]
+This subsection describes the participant body, the materials, questions, and the steps of the user study.
 
 === Participants
 Seven volunteer students at TUM were enlisted to perform user interviews. Previous Artemis experience varied from "none" to "weekly programming practice". All sessions were held in a quiet place using the participant's own laptop to replicate normal working conditions.
-#figure(caption: "Interview Participants")[
-#table(
-  columns: 4,
-  table.header(
-    [Student],
-    [Program],
-    [Year],
-    [Artemis Familiarity],
-  ),
-  [S1],
+
+
+#figure(
+  sci-table-4col(
+    toprule,
+    table.header([*Student*],
+    [*Program*],
+    [*Year*],
+    [*Artemis Familiarity*]),
+    midrule,
+
+    [S1],
   [M.Sc. Computer Science], [2], [Low],
   [S2],
   [M.Sc. Computer Science], [3], [Medium],
@@ -82,8 +125,12 @@ Seven volunteer students at TUM were enlisted to perform user interviews. Previo
   [M.Sc. Computer Science], [2], [Medium],
   [S7],
   [M.Sc. Computer Science], [3], [High],
-)
-]
+
+    bottomrule,
+  ),
+  caption: [Interview Participants.],
+  kind: table,                   // so it appears under “List of Tables”
+) <interview-participants>
 
 === Materials
 Participants interacted with the feedback preferences setup integrated into the exercise workflow. The target task was a short, text-based machine learning question chosen to be conceptually accessible to all participants. 
@@ -91,14 +138,14 @@ Participants interacted with the feedback preferences setup integrated into the 
 === Procedure
 Each session followed a seven-step script (see @interview-steps). Participants were encouraged to think aloud throughout the interaction.
 
-#figure(caption: "Detailed Interview Steps")[
-#table(
-  columns: 2,
-  table.header(
-    [Step],
-    [Description],
-  ),
-  [1],
+#figure(
+  sci-table-2col(
+    toprule,
+    table.header([*Step*],
+    [*Description*]),
+    midrule,
+
+    [1],
   [Introduce the student to the evaluation study and what they will do],
   [2],
   [Show the exercise. Let them read (and optionally solve) it.],
@@ -112,44 +159,58 @@ Each session followed a seven-step script (see @interview-steps). Participants w
   [They submit again and receive personalized feedback],
   [7],
   [Conduct a short interview to gather insights],
-)
-] <interview-steps>
+
+    bottomrule,
+  ),
+  caption: [Interview questionnaire used in the user study.],
+  kind: table,                   // so it appears under “List of Tables”
+) <interview-steps>
 
 === Instruments and Measures
 Following the interaction, a seven-item questionnaire was administered (four Likert items, three open-ended questions; see @interview-questions). Quantitative measures included perceived coverage of dimensions, ease of understanding, alignment with selected preferences, and overall satisfaction. Log data provided configuration time and interaction effort.
 
 
-#figure(caption: "Interview Questions")[
-#table(
-  columns: 3,
-  table.header(
-    [Number],
-    [Question],
-    [Type],
+#figure(
+  sci-table-3col(
+    toprule,
+    table.header([*Number*],
+    [*Question*],
+    [*Type*],),
+    midrule,
+
+    [Q 1],
+    [When you heard you'd be able to set your feedback preferences, what kind of customization did you expect?],
+    [Free text],
+
+    [Q 2],
+    [Do you feel the three preference dimensions covered your expectations?],
+    [Likert scale],
+
+    [Q 3],
+    [If something was missing or unclear, what would you have liked to adjust instead?],
+    [Free text],
+
+    [Q 4],
+    [Was it easy to understand what each setting (attribute) does?],
+    [Likert scale],
+
+    [Q 5],
+    [Was the feedback aligned with the preferences you selected?],
+    [Likert scale],
+
+    [Q 6],
+    [Overall, how satisfied were you with the personalized feedback you received?],
+    [Likert scale],
+
+    [Q 7],
+    [Extra comments about the preferences system?],
+    [Free text],
+
+    bottomrule,
   ),
-  [1],
-  [When you heard you'd be able to set your feedback preferences, what kind of customization did you expect?],
-  [Free text],
-  [2],
-  [Do you feel the three preference dimensions covered your expectations?],
-  [Likert scale],
-  [3],
-  [If something was missing or unclear, what would you have liked to adjust instead?],
-  [Free text],
-  [4],
-  [Was it easy to understand what each setting (attribute) does?],
-  [Likert scale],
-  [5],
-  [Was the feedback aligned with the preferences you selected?],
-  [Likert scale],
-  [6],
-  [Overall, how satisfied were you with the personalized feedback you received?],
-  [Likert scale],
-  [7],
-  [Extra comments about the preferences system?],
-  [Free text],
-)
-] <interview-questions>
+  caption: [Interview questionnaire used in the user study.],
+  kind: table,                   // so it appears under “List of Tables”
+) <interview-questions>
 
 #pagebreak()
 
@@ -159,7 +220,7 @@ Following the interaction, a seven-item questionnaire was administered (four Lik
 ]
 The interview study set out to test a single overarching claim:
 
-#text("Does enabling students to customise feedback via preference settings result in feedback that is perceived as higher quality, more aligned with their expectations, and more personally useful?", style: "italic") 
+#text("Does enabling students to customize feedback via preference settings result in feedback that is perceived as higher quality, more aligned with their expectations, and more personally useful?", style: "italic") 
 
 To make that broad claim measurable, we decomposed it into four concrete objectives that map directly onto our questionnaire items and logging metrics:
 
@@ -173,41 +234,25 @@ To make that broad claim measurable, we decomposed it into four concrete objecti
 #TODO[
   Summarize the most interesting results of your evaluation (without interpretation). Additional results can be put into the appendix.
 ]
-=== Quantitative Results
-Table 1 summarises the Likert-scale findings. Students rated alignment with their chosen preferences and overall satisfaction at a solid M = 4.0, confirming that the personalised version was perceived as both relevant and useful. Coverage of the three preference dimensions was judged adequate (M = 3.7), but ease of understanding the settings lagged behind (M = 3.4). 
+We will present the results of the user study in two subsections: (i) quantitative results, and (ii) qualitative results.
 
-#figure(caption: "Likert-scale Results")[
-#table(
-  columns: 3,
-  table.header(
-    [Question],
-    [Mean],
-    [Standard Deviation],
-  ),
-  [2],
-  [3.7],
-  [XXX],
-  [4],
-  [3.4],
-  [XXX],
-  [5],
-  [4.0],
-  [XXX],
-  [6],
-  [4.0],
-  [XXX],
-  
-)
-]
+=== Quantitative Results
+@evaluation_graph summarises the Likert-scale findings. Students rated alignment with their chosen preferences and overall satisfaction at a solid M = 4.0, confirming that the personalised version was perceived as both relevant and useful. Coverage of the three preference dimensions was judged adequate (M = 3.7), but ease of understanding the settings lagged behind (M = 3.4). 
+
+
+#figure(caption: "Likert-scale Results.")[
+  #image("../figures/likert_graph.png", width: 100%)
+] <evaluation_graph>
+
 
 Log data reinforce this impression: the time to complete the preference setup was observed to be higher than expected (expexted 1 minute, average > 4 minutes). 
 
 === Qualitative Results
-Qualitative results discuss the results of the open-ended questions. Considering the small number of interviewees, the answers manually analysed. The results complement the quantitative results and yield themes that align with the numeric trends:
+Qualitative results discuss the results of the open-ended questions. Considering the small number of interviewees, the answers manually analyzed. The results complement the quantitative results and yield themes that align with the numeric trends:
 \
 #text("Adjustability was beyond expectations.", weight: "bold") Five of seven participants mentioned that they were expecting to setup less than what's currently provided—e.g., #text("“...wasn't expecting much control”", style: "italic") (P5).
 \
-#text("Terminology confusion.", weight: "bold") Five of seven participants struggled with at least one label—most often alternative—e.g., #text("“Alternative wasn't too clear, I would need to try it a bit to understand what it means.”", style: "italic") (P2), #text("“The dimensions were unclear by name, still not sure what some of them actually means, and how different they are in action”", style: "italic") (P7).
+#text("Terminology confusion.", weight: "bold") Five of seven participants struggled with at least one label—most often alternative—e.g., #text("“Alternative wasn't too clear, I would need to try it a bit to understand what it means.”", style: "italic") (P2), #text("“The dimensions were unclear by name, still not sure what some of them actually mean, and how different they are in action”", style: "italic") (P7).
 
 
 == Findings
@@ -248,7 +293,7 @@ In response, we introduced a clearer entry point with a dedicated setup button (
   radius: 3pt
 ) <preference-v2_1>
 
-The onboarding wizard is the biggest change we introduced comparing to the first version, which works a "guided tour" for students to understand the each dimension of the preference configuration (see @preference-v2_2). After setting up their preferences, students are shown the final screen with the selected preferences (see @preference-v2_4) which is a summary of the preferences they have set reusing the same design with the first version.
+The onboarding wizard is the biggest change we introduced comparing to the first version, which works a "guided tour" for students to understand the each dimension of the preference configuration (see @preference-v2_2). 
 
 #outlined-figure(
   "../figures/preference-component/preference_v2_2.png",
@@ -257,6 +302,7 @@ The onboarding wizard is the biggest change we introduced comparing to the first
   stroke: 0.5pt + black,
   radius: 3pt
 ) <preference-v2_2>
+After setting up their preferences, students are shown the final screen with the selected preferences (see @preference-v2_4) which is a summary of the preferences they have set reusing the same design with the first version.
 
 We also iterated over the feedback preferences dimensions to make them more intuitive. Even though we introduced the onboarding wizard, some dimensions were still not clear with examples. Therefore, we have reduced the number of dimensions from three, by removing follow-up vs summary and alternative vs standard and adding a new dimension on feedback style, to two and made them more intuitive.
 
