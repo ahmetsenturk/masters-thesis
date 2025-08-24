@@ -3,7 +3,7 @@
 #let fr(id, title, body) = table(columns: (15mm, 1fr), stroke: none, [#id], [*#title*: #body])
 
 // --- Chapter numbering like "Figure 5.4" ---
-#set heading(numbering: "1.")
+#set heading(numbering: "1.1")
 
 // Reset per-chapter counters at level-1 headings
 #show heading.where(level: 1): it => {
@@ -202,10 +202,11 @@ This subsection presents the necessary interfaces, both the new ones and the one
 ] <mockup1>
 \
 The setup interface would follow a segmented toggle approach to make the workflow easy to understand and intuitive, as QA 2 states, where users can click on the toggle to change the preference. 
+
 @mockup2 presents the first mockup iteration for the feedback component. According to Hattie and Timperley, the feedback should be actionable, understandable, and aligned with the student's needs @hattie2007. This should also apply to how to deliver feedback to the students. While the content of the feedback is essential, the way it is delivered is also important. Following FR 12 and QA 1, we defined that a feedback should be (i) actionable (i.e., students should be able to understand what is the next step they should take) and (ii) understandable (i.e., students should be able to understand what the feedback is about, where did they succeed and where did they fail). 
 
 #figure(caption: "Feedback component mockup. Badges of different colors and titles help students quickly understand the feedback. The seperate next section should explain the action the student should take to improve.")[
-  #image("../figures/feedback-component/mockup.png", width: 90%)
+  #image("../figures/feedback-component/mockup.png", width: 89%)
 ] <mockup2>
 
 

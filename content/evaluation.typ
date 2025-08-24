@@ -1,6 +1,8 @@
 #import "/utils/todo.typ": TODO
 #import "requirements.typ": fr
 
+#set heading(numbering: "1.1")
+
 // Reusable “scientific” table style
 #let sci-table-3col = table.with(
   columns: (auto, 1fr, auto),   // wide middle column
@@ -48,7 +50,7 @@
 ]
 
 // --- Chapter numbering like "Figure 5.4" ---
-#set heading(numbering: "1.")
+
 
 // Reset per-chapter counters at level-1 headings
 #show heading.where(level: 1): it => {
@@ -90,13 +92,23 @@
 
 Given that users are central to personalization and prioritized end-user criteria in @design-goals, we evaluated the system against usability, clarity, and perceived usefulness. The goal was to understand whether preference-driven feedback feels more helpful and aligned than the default, and how intuitive the configuration process is.
 
+== Objectives
+The interview study set out to test a single overarching claim:
+
+#text("Does enabling students to customize feedback via preference settings result in feedback that is perceived as higher quality, more aligned with their expectations, and more personally useful?", style: "italic") 
+
+To make that broad claim measurable, we decomposed it into five concrete objectives that map directly onto our questionnaire items and logging metrics:
+
+#fr("O 1", "Preference Dimension Alignment", "Do students perceive the three preference dimensions (follow-up vs summary, alternative vs standard, brief vs detailed) as comprehensive and aligned with their expectations?")
+#fr("O 2", "Perceived Quality of the Feedback", "Do students regard the personalized feedback as higher-quality than the default?")
+#fr("O 3", "Perceived Personalisation of the Feedback", "Do students perceive the personalized feedback as more aligned with their preferences?")
+#fr("O 4", "Perceived Alignment of the Feedback with Preferences", "Do students perceive the personalized feedback as aligned with the preferences they set?")
+#fr("O 5", "UI Usability", "Can students understand and configure the preference sliders quickly and confidently?")
+
 == Design 
-#TODO[
- We have conducted a user study with university students to evaluate the usability and accessibility of the feedback preferences setup, which allows students to configure their feedback preferences. We introduced the participants to the setup and asked them to use the newly developed system. Finally, we have conducted a short interview to gather insights about the participants' experience with the system.
-]
 This subsection describes the participant body, the materials, questions, and the steps of the user study.
 
-=== Participants
+
 We enlisted seven volunteer students at TUM to perform user interviews. Their previous Artemis experience ranged from "none" to "weekly programming practice." We held all sessions quietly on the participants' laptops to replicate normal working conditions.
 
 #let td(body) = table.cell(align: center + horizon)[#body]
@@ -130,11 +142,8 @@ We enlisted seven volunteer students at TUM to perform user interviews. Their pr
   kind: table,                   // so it appears under "List of Tables"
 ) <interview-participants>
 \
-=== Materials
-Participants interacted with the feedback preferences setup integrated into the exercise workflow. The target task was a short, text-based machine learning question chosen to be conceptually accessible to all participants. 
 
-=== Procedure
-Each session followed a seven-step script (see @interview-steps). Participants were encouraged to think aloud throughout the interaction.
+Participants interacted with the feedback preferences setup integrated into the exercise workflow. The target task was a short, text-based machine learning question chosen to be conceptually accessible to all participants. Each session followed a seven-step script (see @interview-steps). Participants were encouraged to think aloud throughout the interaction.
 
 #figure(
   sci-table-2col(
@@ -164,7 +173,6 @@ Each session followed a seven-step script (see @interview-steps). Participants w
   kind: table,                   // so it appears under "List of Tables"
 ) <interview-steps>
 \
-=== Instruments and Measures
 Following the interaction, a seven-item questionnaire was administered (four Likert items, three open-ended questions; see @interview-questions). 
 
 
@@ -212,20 +220,7 @@ Following the interaction, a seven-item questionnaire was administered (four Lik
 \
 Quantitative measures included perceived coverage of dimensions, ease of understanding, alignment with selected preferences, and overall satisfaction. Log data provided configuration time and interaction effort.
 
-== Objectives
-The interview study set out to test a single overarching claim:
-
-#text("Does enabling students to customize feedback via preference settings result in feedback that is perceived as higher quality, more aligned with their expectations, and more personally useful?", style: "italic") 
-
-To make that broad claim measurable, we decomposed it into four concrete objectives that map directly onto our questionnaire items and logging metrics:
-
-#fr("O 1", "Preference Dimension Alignment", "Do students perceive the three preference dimensions (follow-up vs summary, alternative vs standard, brief vs detailed) as comprehensive and aligned with their expectations?")
-#fr("O 2", "Perceived Quality of the Feedback", "Do students regard the personalized feedback as higher-quality than the default?")
-#fr("O 3", "Perceived Personalisation of the Feedback", "Do students perceive the personalized feedback as more aligned with their preferences?")
-#fr("O 4", "Perceived Alignment of the Feedback with Preferences", "Do students perceive the personalized feedback as aligned with the preferences they set?")
-#fr("O 5", "UI Usability", "Can students understand and configure the preference sliders quickly and confidently?")
-
-== Results & Findings
+== Results
 
 We will present the results of the user study in two subsections: (i) quantitative results, and (ii) qualitative results.
 
@@ -240,12 +235,6 @@ We will present the results of the user study in two subsections: (i) quantitati
 \
 Log data reinforce this impression: the time to complete the preference setup was observed to be higher than expected (expected 1 minute, average > 4 minutes). 
 
-
-
-
-
-
-
 === Qualitative Results
 Qualitative results discuss the results of the open-ended questions. Considering the small number of interviewees, we analyzed the answers manually. The results complement the quantitative results and yield themes that align with the numeric trends:
 \
@@ -254,35 +243,28 @@ Qualitative results discuss the results of the open-ended questions. Considering
 #text("Terminology confusion.", weight: "bold") Five of seven participants struggled with at least one label—most often alternative—e.g., #text("Alternative was not too clear, I would need to try it a bit to understand what it means.", style: "italic") (P2), #text("The dimensions were unclear by name, still not sure what some of them actually mean, and how different they are in action", style: "italic") (P7).
 
 
-== Findings
 
-Taken together, qualitative and quantitative results indicate high satisfaction with the outcome of personalisation but reveal friction in the configuration process. While quantitative results show that ease of understanding the settings lagged (M = 3.4), the qualitative insights clarify a low usability score: students appreciated the concept of customisation but found the current terminology unintuitive. Their positive remarks regarding alignment and utility validate the elevated satisfaction scores, reinforcing the argument for preference-driven personalization after optimizing the user interface.
+== Discussion
+
+The evaluation demonstrates that students perceived the personalized feedback as high-quality and well-aligned with their expectations, validating the core objectives of O2 (perceived quality) and O3 (perceived personalization). Overall satisfaction and alignment ratings averaged M = 4.0 (Q5 and Q6 in @evaluation_graph), confirming the value of preference-driven personalization. This supports the overarching claim that allowing students to customize feedback results in more relevant and actionable outputs.
+
+At the same time, the study highlighted friction in the configuration process. While students appreciated the concept of customization, they found the terminology unintuitive and the interface less intuitive than expected. This is reflected in the M = 3.7 score for preference coverage (Q2) and the M = 3.4 score for ease of understanding (Q4). Qualitative results backed these findings, with participants expressing confusion and uncertainty about specific dimensions.
+
+These insights indicate that the personalization concept is sound, but the delivery mechanism requires refinement. To meet QA 2 (preference interface usability) and support a more intuitive and easier user experience, the configuration process needs to be clearer, faster, and more intuitive without reducing the sense of control that students valued. The following section builds on these findings, describing the design iterations introduced to address these pain points and enhance the user experience.
 
 
+== Design Iterations Informed by the Study
 
-
-
-#TODO[
- We might reference the pair-wise preference elicitation techniques here.
-]
-
-== Design Iterations Informed by Findings
-
-The initial mockup used in the study was not sufficiently intuitive, and terminology contributed to misunderstandings. The first version is shown in @preference-v1.
+As discussed in the previous section, the initial prototype used in the study (see @preference-v1) was not sufficiently intuitive for the students. In response, we introduced a more precise entry point with a dedicated setup button (see @preference-v2_1) that opens an onboarding modal.
+ 
 
 #outlined-figure(
   "../figures/preference-component/preference_v1.png",
-  caption: [First version of the feedback preferences setup. It provides the segmented button components to allow students to select the feedback style on three dimensions (i) follow-up vs summary, (ii) alternative vs standard, and (iii) brief vs detailed).],
+  caption: [First version of the feedback preferences setup with segmented button components.],
   width: 100%,
   stroke: 0.5pt + black,
   radius: 3pt
 ) <preference-v1>
-\
-In response, we introduced a more precise entry point with a dedicated setup button (see @preference-v2_1) that opens an onboarding modal.
-
-#TODO[
- We might reference the pair-wise preference elicitation techniques here.
-]
 
 #outlined-figure(
   "../figures/preference-component/preference_v2_1.png",
@@ -291,8 +273,8 @@ In response, we introduced a more precise entry point with a dedicated setup but
   stroke: 0.5pt + black,
   radius: 3pt
 ) <preference-v2_1>
-\
-The onboarding wizard is the most significant change we introduced compared to the first version, which works as a "guided tour" for students to understand each dimension of the preference configuration (see @preference-v2_2). 
+
+The onboarding wizard is the most significant change we introduced compared to the first version, which works as a "guided tour" for students to understand each dimension of the preference configuration (see @preference-v2_2). The guided onboarding wizard walks students through each preference dimension step-by-step, providing examples for every option. This aims to reduce the cognitive load of first-time configuration and supports users in making informed choices, which aligns with FR 1 and QA 2.
 
 #outlined-figure(
   "../figures/preference-component/preference_v2_2.png",
@@ -304,7 +286,9 @@ The onboarding wizard is the most significant change we introduced compared to t
 \
 After setting up their preferences, students can see the final screen with the selected preferences (see @preference-v2_4), which summarizes their preferences, reusing the same design as the first version.
 
-We also iterated over the feedback preferences dimensions to make them more intuitive. Even though we introduced the onboarding wizard, some dimensions were still not precise with examples. Therefore, we have reduced the number of dimensions from three by removing follow-up vs summary and alternative vs standard, and adding a new dimension on feedback style to two, making them more intuitive.
+We also simplified terminology and labels to use language that more closely matched participants' expectations. Feedback revealed that terms like _alternative_ and _summary_ were confusing and did not clearly convey their impact on the feedback output. This change made the configuration process more intuitive and reduced the risk of misconfiguration due to misunderstanding.
+
+Finally, we streamlined the number of preference dimensions from three to two, focusing on _detail_ and _tone_. This change also aims to reduce the complexity of the configuration process and make it more intuitive for the students. 
 
 #outlined-figure(
   "../figures/preference-component/preference_v2_4.png",
@@ -315,9 +299,7 @@ We also iterated over the feedback preferences dimensions to make them more intu
 ) <preference-v2_4>
 
 
-== Discussion
 
-The results indicate personalized feedback is perceived as aligned with user preferences and of high quality, whereas first-time configuration imposes a noticeable cognitive cost. The design changes target precisely this pain point. More transparent labels, example-based onboarding, and progressive disclosure will reduce configuration time and increase comprehension without reducing perceived control.
 
 
 == Limitations

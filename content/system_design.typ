@@ -1,7 +1,7 @@
 #import "/utils/todo.typ": TODO
 
 // --- Chapter numbering like "Figure 5.4" ---
-#set heading(numbering: "1.")
+#set heading(numbering: "1.1")
 
 // Reset per-chapter counters at level-1 headings
 #show heading.where(level: 1): it => {
@@ -106,9 +106,9 @@ As @athena-sd displays, the _Text Assessment Module_ contains the following comp
 \
 _Personalized Feedback Generation_ acts as an orchestrator and generates personalized feedback using the input data provided by the _Assessment Module Manager_ and communicating with _Prompt Management_, _Competency Extraction_, and _Student Status Analysis_ components.
 
-_Prompt Management_ manages the prompts to generate personalized feedback. It contains the directives for the different levels of feedback preferences (see _FeedbackPreferences_ in @aom). It automatically injects the corresponding directives into the feedback generation prompt for the personalised feedback generation based on the learner profile, which the _Assessment Module Manager _ provides.
+_Prompt Management_ manages the prompts to generate personalized feedback. It contains the directives for the different levels of feedback preferences (see _FeedbackPreferences_ in @aom). It automatically injects the corresponding directives into the feedback generation prompt for the personalized feedback generation based on the learner profile, which the _Assessment Module Manager _ provides.
 
-_Competency Extraction_ is responsible for extracting the competencies from the Exercise object (see _Exercise_ in @aom). It is being called by the _Personalised Feedback Generation_ component when the LMS does not provide the competencies to the _Assessment Module Manager_.
+_Competency Extraction_ is responsible for extracting the competencies from the Exercise object (see _Exercise_ in @aom). It is being called by the _Personalized Feedback Generation_ component when the LMS does not provide the competencies to the _Assessment Module Manager_.
 
 _Student Status Analysis_ is responsible for analysing the student's status and providing the necessary information to the _Personalized Feedback Generation_ component. It creates a Student Status Analysis object (see _StudentStatusAnalysis_ in @aom), which is then used by the _Personalized Feedback Generation_ component to personalize the feedback.
 

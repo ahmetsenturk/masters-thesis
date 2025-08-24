@@ -2,7 +2,7 @@
 #import "evaluation.typ": outlined-figure
 
 // --- Chapter numbering like "Figure 5.4" ---
-#set heading(numbering: "1.")
+#set heading(numbering: "1.1")
 
 // Reset per-chapter counters at level-1 headings
 #show heading.where(level: 1): it => {
