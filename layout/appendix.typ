@@ -53,33 +53,7 @@
   #image("../figures/feedback-component/modeling.png", width: 100%)
 ] <modeling-feedback-component>
 
-== Student's Submission Analysis
-
-#figure(
-  box(
-    fill: rgb("#fdfdfd"),   // light gray background
-    stroke: rgb("#edebeb"), // subtle border (optional)
-    radius: 2pt,              // rounded corners (optional)
-    inset: 10pt,              // padding
-    [
-    ```json
-
-    {
-      "competency": {
-        "description": "Explain what a rate limiter is and why it is necessary in distributed systems.", 
-        "blooms_level": "Understand", 
-        "grading_instruction_id": 1
-      }, 
-      "status": "Partially Correct", 
-      "evidence": "A rate limiter is for stopping too many requests.", 
-      "line_start": 0, 
-      "line_end": 1
-    }
-    ```
-    ]
-  ),
-  caption: [Student's submission analysis with Bloom's taxonomy, where student's answer is partially correct. The competencies are linked to the exercise and the student's submission is analysed according to the Bloom's taxonomy competencies.],
-) <blooms-partially-correct2>
+== Student's Submission Analysis <student-submission-analysis>
 
 
 #figure(
