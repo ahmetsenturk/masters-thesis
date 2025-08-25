@@ -364,11 +364,11 @@ Example 2: 👉 Introducing your main argument clearly in the essay's opening no
   ]
 ) <formality-tokens>
 \
-Together, these two dimensions cover most visible variation students expect: how much to say and how to say it. They also work well with competency- and progress-aware feedback from the previous subsection, since tokens can be combined with the detected competency state without conflicts.
+These two dimensions cover the most visible variation students expect: how much to say and how to say it. They also work well with competency- and progress-aware feedback from the previous subsection, since tokens can be combined with the detected competency state without conflicts.
 
 
 
-== Generating Personalized Feedback Utilising the Profile
+== Generating Personalized Feedback Utilizing the Profile
 
 After defining the learner profile schema, the next step was integrating the profile into the feedback generation process. We followed the chain-of-thought approach, where in the first step we extracted the student's competency status using the input data and the prompt introduced in the previous section, and in the following step, making use of the student's competency status, we generated the personalized feedback by prompting LLM with @feedback-generation-prompt. 
 
@@ -417,11 +417,11 @@ Student's feedback preferences:
 
 == Delivering the Personalized Feedback
 
-Displaying personalized feedback on the LMS and delivering it to the students was our last objective, complementing the previous two objectives. Our objective was to develop a design that would meet our requirements (FR 12 and QA 1) and implement the new feedback component on Artemis.
+Displaying personalized feedback on the LMS and delivering it to the students was our last objective, complementing the previous two goals. We aimed to develop a design to meet our requirements (FR 12 and QA 1) and implement the new feedback component on Artemis.
 
-Starting with the prototype design and user feedback round, we iterated over the feedback component to meet the requirements. @default-feedback-component showcases the final version of the feedback component. We desinged the component to be flexible and allow for different feedback types with different information (e.g., with or without the reference to the student's submission or a title) to be displayed. 
+Starting with the prototype design and user feedback round, we iterated over the feedback component to meet the requirements. @default-feedback-component showcases the final version of the feedback component. We designed the component to be flexible and allow for different feedback types with various information (e.g., with or without reference to the student's submission or a title) to be displayed. See @text-feedback-component, @programming-feedback-component, and @modeling-feedback-component for the different exercise types.
 
-#figure(caption: [Default feedback component. This figure shows three default feedback types: Correct, Needs Revision, and Not Attempted. On top of the component, there is the reference to the student's submission if available. Then the feedback is displayed with the credits and a title.])[
+#figure(caption: [Default feedback component. This figure shows three default feedback types: Correct, Needs Revision, and Not Attempted. On top of the component is a reference to the student's submission if available. Then the feedback is displayed with the credits and a title.])[
   #image("../figures/feedback-component/default.png", width: 94%)
 ] <default-feedback-component>
 

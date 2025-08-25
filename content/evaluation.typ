@@ -90,7 +90,7 @@
 #pagebreak()
 = User Interviews <user_interviews>
 
-Since users are central to personalization and prioritized end-user criteria in @design-goals, we evaluated the system against usability, clarity, and perceived usefulness. The goal was to understand whether preference-driven feedback feels more helpful and aligned than the default, and how intuitive the configuration process is.
+Since users are central to personalization and prioritized end-user criteria, we evaluated the system against usability, clarity, and perceived usefulness. The goal was to understand whether preference-driven feedback feels more helpful and aligned than the default, and how intuitive the configuration process is.
 
 == Objectives
 The interview study set out to test a single overarching claim:
