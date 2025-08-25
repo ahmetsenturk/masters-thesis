@@ -40,13 +40,12 @@
   it
 }
 
-
 #pagebreak()
 = Requirements <requirements>
 The requirements chapter follows the Requirements Analysis Document Template proposed by Brügge and Dutoit, emphasizing a clear separation between the application domain (problem space) and the solution domain (technology choices and implementation details) @bruegge2009. Therefore, all artefacts in this chapter describe what the system should achieve without assuming implementation details, an approach that supports traceability from stakeholder needs to design decisions.
 
 == Overview
-The proposed system extends Artemis and Athena automated feedback generation with a personalization integration that employs learner profiles to tailor feedback to individual students. The scope includes mechanisms for building and maintaining profiles, incorporating those profiles into automated feedback generation, and presenting the resulting feedback within Artemis. We will measure by (i) the correctness and completeness of extracted learner attributes, (ii) the pedagogical quality of the personalized feedback, and (iii) the seamless integration into existing Artemis workflows—all assessed independently of any specific LLM vendor or database technology, in line with the abstraction principles of Brügge and Dutoit @bruegge2009.
+The proposed system extends Artemis and Athena automated feedback generation with a personalization integration that utilizes learner profiles to tailor feedback to individual students. The scope includes mechanisms for building and maintaining profiles, incorporating those profiles into automated feedback generation, and presenting the resulting feedback within Artemis. We will measure by (i) the correctness and completeness of extracted learner attributes, (ii) the pedagogical quality of the personalized feedback, and (iii) the seamless integration into existing Artemis workflows—all assessed independently of any specific LLM vendor or database technology, in line with the abstraction principles of Brügge and Dutoit @bruegge2009.
 
 == Existing System
 Artemis (version 8.3.4) currently allows students to request automatically generated feedback for programming, modelling, and text exercises, provided the lecturer enables this feature. Each student may submit up to ten feedback requests per exercise, and each feedback request maps to a single submission. When a request is triggered, Artemis forwards the submission and exercise metadata—problem statement, example solution, rubric, and maximum points—to Athena. Athena selects an exercise-specific feedback module that relies on an LLM prompt template and chain-of-thought reasoning to produce formative feedback aligned with the rubric. Athena sends the generated feedback back to Artemis, which displays it in two categories: referenced feedback (anchored to specific lines or elements of the submission) and unreferenced feedback.
@@ -54,7 +53,7 @@ Artemis (version 8.3.4) currently allows students to request automatically gener
 Although this pipeline delivers timely feedback, it treats each submission in isolation and disregards longitudinal evidence such as prior attempts, engagement metrics, or expressed preferences. Consequently, the generated feedback is uniform across students with diverse backgrounds and learning trajectories.
 
 == Proposed System
-The envisioned extension introduces learner profiles as a first-class artefact. A learner profile is a structured representation of a student's competencies, progress, and feedback preferences. Profiles will be populated automatically from submission traces, engagement data, and explicit preference settings and updated incrementally after each new interaction. During feedback generation, Athena will retrieve the relevant profile and supply it with the current submission and grading rubric to an LLM-driven pipeline. The LLM will be prompted to produce feedback that explicitly references profile attributes, thereby aligning the feedback with the student's needs and preferred style and generating feedback that respects the following aspects: (i) competency status, (ii) progress, and (iii) preferences.
+The envisioned extension introduces learner profiles as the foundation artefact. A learner profile is a structured representation of a student's competencies, progress, and feedback preferences. Profiles will be populated automatically from submission traces, engagement data, and explicit preference settings and updated incrementally after each new interaction. During feedback generation, Athena will retrieve the relevant profile and supply it with the current submission and grading rubric to an LLM-driven pipeline. The LLM will be prompted to produce feedback that explicitly references profile attributes, thereby aligning the feedback with the student's needs and preferred style and generating feedback that respects the following aspects: (i) competency status, (ii) progress, and (iii) preferences.
 
 === Functional Requirements <functional-requirements>
 
@@ -70,7 +69,7 @@ The envisioned extension introduces learner profiles as a first-class artefact. 
 
 #fr("FR 6", "Utilize Submission History", "The system should make use of the submission history (i.e., previous submissions) to understand the student's progress when assessing the student's competency status.")
 
-#fr("FR 7", "Utilize Engagement Data", "The system should incorporate engagement signals (i.e., forum posts, chat logs) extract the insights about where the student is struggling when assessing the competency status.")
+#fr("FR 7", "Utilize Engagement Data", "The system should incorporate engagement signals (i.e., forum posts, chat logs), extract the insights about where the student is struggling when assessing the competency status.")
 
 #fr("FR 8", "Generate Learner Profiles", "The system should construct a learner profile from the student's competency status (which encapsulates competencies and progress of the student) and explicit preference settings.")
 
@@ -127,7 +126,7 @@ A scenario describes a sequence of interactions from the system's user's viewpoi
 #text(weight: "bold")[Preference Configuration and Iterative Adaptation.] Before solving the rate-limiter exercise, Anna, a first-semester student, visits the newly deployed Feedback Preferences page on Artemis, where an interactive onboarding wizard previews different styles with example feedback. She selects brief and formal as her feedback style. The system stores these choices in her learner profile.
 Anna submits her initial answer and requests AI-generated feedback. She sees that the generated feedback is a direct sentence—"Definition lacks discussion of rate-limiting strategies"—followed by a next step: mention two different rate-limiting strategies. The style matches her brief-formal preference.
 Curious about how different guidance might look, Anna reopens the preference panel, sets the detail level to detail, and switches the tone to friendly. She revises her answer and requests feedback again. This time, the feedback begins with an encouraging summary of her improvements with a friendly tone backed up by emojis, explains why sliding-window algorithms handle burst traffic differently, and provides a real-world example from a CDN. A final paragraph suggests adding further metrics for throughput under peak load.
-Anna finds the expanded explanation helpful, as this can be her personal exercise coach, so she decides to keep the detail-friendly setting for future exercises. The scenario demonstrates that students can dynamically modulate feedback depth and tone to fit their learning stage, reducing cognitive overload when skimming and offering depth during consolidation. 
+Anna finds the elaborate explanation helpful, so she decides to keep the detail-friendly setting for future exercises. The scenario demonstrates that students can dynamically adjust feedback depth and tone to fit their learning stage. 
 \
 \
 #text(weight: "bold")[History-Aware Feedback.] Ben, a master's student who has already taken a few courses in networking, submits his first response to the same rate-limiter exercise. His answer covers the rate limiter explanation and one strategy, but lacks the second strategy and a comparison between the strategies. The feedback he receives acknowledges his clear explanation and one strategy, flags the missing strategy, and the missing comparison. All feedback has the next steps for Ben on what to do to achieve better results.
@@ -205,12 +204,6 @@ The setup interface would follow a segmented toggle approach to make the workflo
 
 @mockup2 presents the first mockup iteration for the feedback component. According to Hattie and Timperley, the feedback should be actionable, understandable, and aligned with the student's needs @hattie2007. This should also apply to how to deliver feedback to the students. While the content of the feedback is essential, the way it is delivered is also important. Following FR 12 and QA 1, we defined that a feedback should be (i) actionable (i.e., students should be able to understand what is the next step they should take) and (ii) understandable (i.e., students should be able to understand what the feedback is about, where did they succeed and where did they fail). 
 
-#figure(caption: "Feedback component mockup. Badges of different colors and titles help students quickly understand the feedback. The seperate next section should explain the action the student should take to improve.")[
+#figure(caption: [Feedback component mockup. Badges of different colors and titles help students quickly understand the feedback. The next section should explain the action the student should take to improve.])[
   #image("../figures/feedback-component/mockup.png", width: 89%)
 ] <mockup2>
-
-
-
-
-
-

@@ -1,0 +1,5 @@
+I want to genuinely thank my supervisor, Maximilian Sölch, for his guidance, patience, and constant support throughout this thesis. He always stayed positive and was ready to help anytime, in any way, without hesitation. His encouragement and feedback made it much easier to overcome challenges and gave me the confidence to keep moving forward. I am also grateful to the entire Artemis team for their help, and to Prof. Stephan Krusche for allowing me to be part of this inspiring community and contribute to the future of educational technology.
+
+I am also thankful to the TUM Entrepreneurial Masterclass for providing an environment where I met wonderful people and gained new perspectives that enriched my academic and personal journey.
+
+Finally, my deepest thanks go to my family — my mom, my dad, and my sister — for their immeasurable love and belief in me throughout my master's studies. I could not have done this without them.

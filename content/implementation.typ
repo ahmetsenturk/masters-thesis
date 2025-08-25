@@ -118,10 +118,9 @@ Student's CURRENT submission (with line numbers):
     ]
  ),
   caption: [System prompt for LLM to generate _Student Competency Status_.],
-  supplement: "Prompt",
 ) <student-analysis-prompt>
 
-Since Athena can work with any LMS, we also implemented a fallback to extract competencies from exercise metadata when an explicit mapping is unavailable. @competency-extraction-prompt shows the prompt we used to extract the competencies from the exercise metadata.
+Since Athena should work with any LMS, we also implemented a fallback to extract competencies from exercise metadata when an explicit mapping is unavailable. @competency-extraction-prompt shows the prompt we used to extract the competencies from the exercise metadata.
 
 #figure(
   box(
@@ -139,7 +138,6 @@ Since Athena can work with any LMS, we also implemented a fallback to extract co
     ]
  ),
   caption: [System prompt for LLM to extract competencies linked to an exercise. It is appended to the @student-analysis-prompt when the instructor does not provide the competencies via LMS.],
-  supplement: "Prompt",
 ) <competency-extraction-prompt>
 \
 
@@ -203,7 +201,7 @@ The third part of the learner profile is preferences—how a student wants to re
  )
 ) <pref-dimensions>
 \
-After experiments, more literature review, and user interviews (see Section @user_interviews), we found some dimensions confusing in practice. We simplified to two dimensions that students understood well and that changed the feedback clearly: detail and tone/formality. @pref-dimensions summarizes the complete evolution—from initial candidates to the final selection.
+After experiments, more literature review, and user interviews, we found some dimensions confusing in practice. We simplified to two dimensions that students understood well and that changed the feedback clearly: detail and tone/formality. @pref-dimensions summarizes the complete evolution—from initial candidates to the final selection.
 
 Each selected dimension maps to a small prompt token injected at generation time for implementation. For the Detail dimension, the injected text varies from brief to detailed (see @detail-tokens). For the Tone/Formality dimension, the token adjusts the register from formal to friendly (see @formality-tokens). Both dimensions use a 3-point scale (1-3). A value of 2 means "neutral," which injects no extra token and falls back to the base prompt. This keeps the system simple while giving students control over length and tone.
 
@@ -366,7 +364,7 @@ Example 2: 👉 Introducing your main argument clearly in the essay's opening no
   ]
 ) <formality-tokens>
 \
-Together, these two dimensions cover most of the visible variation students expect: how much to say and how to say it. They also work well with competency- and progress-aware feedback from the previous subsection, since tokens can be combined with the detected competency state without conflicts.
+Together, these two dimensions cover most visible variation students expect: how much to say and how to say it. They also work well with competency- and progress-aware feedback from the previous subsection, since tokens can be combined with the detected competency state without conflicts.
 
 
 
@@ -409,7 +407,6 @@ Student's feedback preferences:
     ]
  ),
   caption: [System prompt for LLM to generate personalized feedback based on the student's competency status and progress. Only the relevant parts of the prompt are shown here (i.e., personalization according to the student's learner profile).],
-  supplement: "Prompt",
 ) <feedback-generation-prompt>
 
 #TODO[
@@ -422,7 +419,7 @@ Student's feedback preferences:
 
 Displaying personalized feedback on the LMS and delivering it to the students was our last objective, complementing the previous two objectives. Our objective was to develop a design that would meet our requirements (FR 12 and QA 1) and implement the new feedback component on Artemis.
 
-Starting with the prototype design and user feedback round, we iterated over the feedback component to meet the requirements. @default-feedback-component showcases the final version of the feedback component after integrating the feedback from the UI/UX meetings.
+Starting with the prototype design and user feedback round, we iterated over the feedback component to meet the requirements. @default-feedback-component showcases the final version of the feedback component. We desinged the component to be flexible and allow for different feedback types with different information (e.g., with or without the reference to the student's submission or a title) to be displayed. 
 
 #figure(caption: [Default feedback component. This figure shows three default feedback types: Correct, Needs Revision, and Not Attempted. On top of the component, there is the reference to the student's submission if available. Then the feedback is displayed with the credits and a title.])[
   #image("../figures/feedback-component/default.png", width: 94%)

@@ -156,11 +156,21 @@
         target: figure.where(kind: table)
       )
     }
+
+    #if query(figure.where(kind: raw)).len() > 0 {
+      pagebreak()
+      heading(numbering: none)[List of Listings]
+      show outline: it => {
+        in-outline.update(true)
+        it
+        in-outline.update(false)
+      }
+      outline(title: "", target: figure.where(kind: raw))
+}
   ]
 
   // Appendix.
   pagebreak()
-  heading(numbering: none)[Appendix A: Supplementary Material]
   include("/layout/appendix.typ")
 
   pagebreak()

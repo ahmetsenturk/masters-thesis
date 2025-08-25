@@ -44,10 +44,7 @@ This chapter concludes this thesis with the status update regarding the requirem
 
 
 == Status
-#TODO[
-  Describe honestly the achieved goals (e.g. the well implemented and tested use cases) and the open goals here. if you only have achieved goals, you did something wrong in your analysis.
-]
-@fr-status summarizes the status according to the functional requirements. We disscuss the realized and open goals detailly in the following subsections.
+@fr-status summarizes the status according to the functional requirements. We discuss the realized and open goals in detail in the following subsections.
 
 #let status(kind) = {
   // Use a bigger, consistent size for all glyphs
@@ -97,12 +94,8 @@ This chapter concludes this thesis with the status update regarding the requirem
     [FR 12], [View Personalized Feedback],           [#status("done")],
 
     table.hline(stroke: 0.8pt),
-  )
-) <fr-status>
-
-#v(6pt)
-#set text(size: 9pt)
-#grid(
+    [],
+    grid(
   columns: (auto, auto, auto),
   gutter: 16pt,
   align: left + horizon,
@@ -110,35 +103,39 @@ This chapter concludes this thesis with the status update regarding the requirem
   [#status("wip") Partially Completed],
   [#status("plan") Open],
 )
+  )
+) <fr-status>
+
 
 #set text(size: 12pt)
 === Realized Goals
-The first objective—profiling university students on LMSs—was mostly realized (FR 1, FR 2, FR 4, FR 6, and FR 8). A learner profile schema was designed to capture competencies, progress, and explicit feedback preferences. This schema was implemented within the existing Athena pipeline to ensure compatibility with the current infrastructure, meeting the maintainability and reusability expectations defined in QA 3 and C 2. The integration leveraged structured LLM prompts to extract competency status and incorporated preference data, ensuring consistency and accuracy while minimizing additional system complexity (QA 8 and QA 9). We also tested the feedback preference configuration workflow with user interviews to make sure that the experinece was intiutive for students, and iterated over the design to make it more user-friendly (QA 2).
+The first objective—profiling university students on LMSs—was mostly realized (FR 1, FR 2, FR 4, FR 6, and FR 8). A learner profile schema was designed to capture competencies, progress, and explicit feedback preferences. This schema was implemented within the existing Athena pipeline to ensure compatibility with the current infrastructure, meeting the maintainability and reusability expectations defined in QA 3 and C 2. The integration leveraged structured LLM prompts to extract competency status and incorporated preference data, ensuring consistency and accuracy while minimizing additional system complexity (QA 8 and QA 9). We also tested the feedback preference configuration workflow with user interviews to ensure that the experience was intuitive for students. We iterated over the design to make it more user-friendly (QA 2).
 
 The second objective—generating personalized feedback utilizing the profile—was completed (FR 3, FR 5, FR 10, and FR 11). This work extended the feedback generation pipeline by designing a multi-stage workflow that dynamically injects competency status and preference tokens into the prompts. This approach allowed the feedback to adapt to each learner's needs while preserving response quality and latency within the thresholds specified in QA 6 and QA 7. Careful integration with existing assessment modules ensured a seamless extension of Athena without disrupting its core services, aligning with QA 9 on extensibility and C 1 on cost-efficiency.
 
-The third objective—delivering the personalized feedback through Artemis—was realized with the introduction of actionable and understandable feedback component (FR 12, QA 1, and QA 2). Iterative design and user testing ensured that the interface met usability and clarity requirements, and the integration with the Artemis client and server architecture maintained compliance with performance and reliability constraints.
+The third objective—delivering the personalized feedback through Artemis—was realized by introducing an actionable and understandable feedback component (FR 12, QA 1, and QA 2). Iterative design and user testing ensured that the interface met usability and clarity requirements, and the integration with the Artemis client and server architecture maintained compliance with performance and reliability constraints.
 
 === Open Goals <open-goals>
-Despite these achievements, a few aspects remain open or partially realized predominantly due to time constraints. In this section we discuss the open goals in detail.
+Despite these achievements, a few aspects remain open or partially realized, predominantly due to time constraints. In this section, we discuss the open goals in detail.
 
-First aspect that we haven't realized is the use of engagement data (FR 7). When analyzing the problem and envisioning the solution through literature research and experiments, engagement data (e.g., forum posts, chats with AI assistants) was a potential input source for the learner profile to which we personalized the feedback. However, this was a complex problem to itself requiring a detail end-to-end implementation plan, from filterinf the data, making a meaning out of it such as struggles of the student, and integrating into the learner profile. Integration requires some attention, as every student uses these tools differently, the system needs to be smart enough how to prioritize these data.  
+The first aspect we have not realized is the use of engagement data (FR 7). When analyzing the problem and envisioning the solution through literature research and experiments, engagement data (e.g., forum posts, chats with AI assistants) was a potential input source for the learner profile to which we personalized the feedback. However, this complex problem required a detailed end-to-end implementation plan, from filtering the data, making meaning out of it, such as student struggles, and integrating it into the learner profile. Integration requires some attention, as every student uses these tools differently, the system needs to be smart enough to prioritize this data.  
 
-The other part we could not address was updating the learner profile (FR 9). Current state of the implementation generates the _Student Competency Status_ on the fly and does persist the data. Even though system can understand the student's progress analyzing the previous and the current submissions, keeping a track of the _Student Competency Status_, there for the _Learner Profile_, might increase the accuracy of the personalization and the reference to the student progress.
+The other part we could not address was updating the learner profile (FR 9). The current state of the implementation generates the _Student Competency Status_ on the fly and persists the data. Even though the system can understand the student's progress by analyzing the previous and the current submissions, keeping a track of the _Student Competency Status_, therefore the _Learner Profile_, might increase the accuracy of the personalization and the reference to the student's progress.
 
 == Contributions
-This thesis set out to bridge the gap between automated feedback systems, which scale well but lack personalization, and manual feedback, which is highly individualized but not scalable. The proposed profile-aware feedback architecture successfully addresses this challenge. It introduces a scalable learner profiling framework for Artemis and Athena, a personalized feedback generation pipeline that tailors responses based on a student’s profile, and user interface components that make the system accessible and intuitive for students.
+This thesis set out to bridge the gap between automated feedback systems, which scale well but lack personalization, and manual feedback, which is highly individualized but not scalable. The proposed profile-aware feedback architecture successfully addresses this challenge. It introduces a scalable learner profiling framework for Artemis and Athena, a personalized feedback generation pipeline that tailors responses based on a student's profile, and user interface components that make the system accessible and intuitive for students.
 
-The evaluation, conducted through user interviews, confirmed that the personalized feedback was perceived as more relevant and valuable compared to the default version. Participants highlighted that the ability to configure feedback preferences provided a sense of ownership and improved their engagement with the system. These findings demonstrate that personalization can enhance both the quality and usability of automated feedback in large-scale learning environments, paving the way for more adaptive and student-centered educational technologies.
+The evaluation, conducted through user interviews, confirmed that the personalized feedback was perceived as more relevant and valuable than the default version. Participants highlighted that the ability to configure feedback preferences provided a sense of ownership and improved their engagement with the system. These findings demonstrate that personalization can enhance the quality and usability of automated feedback in large-scale learning environments, paving the way for more adaptive and student-centered educational technologies.
 
+#pagebreak()
 == Future Work
 After addressing the immediate next steps outlined in @open-goals, several directions could further extend and improve the system. These directions range from refining the personalization mechanisms for the preference configuration to broadening the use of learner profiles across the LMS.
 
 === Pairwise Preference Elicitation for Feedback Tuning
-The current implementation models feedback preferences using predefined dimensions with fixed prompt tokens. While this approach is effective for an initial deployment, it does not adapt to individual variations in how students perceive and value feedback styles. Future work could explore pairwise preference elicitation methods, such as Bayesian optimization or probabilistic models, to dynamically infer each student’s preferences. By allowing students to iteratively compare different feedback styles—similar to recommendation systems—these methods could fine-tune the level of detail, tone, or structure of the feedback in a data-driven way. This adaptive approach would create a more personalized and responsive feedback experience over time, improving both engagement and satisfaction.
+The current implementation models feedback preferences using predefined dimensions with fixed prompt tokens, student select a value for a dimension and a static prompt expressing this dimension than is used to generate the feedback. While this approach is effective for an initial deployment, it does not adapt to individual variations in how students perceive and value feedback styles, since it assigns students to predefined categories. Future work could explore pairwise preference elicitation methods, such as Bayesian optimization or probabilistic models, to dynamically infer each student's preferences based on their choices. By allowing students to iteratively compare different feedback styles—similar to recommendation systems—these methods could fine-tune the level of detail, tone, or structure of the feedback in a data-driven way. This adaptive approach would create a more personalized feedback experience.
 
-=== Integrating Lecture Material into the Feedback Generation Pipeline
-Another promising extension is to incorporate lecture and exercise materials into the feedback generation process. A retrieval-augmented generation (RAG) pipeline could retrieve relevant lecture slides, problem statements, or tutorial notes and surface them in the feedback response. This integration would enable the system to not only highlight what the student should improve but also directly point them to authoritative resources to close their knowledge gaps. For example, feedback could include actionable references such as “Revisit Section 3 of Lecture 5” or “Review the example in Exercise 2,” bridging the gap between automated assessment and targeted remediation. Implementing such a system would also align with quality attributes around feedback clarity and actionability.
+=== Integrating Lecture Material into the Feedback Generation
+Another promising extension is incorporating lecture and exercise materials into the feedback generation process. A retrieval-augmented generation (RAG) pipeline could retrieve relevant material like lecture slides and surface them in the feedback response. This integration would enable the system to highlight refer student to the right material to improve their answer and directly point them to authoritative resources to close their knowledge gaps. For example, feedback could include actionable references such as "Revisit Section 3 of Lecture 5" or "Review the example in Exercise 2," bridging the gap between automated assessment and targeted remediation. Implementing such a system would also align with feedback clarity and actionability quality attributes.
 
-=== Expanding the Use of Learner Profiles Beyond Feedback
+=== Expanding the Use of Learner Profiles
 The learner profile developed in this thesis is a versatile artifact that could support personalization well beyond feedback generation. For instance, the profile could be leveraged to generate personalized study plans, exercise recommendations, or exam preparation materials that align with a student's competency status and progress trajectory. This expansion would amplify the value of the profiling framework and promote a more adaptive learning environment within the LMS. Over time, such applications could create a cohesive ecosystem where every interaction—from practice exercises to assessments—is informed by the student's evolving profile, fostering a more individualized and efficient learning journey.

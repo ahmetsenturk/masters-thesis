@@ -90,7 +90,7 @@
 #pagebreak()
 = User Interviews <user_interviews>
 
-Given that users are central to personalization and prioritized end-user criteria in @design-goals, we evaluated the system against usability, clarity, and perceived usefulness. The goal was to understand whether preference-driven feedback feels more helpful and aligned than the default, and how intuitive the configuration process is.
+Since users are central to personalization and prioritized end-user criteria in @design-goals, we evaluated the system against usability, clarity, and perceived usefulness. The goal was to understand whether preference-driven feedback feels more helpful and aligned than the default, and how intuitive the configuration process is.
 
 == Objectives
 The interview study set out to test a single overarching claim:
@@ -101,7 +101,7 @@ To make that broad claim measurable, we decomposed it into five concrete objecti
 
 #fr("O 1", "Preference Dimension Alignment", "Do students perceive the three preference dimensions (follow-up vs summary, alternative vs standard, brief vs detailed) as comprehensive and aligned with their expectations?")
 #fr("O 2", "Perceived Quality of the Feedback", "Do students regard the personalized feedback as higher-quality than the default?")
-#fr("O 3", "Perceived Personalisation of the Feedback", "Do students perceive the personalized feedback as more aligned with their preferences?")
+#fr("O 3", "Perceived Personalization of the Feedback", "Do students perceive the personalized feedback as more aligned with their preferences?")
 #fr("O 4", "Perceived Alignment of the Feedback with Preferences", "Do students perceive the personalized feedback as aligned with the preferences they set?")
 #fr("O 5", "UI Usability", "Can students understand and configure the preference sliders quickly and confidently?")
 
@@ -228,12 +228,12 @@ We will present the results of the user study in two subsections: (i) quantitati
 @evaluation_graph summarises the Likert-scale findings. Students rated alignment with their chosen preferences and overall satisfaction at a solid M = 4.0,  confirming that they perceived the personalized version as relevant and valuable. Coverage of the three preference dimensions was judged adequate (M = 3.7), but ease of understanding the settings lagged (M = 3.4). 
 
 
-#figure(caption: [User study results of the Likert scale questions, based on the answers of the participants (n = 7). Blue line represents the average rating of the participants, shaded area represents the standard deviation.], )[
+#figure(caption: [User study results of the Likert scale questions, based on the answers of the participants (n = 7). Blue line represents the average rating of the participants (M for mean), shaded area represents the standard deviation.], )[
   #image("../figures/likert_graph.png", width: 100%)
 ] <evaluation_graph>
 
 \
-Log data reinforce this impression: the time to complete the preference setup was observed to be higher than expected (expected 1 minute, average > 4 minutes). 
+Log data reinforce this impression: the time to complete the preference setup was higher than expected (expected 1 minute, average > 4 minutes). 
 
 === Qualitative Results
 Qualitative results discuss the results of the open-ended questions. Considering the small number of interviewees, we analyzed the answers manually. The results complement the quantitative results and yield themes that align with the numeric trends:

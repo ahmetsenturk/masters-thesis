@@ -1,5 +1,6 @@
 // --- Chapter numbering like "Figure 5.4" ---
-#set heading(numbering: "1.")
+#counter(heading).update(0)      // reset level-1 so next becomes 1 → A
+#set heading(numbering: "A.1")   // letters for level-1, numbers for level-2
 
 // Reset per-chapter counters at level-1 headings
 #show heading.where(level: 1): it => {
@@ -11,7 +12,7 @@
 
 // Prefix the figure counter with the current chapter number.
 #set figure(numbering: (..num) =>
-  numbering("1.1", counter(heading).get().first(), num.pos().first())
+  numbering("A.1.1", counter(heading).get().first(), num.pos().first())
 )
 
 // Use "Figure" in captions (default), left-aligned, small, with a colon.
@@ -36,17 +37,49 @@
   it
 }
 
-- Rate limiting exercise
-- User personas
-- Full interview table
+= Appendix
+
+== Feedback Component
 
 #figure(caption: "Inline Text Feedback Component. This version has a custom title and does not have a reference part as it is directly under the referenced part.")[
   #image("../figures/feedback-component/text.png", width: 100%)
 ] <text-feedback-component>
 
+#figure(caption: "Inline Programming Feedback Component. This version has a custom title and does not have a reference part as it is directly under the referenced part.")[
+  #image("../figures/feedback-component/feedback-3.png", width: 100%)
+] <programming-feedback-component>
+
 #figure(caption: "Modeling Feedback Component. This version has a custom title and does not have a reference part as it is directly under the referenced part.")[
   #image("../figures/feedback-component/modeling.png", width: 100%)
 ] <modeling-feedback-component>
+
+== Student's Submission Analysis
+
+#figure(
+  box(
+    fill: rgb("#fdfdfd"),   // light gray background
+    stroke: rgb("#edebeb"), // subtle border (optional)
+    radius: 2pt,              // rounded corners (optional)
+    inset: 10pt,              // padding
+    [
+    ```json
+
+    {
+      "competency": {
+        "description": "Explain what a rate limiter is and why it is necessary in distributed systems.", 
+        "blooms_level": "Understand", 
+        "grading_instruction_id": 1
+      }, 
+      "status": "Partially Correct", 
+      "evidence": "A rate limiter is for stopping too many requests.", 
+      "line_start": 0, 
+      "line_end": 1
+    }
+    ```
+    ]
+  ),
+  caption: [Student's submission analysis with Bloom's taxonomy, where student's answer is partially correct. The competencies are linked to the exercise and the student's submission is analysed according to the Bloom's taxonomy competencies.],
+) <blooms-partially-correct2>
 
 
 #figure(
@@ -73,7 +106,6 @@
     ]
   ),
   caption: [Student's submission analysis with Bloom's taxonomy, where student has not attempted a part of the exercise. The competencies are linked to the exercise and the student's submission is analysed according to the Bloom's taxonomy competencies.],
-  supplement: "Figure",
 ) <blooms-not-attempted>
 
 
@@ -101,7 +133,6 @@
     ]
   ),
   caption: [Student's submission analysis with Bloom's taxonomy, where student's answer is partially correct. The competencies are linked to the exercise and the student's submission is analysed according to the Bloom's taxonomy competencies.],
-  supplement: "Figure",
 ) <blooms-partially-correct>
 
 
@@ -139,5 +170,4 @@
     ]
   ),
   caption: [Student's submission analysis with Bloom's taxonomy, where student has enhanced a part of the submission. The competencies are linked to the exercise and the student's submission is analysed according to the Bloom's taxonomy competencies.],
-  supplement: "Figure",
 ) <blooms-improved>

@@ -121,10 +121,10 @@ Lastly, we decompose the Artemis subsystem, which follows a client-server archit
   #image("../figures/subsystem-decomposition/artemis.svg", width: 100% ,format: "svg")
 ] <artemis-sd>
 
-The _Learner Profile Module_ manages the learner profile interaction between the student and the LMS. It contains the newly introduced _Feedback Preferences Onboarding Component_, which guides the student through the configuration process for feedback preferences. It also displays the learner profile to the student and allows them to configure the feedback preferences using _Learner Profile Attribute Configure Component_.
-_Feedback Module_ contains the newly developed _Feedback Component_, responsible for displaying the feedback. This component is then used in the different exercise type feedback components to display the feedback to the student, namely, _Programming Feedback Component_, _Text Feedback Component_, and _Modeling Feedback Component_.
+The _Learner Profile Module_ manages the learner profile interaction between the student and the LMS. It contains the  _Feedback Preferences Onboarding Component_, which guides the student through the configuration process for feedback preferences. It also displays the learner profile to the student and allows them to configure the feedback preferences using _Learner Profile Attribute Configure Component_.
+_Feedback Module_ contains the _Feedback Component_, which is responsible for displaying the feedback for different exercise types.
 
-Both modules connect to the Artemis Server through REST API calls. _Learner Profile Module_ uses _Learner Profile Service_ to fetch and update the learner profile. _Feedback Module_ uses _Feedback Service_ to request for a feedback. _Artemis Server_ is connected to _Athena_, as displayed in @sd as well, to fetch the feedback.
+Both modules connect to the Artemis Server through REST API calls. _Learner Profile Module_ uses _Learner Profile Service_ to fetch and update the learner profile. _Feedback Module_ uses _Feedback Service_ to request for a feedback. 
 
 
 == Hardware Software Mapping
